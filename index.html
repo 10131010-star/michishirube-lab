@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="ja" data-v="a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ミチシルベ業務ラボ｜AIと自動化の無料テンプレート</title>
+<meta name="description" content="議事録・メール・資料作成のプロンプト集と、Googleスプレッドシートの定型メール自動送信テンプレートを無料で公開しています。登録不要でその場でコピーできます。">
+<meta property="og:title" content="ミチシルベ業務ラボ｜AIと自動化の無料テンプレート">
+<meta property="og:description" content="登録不要。議事録・メール・資料作成のプロンプト集と、定型メール自動送信のGASテンプレート。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f3d4c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f3d4c'/%3E%3Cpath d='M9 22l7-12 7 12' stroke='%23fff' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+<script>
+/* AB切替：?v=a / ?v=b（それ以外・指定なしは a）。描画前に確定してちらつきを防ぐ */
+(function(){var m=/[?&]v=([ab])(?:&|$)/i.exec(location.search);document.documentElement.setAttribute('data-v',m?m[1].toLowerCase():'a');})();
+</script>
+<style>
+:root{--ink:#1d2b33;--sub:#56656d;--line:#dbe3e6;--bg:#ffffff;--soft:#f3f7f8;--brand:#0f3d4c;--accent:#0e7c6b;--accent-ink:#ffffff;--warn:#fff7e0;--code:#0f2530;--code-ink:#e3f1f0}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;font-size:16px;line-height:1.75;overflow-wrap:anywhere}
+a{color:var(--accent)}
+.pr{background:var(--soft);color:var(--sub);font-size:12px;text-align:center;padding:6px 16px;border-bottom:1px solid var(--line)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+header.fv{background:var(--brand);color:#fff;padding:28px 0 32px}
+.brand{font-size:13px;letter-spacing:.08em;opacity:.85;margin:0 0 12px}
+.fv h1{font-size:26px;line-height:1.45;margin:0 0 14px;font-weight:800}
+.fv .lead{margin:0 0 14px;font-size:15px;opacity:.95}
+.h-b{display:none}
+html[data-v="b"] .h-a{display:none}
+html[data-v="b"] .h-b{display:block}
+.btn{display:block;text-align:center;text-decoration:none;font-weight:700;border-radius:10px;padding:14px 16px;font-size:16px}
+.btn-main{background:#fff;color:var(--brand)}
+.btn-sub{border:1px solid rgba(255,255,255,.6);color:#fff;margin-top:10px;font-weight:600}
+.fv .note{font-size:12px;opacity:.75;margin:12px 0 0}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:21px;line-height:1.5;margin:0 0 6px}
+.kicker{color:var(--accent);font-size:13px;font-weight:700;margin:0 0 4px}
+.desc{color:var(--sub);font-size:14px;margin:0 0 18px}
+.caution{background:var(--warn);border-radius:10px;padding:12px 14px;font-size:13px;margin:0 0 18px}
+.caution p{margin:0}
+details.tpl{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;background:#fff}
+details.tpl summary{cursor:pointer;padding:14px 16px;font-weight:700;list-style:none;position:relative;padding-right:40px}
+details.tpl summary::-webkit-details-marker{display:none}
+details.tpl summary::after{content:"＋";position:absolute;right:16px;top:14px;color:var(--accent)}
+details.tpl[open] summary::after{content:"－"}
+details.tpl summary small{display:block;font-weight:400;color:var(--sub);font-size:13px}
+.tpl-body{padding:0 16px 16px}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.65;background:var(--soft);border-radius:8px;padding:12px;max-height:420px;overflow:auto}
+pre.code{background:var(--code);color:var(--code-ink);white-space:pre;word-break:normal;overflow-x:auto}
+.copy{display:block;width:100%;margin-top:10px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-size:15px;font-weight:700;padding:12px;cursor:pointer;font-family:inherit}
+.copy.done{background:#2f5d50}
+ol.steps{padding-left:1.4em;margin:0 0 16px;font-size:15px}
+ol.steps li{margin-bottom:6px}
+.sheet{width:100%;border-collapse:collapse;font-size:13px;margin:0 0 16px}
+.sheet th,.sheet td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+.sheet th{background:var(--soft)}
+.tablewrap{overflow-x:auto}
+.points{padding-left:1.3em;margin:0 0 20px}
+.points li{margin-bottom:8px}
+.points b{color:var(--brand)}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 12px;background:#fff}
+.card h3{font-size:17px;margin:0 0 4px}
+.card p{margin:0 0 12px;font-size:14px;color:var(--sub)}
+.badge{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 6px;color:var(--sub);margin-bottom:6px}
+.btn-exit{background:var(--accent);color:var(--accent-ink)}
+.fine{font-size:12px;color:var(--sub);margin:8px 0 0}
+footer{background:var(--soft);padding:32px 0 48px;font-size:14px}
+footer h2{font-size:17px}
+footer h3{font-size:15px;margin:20px 0 4px}
+footer p,footer li{color:var(--sub)}
+footer dl{margin:0 0 8px}
+footer dt{font-weight:700;color:var(--ink)}
+footer dd{margin:0 0 8px;color:var(--sub)}
+.toplink{display:block;text-align:center;margin-top:24px}
+.toc{background:var(--soft)}
+.toc-list{list-style:none;padding:0;margin:0 0 12px;counter-reset:t}
+.toc-list li{margin:0 0 8px}
+.toc-list a{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--ink);font-weight:700}
+.toc-list small{display:block;font-weight:400;color:var(--sub);font-size:13px}
+.box{border-left:4px solid var(--accent);background:var(--soft);border-radius:0 8px 8px 0;padding:10px 14px;margin:0 0 14px}
+.box p{margin:0;font-size:15px}
+.box .box-t{font-weight:700;color:var(--brand);margin-bottom:2px}
+.copyblock{margin:0 0 18px}
+.cb-label{font-weight:700;margin:0 0 6px;font-size:15px}
+.small{font-size:13px;color:var(--sub);margin:-8px 0 16px}
+.back{display:block;text-align:right;font-size:13px;margin-top:8px}
+.fv-toc{margin:4px 0 0}
+.fv-toc-t{font-size:13px;font-weight:700;margin:0 0 6px;opacity:.9}
+.fv-toc ol{list-style:none;margin:0;padding:0}
+.fv-toc li{margin:0 0 6px}
+.fv-toc a{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;line-height:1.4;border-radius:8px;padding:9px 12px}
+.fv-toc a::after{content:"›";font-size:18px;color:var(--accent)}
+.fv-more{font-size:13px;margin:10px 0 0;opacity:.9}
+.fv-more a{color:#fff}
+@media (min-width:600px){.fv h1{font-size:32px}.btns{display:flex;gap:10px}.btns .btn{flex:1;margin-top:0}}
+</style>
+</head>
+<body>
+
+
+<header class="fv" id="top">
+  <div class="wrap">
+    <p class="brand">ミチシルベ業務ラボ</p>
+    <!-- AB案：?v=a（ブランドの約束・数値なし） / ?v=b（具体的な作業名＋即使える） -->
+    <div class="h-a">
+      <h1>明日の仕事を、<br>AIと自動化で軽くする<br>実践ワザ</h1>
+      <p class="lead">Instagramの投稿で紹介したテンプレートを、登録不要・無料でその場でコピーできます。</p>
+    </div>
+    <div class="h-b">
+      <h1>議事録もメールも、<br>コピペ1回でAIが下書き</h1>
+      <p class="lead">Instagramの投稿で紹介したプロンプト・式・コードを、登録不要・無料でその場でコピーできます。</p>
+    </div>
+    <nav class="fv-toc" aria-label="投稿で紹介したテンプレート">
+      <p class="fv-toc-t">見た投稿を選んでください</p>
+<!--FVTOC:BEGIN（gen_posts.mjs が生成）-->
+      <ol>
+        <li><a href="#d001" data-cta="fv-d001">議事録づくり（会議メモ→議事録のプロンプト）</a></li>
+        <li><a href="#d002" data-cta="fv-d002">VLOOKUPでやりがちなミス3つ</a></li>
+        <li><a href="#d003" data-cta="fv-d003">期限が近いタスクを毎朝メール（自分宛てGAS）</a></li>
+        <li><a href="#d004" data-cta="fv-d004">ChatGPT・Claude・Gemini、どれを使う？</a></li>
+        <li><a href="#d005" data-cta="fv-d005">職務経歴書の「AI使えます」の書き方</a></li>
+      </ol>
+<!--FVTOC:END-->
+    </nav>
+    <p class="fv-more">ほかに <a href="#prompts" data-cta="fv-prompts">議事録・メール・資料のプロンプト集（8個）</a> もあります。</p>
+  </div>
+</header>
+
+<main>
+<!--POSTS:BEGIN（artifacts/lp/src/gen_posts.mjs が生成。手で編集しない）-->
+<section id="posts" class="toc">
+  <div class="wrap">
+    <h2>投稿で紹介したテンプレート</h2>
+    <p class="desc">Instagramの投稿から来た方は、該当する投稿を選んでください。その場でコピーできます。</p>
+    <ol class="toc-list">
+      <li><a href="#d001" data-cta="toc-d001"><span>議事録づくり（会議メモ→議事録のプロンプト）</span><small>プロンプト</small></a></li>
+      <li><a href="#d002" data-cta="toc-d002"><span>VLOOKUPでやりがちなミス3つ</span><small>式・練習用の表</small></a></li>
+      <li><a href="#d003" data-cta="toc-d003"><span>期限が近いタスクを毎朝メール（自分宛てGAS）</span><small>GASコード全文</small></a></li>
+      <li><a href="#d004" data-cta="toc-d004"><span>ChatGPT・Claude・Gemini、どれを使う？</span><small>テスト3本・採点シート</small></a></li>
+      <li><a href="#d005" data-cta="toc-d005"><span>職務経歴書の「AI使えます」の書き方</span><small>例文・プロンプト</small></a></li>
+    </ol>
+    <p class="small">ほかにも、<a href="#prompts" data-cta="toc-prompts">議事録・メール・資料のプロンプト集</a>と<a href="#gas" data-cta="toc-gas">宛名入りメールの一斉送信テンプレート</a>があります。</p>
+  </div>
+</section>
+<section id="d001" class="post">
+  <div class="wrap">
+    <p class="kicker">投稿 IG-D001 のテンプレート</p>
+    <h2>議事録づくり、30分→10分に</h2>
+    <p class="desc">コピペで使えるプロンプト付き。会議メモを貼るだけで、決定事項・ToDoを分けた議事録の下書きができます。</p>
+    <div class="box"><p class="box-t">手順は3ステップ</p><p>① 会議メモを箇条書きのまま用意<br>② 次のプロンプトに貼って送信<br>③ 数字・固有名詞・期限だけ人が確認</p></div>
+    <div class="copyblock">
+      <p class="cb-label">議事録プロンプト</p>
+<pre id="d001-prompt">あなたは会議の議事録を整える担当です。
+下の【メモ】から議事録を作ってください。
+
+# ルール
+- メモにない情報は足さない。不明点は「要確認」と書く
+- 決定事項と未決事項を分ける
+- ToDoは「担当｜内容｜期限」の表にする（期限がなければ「未定」）
+- です・ます調、全体で400字程度
+
+# 出力の形
+1. 会議名・日時・参加者
+2. 決定事項
+3. 未決事項・論点
+4. ToDo（表）
+5. 次回の予定
+
+【メモ】
+（ここに会議メモを貼る）</pre>
+      <button type="button" class="copy" data-copy="d001-prompt">このプロンプトをコピー</button>
+    </div>
+    <div class="box"><p class="box-t">ポイントは2行</p><p>「メモにない情報は足さない」<br>「不明点は『要確認』と書く」<br>この2行で、AIの“盛り”を防いで<br>確認する場所がひと目でわかる</p></div>
+    <div class="box"><p class="box-t">最後に人が見る3か所</p><p>① 数字（金額・日付・数量）<br>② 人名・社名・製品名<br>③ ToDoの担当と期限<br>※社外秘・個人情報は、社内のAI利用ルールを確認してから入力</p></div>
+    <div class="box"><p class="box-t">時間の目安（前提つき）</p><p>手作業で清書：約30分<br>AIで下書き＋確認：約10分<br>前提：1時間の会議・箇条書きメモあり<br>※想定の目安。会議の内容や確認の深さで変わります</p></div>
+    <a class="back" href="#posts" data-cta="d001-back">投稿テンプレートの一覧へ戻る</a>
+  </div>
+</section>
+<section id="d002" class="post">
+  <div class="wrap">
+    <p class="kicker">投稿 IG-D002 のテンプレート</p>
+    <h2>VLOOKUPでやりがちなミス3つ</h2>
+    <p class="desc">XLOOKUPなら1本で解決。ミスの理由と、そのまま使える式・練習用の表です。</p>
+    <div class="box"><p class="box-t">ミス① 最後の引数を省略</p><p>=VLOOKUP(A2,商品!A:C,3)<br>→ 省略すると「近似一致」になり<br>　違う商品の値が返ることがある<br>正しくは最後に FALSE を付ける</p></div>
+    <div class="box"><p class="box-t">ミス② 列番号の「3」がずれる</p><p>表に列を1本挿入すると<br>「3列目」が別の列を指す<br>→ 気づかないまま間違った値に</p></div>
+    <div class="box"><p class="box-t">ミス③ 左側の列を引けない</p><p>VLOOKUPは「検索する列が左端」が前提<br>商品名からコード（左側）を<br>引きたいときに使えない</p></div>
+    <div class="copyblock">
+      <p class="cb-label">XLOOKUPならこう書く</p>
+<pre id="d002-xlookup" class="code">=XLOOKUP(A2, 商品マスタ!$A$2:$A$500, 商品マスタ!$C$2:$C$500, &quot;該当なし&quot;)</pre>
+      <button type="button" class="copy" data-copy="d002-xlookup">式をコピー</button>
+    </div>
+    <p class="small">A2        … 探す値（商品コード）<br>1つ目の範囲 … 探す列<br>2つ目の範囲 … 返したい列<br>&quot;該当なし&quot;  … 見つからない時の表示</p>
+    <div class="box"><p class="box-t">3つのミスが消える理由</p><p>① 何も指定しなければ完全一致<br>② 返す列を範囲で指定 → 列挿入に強い<br>③ 返す列が左側でもOK<br>＋見つからない時の表示も1本で</p></div>
+    <div class="copyblock">
+      <p class="cb-label">XLOOKUPがない環境では（Excel 2019以前など）</p>
+<pre id="d002-indexmatch" class="code">=IFERROR(INDEX(商品マスタ!$C$2:$C$500, MATCH(A2, 商品マスタ!$A$2:$A$500, 0)), &quot;該当なし&quot;)</pre>
+      <button type="button" class="copy" data-copy="d002-indexmatch">式をコピー</button>
+    </div>
+    <p class="small">※XLOOKUPはMicrosoft 365／Excel 2021以降とGoogleスプレッドシートで使えます</p>
+    <div class="copyblock">
+      <p class="cb-label">AIに書かせるときの頼み方</p>
+<pre id="d002-ai">「商品マスタ」シートのA列（A2:A500）が商品コード、C列が単価です。
+今のシートのA2の商品コードで単価を引くXLOOKUPを書いてください。
+見つからない時は「該当なし」と表示。
+範囲は絶対参照にしてください。</pre>
+      <button type="button" class="copy" data-copy="d002-ai">この頼み方をコピー</button>
+    </div>
+    <p class="desc">練習用のサンプル表：新しいスプレッドシートに「商品マスタ」「注文」の2シートを作り、それぞれA1セルに貼り付けてください（P099はマスタにないため「該当なし」になります）。</p>
+    <div class="copyblock">
+      <p class="cb-label">「商品マスタ」シート用</p>
+<pre id="d002-master" class="code">商品コード	商品名	単価
+P001	ボールペン（黒）	120
+P002	ボールペン（赤）	120
+P003	ノート A5	180
+P004	ノート B5	200
+P005	クリアファイル 10枚	250
+P006	付箋 75mm	300
+P007	ホッチキス	650
+P008	ホッチキス針	110
+P009	のり（スティック）	160
+P010	修正テープ	280</pre>
+      <button type="button" class="copy" data-copy="d002-master">表をコピー</button>
+    </div>
+    <div class="copyblock">
+      <p class="cb-label">「注文」シート用（C列にXLOOKUPの式入り）</p>
+<pre id="d002-order" class="code">商品コード	数量	単価	金額
+P003	5	=XLOOKUP(A2, 商品マスタ!$A$2:$A$500, 商品マスタ!$C$2:$C$500, &quot;該当なし&quot;)	=IFERROR(B2*C2, &quot;&quot;)
+P007	1	=XLOOKUP(A3, 商品マスタ!$A$2:$A$500, 商品マスタ!$C$2:$C$500, &quot;該当なし&quot;)	=IFERROR(B3*C3, &quot;&quot;)
+P010	3	=XLOOKUP(A4, 商品マスタ!$A$2:$A$500, 商品マスタ!$C$2:$C$500, &quot;該当なし&quot;)	=IFERROR(B4*C4, &quot;&quot;)
+P099	2	=XLOOKUP(A5, 商品マスタ!$A$2:$A$500, 商品マスタ!$C$2:$C$500, &quot;該当なし&quot;)	=IFERROR(B5*C5, &quot;&quot;)</pre>
+      <button type="button" class="copy" data-copy="d002-order">表をコピー</button>
+    </div>
+    <a class="back" href="#posts" data-cta="d002-back">投稿テンプレートの一覧へ戻る</a>
+  </div>
+</section>
+<section id="d003" class="post">
+  <div class="wrap">
+    <p class="kicker">投稿 IG-D003 のテンプレート</p>
+    <h2>期限が近いタスク、毎朝メールで届く</h2>
+    <p class="desc">コピペOK｜Googleスプレッドシート＋GAS。期限が今日・明日のタスクを、毎朝自分宛てにメールで知らせます。</p>
+    <div class="box"><p class="box-t">できること</p><p>・期限が「今日・明日」のタスクを<br>　毎朝8時台に自分へメール<br>・期限切れには【期限切れ】と表示<br>・該当がない日は送らない</p></div>
+    <div class="box"><p class="box-t">① シートを用意</p><p>シート名：タスク<br>A列 タスク名／B列 担当<br>C列 期限（日付で入力）<br>D列 状態（「完了」で通知しない）<br>1行目は見出し</p></div>
+    <div class="copyblock">
+      <p class="cb-label">シートの雛形（「タスク」シートのA1に貼り付け）</p>
+<pre id="d003-sheet" class="code">タスク名	担当	期限	状態</pre>
+      <button type="button" class="copy" data-copy="d003-sheet">見出しをコピー</button>
+    </div>
+    <div class="box"><p class="box-t">② コードを貼る</p><p>「拡張機能」→「Apps Script」を開く<br>最初からあるコードを消す<br>下のコード全文をコピーして貼り、保存</p></div>
+    <div class="copyblock">
+      <p class="cb-label">コード全文</p>
+<pre id="d003-code" class="code">// 期限が近いタスクを毎朝メールで自分に通知する
+// シート「タスク」：A=タスク名 B=担当 C=期限（日付） D=状態（「完了」で通知対象外）
+const SHEET_NAME = 'タスク';
+const DAYS_AHEAD = 1; // 1 = 今日と明日が期限のもの（期限切れも含む）
+
+function notifyDueTasks() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error('シート「' + SHEET_NAME + '」が見つかりません');
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const limit = new Date(today);
+  limit.setDate(limit.getDate() + DAYS_AHEAD);
+
+  const rows = sheet.getDataRange().getValues().slice(1); // 1行目は見出し
+  const lines = [];
+  rows.forEach(function (row) {
+    const task = row[0], owner = row[1], due = row[2], status = row[3];
+    if (!task || status === '完了' || !(due instanceof Date)) return;
+    if (due &gt; limit) return;
+    const mark = due &lt; today ? '【期限切れ】' : '';
+    const day = Utilities.formatDate(due, Session.getScriptTimeZone(), 'M/d');
+    lines.push(mark + day + ' ' + task + '（' + (owner || '担当未定') + '）');
+  });
+  if (lines.length === 0) return; // 該当なしの日は送らない
+
+  MailApp.sendEmail({
+    to: Session.getEffectiveUser().getEmail(),
+    subject: '【期限通知】' + lines.length + '件',
+    body: lines.join('\n') + '\n\n' + ss.getUrl()
+  });
+}
+
+// 最初に1回だけ実行：毎朝8時台に notifyDueTasks を動かすトリガーを作る
+function createMorningTrigger() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'notifyDueTasks') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('notifyDueTasks').timeBased().everyDays(1).atHour(8).create();
+}</pre>
+      <button type="button" class="copy" data-copy="d003-code">コードをコピー</button>
+    </div>
+    <div class="box"><p class="box-t">③ 動かす</p><p>createMorningTrigger を選んで「実行」<br>自分のアカウントで権限を許可<br>試すなら notifyDueTasks を実行</p></div>
+    <div class="box"><p class="box-t">つまずきやすい所</p><p>・C列は文字でなく日付で入力<br>・タイムゾーンは東京に設定<br>・「確認されていません」は詳細→許可</p></div>
+    <div class="caution"><p>宛先は自分のアドレスだけで、ほかの人には送られません。会社のアカウントで使う場合は、社内ルールでGASの利用が認められているか先に確認してください。</p></div>
+    <a class="back" href="#posts" data-cta="d003-back">投稿テンプレートの一覧へ戻る</a>
+  </div>
+</section>
+<section id="d004" class="post">
+  <div class="wrap">
+    <p class="kicker">投稿 IG-D004 のテンプレート</p>
+    <h2>ChatGPT・Claude・Gemini、どれを使う？</h2>
+    <p class="desc">自分の仕事で決める「10分テスト」。同じお題を3つのAIに送り、自分の基準で比べるためのテスト3本と採点シートです。</p>
+    <div class="box"><p class="box-t">ランキングより自分のお題</p><p>向き不向きは、仕事の内容と<br>その時期のバージョンで変わる<br>→ 同じお題を3つに投げて<br>　自分の基準で比べるのが納得しやすい</p></div>
+    <div class="box"><p class="box-t">公平に比べるルール</p><p>・同じ文面を、同じ日に<br>・それぞれ新しいチャットで<br>・無料版か有料版かをメモ<br>・社外秘や個人情報は入れない</p></div>
+    <div class="copyblock">
+      <p class="cb-label">テスト1：メール返信</p>
+<pre id="d004-t1">【テスト1：メール返信】
+次の問い合わせへの返信文を作ってください。
+条件：丁寧だが簡潔に／200字以内／納期は3営業日遅れる／代替案として分納を提案する
+【問い合わせ】
+先日発注した部品Aの納期を確認したいです。今月末に必要です。</pre>
+      <button type="button" class="copy" data-copy="d004-t1">テスト1をコピー</button>
+    </div>
+    <div class="copyblock">
+      <p class="cb-label">テスト2：表の読み取り</p>
+<pre id="d004-t2">【テスト2：表の読み取り】
+次の表で、9月→10月の伸び率が最も高い商品と、その伸び率を答えてください。
+表にない情報は使わないでください。
+商品,9月,10月
+A,120,150
+B,80,72
+C,45,90</pre>
+      <button type="button" class="copy" data-copy="d004-t2">テスト2をコピー</button>
+    </div>
+    <div class="copyblock">
+      <p class="cb-label">テスト3：資料の構成</p>
+<pre id="d004-t3">【テスト3：資料の構成】
+社内向けに「AIツールの利用ルール」を説明する資料を作ります。
+スライド5枚の構成案を、各スライドのタイトルと要点3つで出してください。
+対象は、AIをほとんど使ったことがない社員です。</pre>
+      <button type="button" class="copy" data-copy="d004-t3">テスト3をコピー</button>
+    </div>
+    <div class="box"><p class="box-t">採点は4項目×各1〜3点</p><p>① 正確さ<br>② 条件を守ったか（字数・指示）<br>③ 手直しの少なさ<br>④ 日本語の自然さ</p></div>
+    <div class="copyblock">
+      <p class="cb-label">採点シート（スプレッドシートのA1に貼り付け。合計は自動計算）</p>
+<pre id="d004-score" class="code">テスト	観点	ChatGPT	Claude	Gemini
+テスト1	正確さ			
+テスト1	条件を守ったか			
+テスト1	手直しの少なさ			
+テスト1	日本語の自然さ			
+テスト2	正確さ			
+テスト2	条件を守ったか			
+テスト2	手直しの少なさ			
+テスト2	日本語の自然さ			
+テスト3	正確さ			
+テスト3	条件を守ったか			
+テスト3	手直しの少なさ			
+テスト3	日本語の自然さ			
+合計（各1〜3点）		=SUM(C2:C13)	=SUM(D2:D13)	=SUM(E2:E13)
+メモ	無料版／有料版・日付			</pre>
+      <button type="button" class="copy" data-copy="d004-score">採点シートをコピー</button>
+    </div>
+    <div class="box"><p class="box-t">答え合わせと決め方</p><p>テスト2の正解は C・伸び率100%<br>合計点が高いものを“メイン”に<br>点が近ければ、使い慣れた方でOK</p></div>
+    <div class="box"><p class="box-t">結果の使い方</p><p>・苦手な作業だけ別のAIに回す<br>・月1回、同じテストで見直す</p></div>
+    <a class="back" href="#posts" data-cta="d004-back">投稿テンプレートの一覧へ戻る</a>
+  </div>
+</section>
+<section id="d005" class="post">
+  <div class="wrap">
+    <p class="kicker">投稿 IG-D005 のテンプレート</p>
+    <h2>職務経歴書の「AI使えます」、こう書く</h2>
+    <p class="desc">型と例文3つ。「ChatGPTを使えます」だけで終わらせない書き方です。</p>
+    <div class="box"><p class="box-t">NG：「ChatGPTを使えます」</p><p>何の仕事に、どう使い<br>何が良くなったかが伝わらない<br>→ 読む人が判断できない</p></div>
+    <div class="box"><p class="box-t">書き方の型</p><p>業務 → AIの使い方<br>→ 自分の確認・工夫 → 結果（数字）<br>「確認・工夫」を入れると<br>AI任せではないことが伝わる</p></div>
+    <div class="copyblock">
+      <p class="cb-label">例文①　事務</p>
+<pre id="d005-ex1">週次の売上報告で、AIを使い集計コメントの下書きを作成。数値は元データと照合して確認し、作成時間を約60分→約20分に短縮（自己計測）</pre>
+      <button type="button" class="copy" data-copy="d005-ex1">例文をコピー</button>
+    </div>
+    <div class="copyblock">
+      <p class="cb-label">例文②　営業</p>
+<pre id="d005-ex2">提案書の構成案をAIで3案作成し、顧客の課題に合わせて1案に絞り込み。上長レビューを経て、提案書作成の手順をチーム内で共有</pre>
+      <button type="button" class="copy" data-copy="d005-ex2">例文をコピー</button>
+    </div>
+    <div class="copyblock">
+      <p class="cb-label">例文③　企画</p>
+<pre id="d005-ex3">アンケートの自由記述（約300件）をAIで分類。分類結果は1割を抜き取りで目視確認し、改善テーマの洗い出しを約2日→約半日に短縮（自己計測）</pre>
+      <button type="button" class="copy" data-copy="d005-ex3">例文をコピー</button>
+    </div>
+    <div class="caution"><p>※例文は見本です。ご自身の実際の業務と数字に置き換えてください。例文の数字は見本で、実在の人物の実績ではありません。</p></div>
+    <div class="box"><p class="box-t">数字の出し方</p><p>・作業の前後で、かかった時間を<br>　1〜2週間メモする<br>・「約」「自己計測」を付けて正直に<br>・盛ると面接の深掘りで困る</p></div>
+    <div class="copyblock">
+      <p class="cb-label">自分用に書き直すプロンプト</p>
+<pre id="d005-prompt">次の【業務メモ】を、職務経歴書の実績1〜2行に書き直してください。
+
+# ルール
+- 形は「業務 → AIの使い方 → 自分の確認・工夫 → 結果」
+- メモにない事実や数字は足さない
+- 数字がわからない所は［　］の空欄にする
+- 「AIを使えます」のような抽象的な表現は使わない
+
+【業務メモ】
+（例：毎週の売上報告。ChatGPTでコメントの下書きを作って、数字は元データで確認している。前より早くなった）</pre>
+      <button type="button" class="copy" data-copy="d005-prompt">このプロンプトをコピー</button>
+    </div>
+    <a class="back" href="#posts" data-cta="d005-back">投稿テンプレートの一覧へ戻る</a>
+  </div>
+</section>
+<!--POSTS:END-->
+
+<section id="prompts">
+  <div class="wrap">
+    <p class="kicker">無料テンプレート ①</p>
+    <h2>議事録・メール・資料づくりのプロンプト集（8個）</h2>
+    <p class="desc">ChatGPT・Gemini・Claudeなど、普段使っている生成AIに貼り付けて使えます。（ ）の部分を自分の内容に書き換えてください。</p>
+    <div class="caution"><p>社外秘の情報・顧客の個人情報は入力しないでください。勤務先のAI利用ルールがある場合は、そちらに従ってください。AIの出力は、日付・金額・固有名詞を必ず自分で確認してから使いましょう。</p></div>
+
+    <details class="tpl">
+      <summary>1. 会議メモ → 議事録に整える<small>決定事項・宿題・期限を表にまとめる</small></summary>
+      <div class="tpl-body">
+<pre id="p1">あなたは会議の議事録を作るアシスタントです。
+以下の会議メモを、社内共有用の議事録に整えてください。
+
+# 出力の形式
+1. 会議名・日時・参加者（メモにない項目は「不明」）
+2. 決定事項（箇条書き）
+3. 宿題：担当者／内容／期限 の表
+4. 保留になったこと・次回の論点
+5. 全体の要約（3行）
+
+# ルール
+- メモに書かれていないことは書かない
+- 推測で補った箇所には「（要確認）」と付ける
+- 文体は「です・ます」で統一する
+
+# 会議メモ
+（ここに貼り付け）</pre>
+        <button type="button" class="copy" data-copy="p1">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>2. 長い文字起こし → 要点だけ抜き出す<small>録音の文字起こしを5分で読める形に</small></summary>
+      <div class="tpl-body">
+<pre id="p2">以下は会議（または打ち合わせ）の文字起こしです。
+欠席した人が5分で把握できるように、要点をまとめてください。
+
+# 出力
+- 結論（1〜2文）
+- 話し合われた論点ごとに：論点／出た意見／結論（結論が出ていなければ「未決」）
+- 次のアクション（誰が・何を・いつまでに）
+- 聞き取れなかった可能性がある箇所（固有名詞・数字）
+
+# 条件
+- 雑談や言い直しは省く
+- 発言者の意図を変えない。数字は原文のまま書く
+
+# 文字起こし
+（ここに貼り付け）</pre>
+        <button type="button" class="copy" data-copy="p2">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>3. メールの返信を下書きする<small>伝えたいことを箇条書きで渡すだけ</small></summary>
+      <div class="tpl-body">
+<pre id="p3">以下の受信メールへの返信を下書きしてください。
+
+# 条件
+- 相手：（例：社外の取引先／社内の上司）
+- 伝えたいこと：（例：日程は承諾する。見積は来週水曜までに送る）
+- トーン：丁寧だが簡潔に。本文は300字以内
+- 件名の案を1つ付ける
+- 最後に、送る前に私が確認すべき点（日付・金額・固有名詞）を箇条書きで出す
+
+# 受信メール
+（ここに貼り付け）</pre>
+        <button type="button" class="copy" data-copy="p3">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>4. 依頼・お断りのメールを角を立てずに書く<small>言いにくい用件を3パターンで</small></summary>
+      <div class="tpl-body">
+<pre id="p4">次の用件で、相手との関係を損なわないビジネスメールを書いてください。
+
+# 用件
+（例：今月中の納品をお願いされたが、来月10日までなら対応できると伝えたい）
+
+# 相手と関係
+（例：付き合いの長い取引先の担当者）
+
+# 出力
+- 丁寧さの違う3パターン（かなり丁寧／標準／簡潔）
+- それぞれ件名と本文
+- 「できること・代わりの案」を必ず入れる
+- 断定的な言い方や、相手を責める表現は使わない</pre>
+        <button type="button" class="copy" data-copy="p4">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>5. 資料の構成案（スライドの骨子）を作る<small>白紙から始めない</small></summary>
+      <div class="tpl-body">
+<pre id="p5">次の条件で、プレゼン資料の構成案を作ってください。
+
+# 条件
+- テーマ：（例：営業日報のフォーマット統一の提案）
+- 聞き手：（例：部長と課長3名）
+- 時間・枚数：（例：10分、8枚以内）
+- 聞き手に決めてほしいこと：（例：来月から試験導入するかどうか）
+
+# 出力
+- スライドごとに：タイトル／伝えるメッセージ（1文）／入れる内容（箇条書き3つまで）／入れると良い図表
+- 最初の2枚で「結論と、決めてほしいこと」が分かる構成にする
+- 聞き手から出そうな質問を3つと、その答え方の方針</pre>
+        <button type="button" class="copy" data-copy="p5">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>6. 長い資料を上司向けに1枚で要約する<small>報告・稟議の前に</small></summary>
+      <div class="tpl-body">
+<pre id="p6">以下の資料を、忙しい上司が1分で判断できる1枚の要約にしてください。
+
+# 形式
+- 件名（20字以内）
+- 結論・お願いしたいこと（2文以内）
+- 背景（3行以内）
+- 選択肢と、それぞれの良い点・注意点
+- 費用・期限・リスク（資料に記載がなければ「記載なし」）
+
+# ルール
+- 資料にない数字や事実を加えない
+- 専門用語には短い説明を付ける
+
+# 資料
+（ここに貼り付け）</pre>
+        <button type="button" class="copy" data-copy="p6">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>7. 社内文書を校正する<small>誤字・敬語・分かりにくい箇所を指摘</small></summary>
+      <div class="tpl-body">
+<pre id="p7">以下の文章を校正してください。
+
+# してほしいこと
+1. 誤字脱字・敬語の誤り・表記ゆれを、表（修正前／修正後／理由）で指摘
+2. 読み手が誤解しそうな箇所の指摘と、書き換えの案
+3. 最後に、修正をすべて反映した全文
+
+# 条件
+- 読み手：（例：社内の他部署の人）
+- 意味や主張は変えない。文字数は今の±1割以内
+
+# 文章
+（ここに貼り付け）</pre>
+        <button type="button" class="copy" data-copy="p7">このプロンプトをコピー</button>
+      </div>
+    </details>
+
+    <details class="tpl">
+      <summary>8. Excel・スプレッドシートの関数を作ってもらう<small>やりたいことを日本語で伝えるだけ</small></summary>
+      <div class="tpl-body">
+<pre id="p8">Googleスプレッドシート（またはExcel）で使う数式を作ってください。
+
+# シートの状態
+- A列：（例：日付）
+- B列：（例：担当者名）
+- C列：（例：売上金額）
+- データは2行目から（例：500行程度）
+
+# やりたいこと
+（例：担当者ごと・月ごとの売上合計を、別の表に自動で出したい）
+
+# 出力
+- そのまま貼り付けられる数式と、入力するセル
+- 数式の意味を、初心者向けに3行で説明
+- よくあるエラーと、その直し方</pre>
+        <button type="button" class="copy" data-copy="p8">このプロンプトをコピー</button>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="gas">
+  <div class="wrap">
+    <p class="kicker">無料テンプレート ②</p>
+    <h2>宛名入りメールの一斉送信テンプレート（Googleスプレッドシート＋GAS）</h2>
+    <p class="desc">スプレッドシートの一覧から、宛名入りの定型メールをまとめて送ります。毎朝の自動実行もできます。Googleアカウントがあれば無料で使えます。</p>
+
+    <ol class="steps">
+      <li>スプレッドシートに「<b>送信リスト</b>」シートを作り、1行目に見出しを入れる（下の表）</li>
+      <li>メニューの「拡張機能 → Apps Script」を開き、下のコードを貼り付けて保存</li>
+      <li>まずはそのまま <b>sendMails</b> を実行（最初はテストモードで、メールは送られません。実行ログで文面を確認）</li>
+      <li>文面に問題がなければ、コードの <b>DRY_RUN = true</b> を <b>false</b> に変えて実行</li>
+      <li>毎朝自動で送るなら、<b>setupDailyTrigger</b> を1回だけ実行</li>
+    </ol>
+
+    <div class="tablewrap">
+      <table class="sheet">
+        <tr><th>メールアドレス</th><th>名前</th><th>会社名</th><th>送信状況</th></tr>
+        <tr><td>yamada@example.com</td><td>山田</td><td>A株式会社</td><td>（空欄）</td></tr>
+        <tr><td>sato@example.com</td><td>佐藤</td><td>B株式会社</td><td>送信済み 2026/10/01 09:02</td></tr>
+      </table>
+    </div>
+
+    <details class="tpl" open>
+      <summary>コード（mail_template.gs）<small>件名・本文の {名前} などは、その行の値に置き換わります</small></summary>
+      <div class="tpl-body">
+<pre class="code" id="gascode">/**
+ * 定型メール自動送信テンプレート（Googleスプレッドシート + Apps Script）
+ * 配布：ミチシルベ業務ラボ（無料・改変自由）
+ *
+ * 【準備】
+ * 1. スプレッドシートに「送信リスト」シートを作り、1行目に見出しを入れる
+ *    必須：メールアドレス / 名前 / 送信状況   任意：会社名 など自由に追加OK
+ * 2. 拡張機能 → Apps Script を開き、このコードを貼り付けて保存
+ * 3. まず DRY_RUN = true のまま sendMails を実行 → 実行ログで文面を確認
+ * 4. 問題なければ DRY_RUN = false にして実行（送信した行に「送信済み」が入る）
+ * 5. 毎朝自動で送るなら setupDailyTrigger を1回だけ実行
+ *
+ * 件名・本文の {見出し名} は、その行の値に置き換わります（例：{名前}）。
+ * 「送信状況」が空の行だけ送るので、同じ人に二重に送りません。
+ */
+
+// ===== ここを書き換える =====
+var SHEET_NAME = '送信リスト';
+var SUBJECT = '【ご案内】{名前}様 来週の定例会について';
+var BODY = [
+  '{会社名}',
+  '{名前} 様',
+  '',
+  'いつもお世話になっております。',
+  '来週の定例会の資料をお送りします。',
+  'ご不明点があれば、このメールにご返信ください。',
+  '',
+  'よろしくお願いいたします。'
+].join('\n');
+var DRY_RUN = true;     // true の間は送信せず、実行ログに文面を出すだけ
+var MAX_PER_RUN = 20;   // 1回の実行で送る上限（送りすぎ防止）
+var TRIGGER_HOUR = 9;   // setupDailyTrigger で毎日実行する時（0〜23）
+
+// ===== 本体 =====
+function sendMails() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) {
+    console.log('前回の処理が実行中のため、スキップしました');
+    return;
+  }
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    if (!sheet) throw new Error('「' + SHEET_NAME + '」シートがありません');
+    var values = sheet.getDataRange().getValues();
+    var header = values[0].map(function (h) { return String(h).trim(); });
+    var col = {};
+    header.forEach(function (h, i) { col[h] = i; });
+    ['メールアドレス', '名前', '送信状況'].forEach(function (k) {
+      if (!(k in col)) throw new Error('1行目に見出し「' + k + '」がありません');
+    });
+
+    var limit = Math.min(MAX_PER_RUN, MailApp.getRemainingDailyQuota());
+    var count = 0;
+    for (var r = 1; r &lt; values.length &amp;&amp; count &lt; limit; r++) {
+      var row = values[r];
+      var to = String(row[col['メールアドレス']]).trim();
+      if (!to || String(row[col['送信状況']]).trim() !== '') continue;
+      var statusCell = sheet.getRange(r + 1, col['送信状況'] + 1);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+        if (!DRY_RUN) statusCell.setValue('エラー：アドレスの形式');
+        console.log((r + 1) + '行目：アドレスの形式が不正のためスキップ');
+        continue;
+      }
+      var subject = fill_(SUBJECT, header, row);
+      var body = fill_(BODY, header, row);
+      count++;
+      if (DRY_RUN) {
+        console.log('[テスト・未送信] ' + (r + 1) + '行目 宛先：' + to + '\n件名：' + subject + '\n' + body);
+        continue;
+      }
+      try {
+        MailApp.sendEmail(to, subject, body);
+        statusCell.setValue('送信済み ' + Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm'));
+      } catch (e) {
+        statusCell.setValue('エラー：' + e.message);
+      }
+    }
+    console.log((DRY_RUN ? 'テスト完了（未送信）：' : '送信完了：') + count + '件');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// {見出し名} をその行の値に置き換える（見出しにない名前はそのまま残す）
+function fill_(text, header, row) {
+  return text.replace(/\{([^{}]+)\}/g, function (m, key) {
+    var i = header.indexOf(key.trim());
+    return i === -1 ? m : String(row[i]);
+  });
+}
+
+// 毎日 TRIGGER_HOUR 時台に sendMails を自動実行する（重複しないよう先に削除）
+function setupDailyTrigger() {
+  deleteTriggers();
+  ScriptApp.newTrigger('sendMails').timeBased().everyDays(1).atHour(TRIGGER_HOUR).create();
+  console.log('毎日' + TRIGGER_HOUR + '時台に自動実行します');
+}
+
+// 自動実行をやめる
+function deleteTriggers() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'sendMails') ScriptApp.deleteTrigger(t);
+  });
+}</pre>
+        <button type="button" class="copy" data-copy="gascode">コードをコピー</button>
+      </div>
+    </details>
+
+    <div class="caution"><p>「送信状況」が空の行だけに送るため、同じ人へ二重には送りません。初回の実行時に、Googleから権限の確認画面が表示されます（スプレッドシートの編集・メール送信・自動実行の設定）。1日に送れるメールの数にはGoogle側の上限があります。社外への一斉送信は、勤務先のルールを確認してから使ってください。広告・宣伝のメールを送る場合は特定電子メール法（同意の取得、送信者情報と配信停止方法の表示）に従ってください。</p></div>
+  </div>
+</section>
+
+
+</main>
+
+<footer id="about">
+  <div class="wrap">
+    <h2>運営者情報</h2>
+    <dl>
+      <dt>屋号</dt><dd>ミチシルベ業務ラボ</dd>
+      <dt>内容</dt><dd>AIと業務自動化の実践ノウハウ・テンプレートの発信</dd>
+      <dt>お問い合わせ</dt><dd>お問い合わせはInstagramのDMへ</dd>
+    </dl>
+    <p>当サイトのコンテンツは、AIを活用して作業効率・調査量・制作速度を高めながら、運営者が内容を確認して公開しています。</p>
+
+    <h2 id="privacy">プライバシーポリシー（簡易版）</h2>
+    <h3>アクセス解析について</h3>
+    <p>当サイトでは、サイトの改善のためにアクセス解析ツールを利用する場合があります。アクセス解析ではCookie等を使って閲覧状況（閲覧したページ、クリックした位置など）を収集しますが、個人を特定する情報は含みません。Cookieはブラウザの設定で無効にできます。</p>
+    <h3>免責事項</h3>
+    <p>テンプレートやプロンプトは、ご自身の判断と責任でお使いください。ご利用によって生じた損害について、運営者は責任を負いかねます。掲載している情報は、公開時点のものです。</p>
+    <p>制定：2026年10月</p>
+    <a class="toplink" href="#top" data-cta="footer-top">ページの先頭へ戻る</a>
+  </div>
+</footer>
+
+<script>
+/* 出口リンクに表示中のAB案を付与（計測ツールは後で追加。data-v / data-pos / data-slot を参照する） */
+(function(){
+  var v=document.documentElement.getAttribute('data-v')||'a';
+  var links=document.querySelectorAll('[data-exit],[data-cta]');
+  for(var i=0;i<links.length;i++){links[i].setAttribute('data-v',v);}
+
+  /* コピーボタン：Clipboard API → 使えない環境（アプリ内ブラウザ等）は選択してコピー */
+  function fallback(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,text.length);
+    var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);return ok;
+  }
+  function done(btn,ok){
+    var label=btn.getAttribute('data-label')||btn.textContent;
+    btn.setAttribute('data-label',label);
+    btn.textContent=ok?'コピーしました':'コピーできませんでした。長押しで選択してください';
+    if(ok)btn.className+=' done';
+    setTimeout(function(){btn.textContent=label;btn.className=btn.className.replace(' done','');},2000);
+  }
+  var btns=document.querySelectorAll('[data-copy]');
+  for(var j=0;j<btns.length;j++){
+    btns[j].addEventListener('click',function(){
+      var btn=this,src=document.getElementById(btn.getAttribute('data-copy'));
+      var text=src?src.textContent:'';
+      if(navigator.clipboard&&window.isSecureContext){
+        navigator.clipboard.writeText(text).then(function(){done(btn,true);},function(){done(btn,fallback(text));});
+      }else{done(btn,fallback(text));}
+    });
+  }
+})();
+</script>
+</body>
+</html>
