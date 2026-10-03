@@ -72,6 +72,7 @@ footer p,footer li{color:var(--sub)}
 footer dl{margin:0 0 8px}
 footer dt{font-weight:700;color:var(--ink)}
 footer dd{margin:0 0 8px;color:var(--sub)}
+.own{display:inline-block;font-size:13px;font-weight:700;color:var(--brand);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin:0 0 10px}
 .toplink{display:block;text-align:center;margin-top:24px}
 .toc{background:var(--soft)}
 .toc-list{list-style:none;padding:0;margin:0 0 12px;counter-reset:t}
@@ -715,6 +716,7 @@ function deleteTriggers() {
 </section>
 
 
+
 </main>
 
 <footer id="about">
@@ -725,11 +727,11 @@ function deleteTriggers() {
       <dt>内容</dt><dd>AIと業務自動化の実践ノウハウ・テンプレートの発信</dd>
       <dt>お問い合わせ</dt><dd>お問い合わせはInstagramのDMへ</dd>
     </dl>
-    <p>当サイトのコンテンツは、AIを活用して作業効率・調査量・制作速度を高めながら、運営者が内容を確認して公開しています。</p>
+    <p>当サイトのコンテンツは、AIを活用して作業効率・調査量・制作速度を高めながら、品質確認を行って公開しています。</p>
 
     <h2 id="privacy">プライバシーポリシー（簡易版）</h2>
     <h3>アクセス解析について</h3>
-    <p>当サイトでは、サイトの改善のためにアクセス解析ツールを利用する場合があります。アクセス解析ではCookie等を使って閲覧状況（閲覧したページ、クリックした位置など）を収集しますが、個人を特定する情報は含みません。Cookieはブラウザの設定で無効にできます。</p>
+    <p>当サイトでは、現在アクセス解析ツールを利用していません。導入する場合は、ツール名と収集する情報をこのページに記載します。</p>
     <h3>免責事項</h3>
     <p>テンプレートやプロンプトは、ご自身の判断と責任でお使いください。ご利用によって生じた損害について、運営者は責任を負いかねます。掲載している情報は、公開時点のものです。</p>
     <p>制定：2026年10月</p>
@@ -738,7 +740,9 @@ function deleteTriggers() {
 </footer>
 
 <script>
-/* 出口リンクに表示中のAB案を付与（計測ツールは後で追加。data-v / data-pos / data-slot を参照する） */
+/* #pack を開いて来た訪問を GoatCounter のイベント「pack-view」として数える（EXP-S003 Stage1）。GoatCounter がない版では何もしない */
+  if(location.hash==='#pack'&&document.getElementById('pack')){var n=0,t=setInterval(function(){var gc=window.goatcounter;if(gc&&gc.count){clearInterval(t);gc.count({path:'pack-view',title:'#pack visit',event:true});}else if(++n>20){clearInterval(t);}},500);}
+  /* 出口リンクに表示中のAB案を付与（計測ツールは後で追加。data-v / data-pos / data-slot を参照する） */
 (function(){
   var v=document.documentElement.getAttribute('data-v')||'a';
   var links=document.querySelectorAll('[data-exit],[data-cta]');
