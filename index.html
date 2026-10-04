@@ -726,7 +726,7 @@ function deleteTriggers() {
     <div class="box"><p class="box-t">スクリプト10本の内容</p><p>期限タスクの毎朝通知／フォーム回答の通知／シートの日次バックアップ／ラベル付きGmailをシートに記録／カレンダーの予定の書き出し／重複データのハイライト／Driveフォルダのファイル一覧／ドキュメントの差し込み作成／週次集計メール／更新日時の自動入力</p></div>
     <div class="box"><p class="box-t">向いていない人</p><p>・Googleスプレッドシートを使えない環境の人（Excelだけの運用ではGASは動きません）<br>・会社のルールで、スクリプトの実行やAIへの入力が禁止されている人<br>・貼るだけで業務が完全に自動になるものを求める人（設定値の変更と結果の確認は必要です）</p></div>
     <p class="small">削減できる時間は保証しません。業務の内容・データ量・確認の深さによって変わります。価格は検証のため変更することがあります（2026年10月4日時点：100円）。最新の価格と内容は、noteのページでご確認ください。</p>
-    <a class="btn btn-exit" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener" data-goatcounter-click="to-note" data-cta="pack-note">noteで内容を見る（無料部分あり）</a>
+    <a class="btn btn-exit" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener" data-note-exit data-cta="pack-note">noteで内容を見る（無料部分あり）</a>
   </div>
 </section>
 
@@ -756,6 +756,8 @@ function deleteTriggers() {
 <script>
 /* #pack を開いて来た訪問を GoatCounter のイベント「pack-view」として数える（EXP-S003 Stage1）。投稿ごとの比較のため ?p=（投稿ID）を付けて記録する。GoatCounter がない版では何もしない */
   if(location.hash==='#pack'&&document.getElementById('pack')){var pid=(new URLSearchParams(location.search).get('p')||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,20),n=0,t=setInterval(function(){var gc=window.goatcounter;if(gc&&gc.count){clearInterval(t);gc.count({path:'pack-view'+(pid?'-'+pid:''),title:'#pack visit'+(pid?' '+pid:''),event:true});}else if(++n>20){clearInterval(t);}},500);}
+  /* note 出口クリックに、このURLで観測した投稿IDだけを引き継ぐ。欠損・不正値は推測せず UNKNOWN。legacy の to-note は同時送信しない。 */
+  (function(){var raw=new URLSearchParams(location.search).get('p')||'';var pid=/^BS-(?:F)?\d{2,}$/.test(raw)?raw:'UNKNOWN';var links=document.querySelectorAll('[data-note-exit]');for(var i=0;i<links.length;i++)links[i].setAttribute('data-goatcounter-click','to-note-'+pid);})();
   /* 出口リンクに表示中のAB案を付与（計測ツールは後で追加。data-v / data-pos / data-slot を参照する） */
 (function(){
   var v=document.documentElement.getAttribute('data-v')||'a';
