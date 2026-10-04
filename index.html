@@ -270,9 +270,11 @@ function notifyDueTasks() {
   const lines = [];
   rows.forEach(function (row) {
     const task = row[0], owner = row[1], due = row[2], status = row[3];
-    if (!task || status === '完了' || !(due instanceof Date)) return;
-    if (due &gt; limit) return;
-    const mark = due &lt; today ? '【期限切れ】' : '';
+    if (!task || String(status).trim() === '完了' || !(due instanceof Date)) return;
+    const dueDay = new Date(due);
+    dueDay.setHours(0, 0, 0, 0); // 時刻つきの期限でも「日付」で比べる
+    if (dueDay &gt; limit) return;
+    const mark = dueDay &lt; today ? '【期限切れ】' : '';
     const day = Utilities.formatDate(due, Session.getScriptTimeZone(), 'M/d');
     lines.push(mark + day + ' ' + task + '（' + (owner || '担当未定') + '）');
   });
