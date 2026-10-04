@@ -750,8 +750,8 @@ function deleteTriggers() {
 </footer>
 
 <script>
-/* #pack を開いて来た訪問を GoatCounter のイベント「pack-view」として数える（EXP-S003 Stage1）。GoatCounter がない版では何もしない */
-  if(location.hash==='#pack'&&document.getElementById('pack')){var n=0,t=setInterval(function(){var gc=window.goatcounter;if(gc&&gc.count){clearInterval(t);gc.count({path:'pack-view',title:'#pack visit',event:true});}else if(++n>20){clearInterval(t);}},500);}
+/* #pack を開いて来た訪問を GoatCounter のイベント「pack-view」として数える（EXP-S003 Stage1）。投稿ごとの比較のため ?p=（投稿ID）を付けて記録する。GoatCounter がない版では何もしない */
+  if(location.hash==='#pack'&&document.getElementById('pack')){var pid=(new URLSearchParams(location.search).get('p')||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,20),n=0,t=setInterval(function(){var gc=window.goatcounter;if(gc&&gc.count){clearInterval(t);gc.count({path:'pack-view'+(pid?'-'+pid:''),title:'#pack visit'+(pid?' '+pid:''),event:true});}else if(++n>20){clearInterval(t);}},500);}
   /* 出口リンクに表示中のAB案を付与（計測ツールは後で追加。data-v / data-pos / data-slot を参照する） */
 (function(){
   var v=document.documentElement.getAttribute('data-v')||'a';
