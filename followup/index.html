@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商談フォロー文面メーカー｜ミチシルベ業務ラボ</title>
+<meta name="description" content="商談後の追客タイミングと丁寧なフォロー文面を無料で作成。登録不要・サーバー送信なし。">
+<style>
+:root{--ink:#132c35;--sub:#5a6c74;--teal:#0c695f;--bg:#f4f8f8;--line:#cddbdc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.7 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;color:var(--ink)}a{color:#086d74}
+header{background:linear-gradient(130deg,#123b4d,#0a685d);color:white;padding:32px 18px}main,.wrap{max-width:780px;margin:auto}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:9px 0 10px}h2{font-size:20px;margin:0 0 10px}.eyebrow{margin:0;font-size:13px;letter-spacing:.07em;opacity:.8}.lead{max-width:650px;margin:0}.wrap{padding:0 10px}main{padding:22px 12px 52px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:0 0 18px;box-shadow:0 4px 12px #163c4410}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}input,select,textarea{width:100%;border:1px solid #879ca1;border-radius:8px;padding:12px;font:inherit;color:var(--ink);background:white}textarea{min-height:218px;resize:vertical}input:focus,select:focus,textarea:focus{outline:3px solid #a1d6c9;outline-offset:1px}
+button{background:var(--teal);color:white;border:0;border-radius:8px;font-size:16px;font-weight:700;padding:12px 17px;cursor:pointer}button.secondary{background:#e9f2f1;color:var(--teal);border:1px solid #a5c8c2}button:hover{filter:brightness(.96)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:13px}
+.note{color:var(--sub);font-size:13px;margin:10px 0 0}.status{padding:12px 14px;background:#eaf7f2;border-left:4px solid var(--teal);border-radius:7px;margin:13px 0}.status strong{display:block}.mini{font-size:14px}.privacy{background:#fff8e8;border-radius:8px;padding:11px;font-size:13px}footer{padding:15px;text-align:center;color:var(--sub);font-size:13px}#result{display:none}#result.visible{display:block}@media(max-width:560px){.grid{grid-template-columns:1fr}.card{padding:16px}}
+</style>
+</head><body>
+<header><div class="wrap"><p class="eyebrow">ミチシルベ業務ラボ / 無料テンプレート</p><h1>商談フォロー文面メーカー</h1><p class="lead">見積送付後や検討中のお客様へのフォローを短時間で下書き。メールやLINEで使える丁寧な文章を作れます。</p></div></header>
+<main><section class="card"><h2>1. 商談の状況を選ぶ</h2>
+<div class="grid">
+<div><label for="stage">商談の段階</label><select id="stage"><option value="quote">見積もりを送った</option><option value="consider">検討中と伺っている</option><option value="initial">初回のご案内後</option></select></div>
+<div><label for="channel">連絡手段</label><select id="channel"><option value="mail">メール</option><option value="line">LINE・チャット</option></select></div>
+<div><label for="days">前回の連絡からの日数</label><input id="days" type="number" min="0" max="365" value="3" required inputmode="numeric"></div>
+<div><label for="concern">お客様の検討事項</label><select id="concern"><option value="general">特に確認できていない</option><option value="timing">導入・開始の時期</option><option value="cost">料金・費用</option><option value="compare">他社との比較</option></select></div>
+</div><p class="note">顧客の氏名・個人情報の入力は不要です。生成文中の「〇〇」を送信前に編集してください。</p>
+<div class="actions"><button type="button" id="generate">フォロー文を作成</button></div></section>
+<section id="result" class="card" aria-live="polite"><h2>2. コピーして編集</h2><div class="status"><strong id="priority"></strong><span id="reason" class="mini"></span></div><label for="message">下書き文面（編集可能）</label><textarea id="message" spellcheck="false"></textarea><div class="actions"><button type="button" id="copy">文面をコピー</button><button type="button" class="secondary" id="download">文面をテキスト保存</button></div><p class="note" id="feedback" role="status"></p><p class="privacy">送信前に相手のご意向・受信可否・連絡頻度・氏名・価格・期日を確認してください。連絡を断られている相手には送信しないでください。</p></section>
+<section class="card"><h2>使い方と注意点</h2><p>商談状況を選び、生成した文章を必ず確認してから利用します。しつこい追客を促すツールではありません。対応優先度は参考で、成約確率や売上の予測ではありません。</p><p class="mini">このページは外部ライブラリ不要の単独HTMLです。入力内容はブラウザ内で処理し、サーバーに送信せず保存もしません。外部解析タグ・広告なし。</p><p><a href="../?src=followup_tool#prompts">議事録・メールなどの無料テンプレートも見る</a></p></section></main>
+<footer>ミチシルベ業務ラボ｜無料の業務支援ツール</footer>
+<script>
+(function(){'use strict';
+const $=id=>document.getElementById(id);
+function assess(days,stage){
+ if(days>=14)return {label:'連絡の適切さを最優先で確認',reason:'日数が空いています。不要な再送を避け、連絡してよい状況か先に確認してください。'};
+ if(stage==='quote'&&days>=4)return {label:'フォロー候補',reason:'見積送付から数日経過。返信の催促ではなく不明点の確認を優先。'};
+ if(days<=1)return {label:'本日は様子見を推奨',reason:'前回の連絡から日が浅いため、重複連絡を避ける目安です。'};
+ return {label:'状況に合わせて判断',reason:'相手の希望した検討期限があれば、その日時を最優先にしてください。'};
+}
+function compose(stage,channel,concern){
+ const intro={quote:'先日お送りしたお見積もりについて、その後ご不明点などはございませんでしょうか。',consider:'先日はご検討のお時間をいただき、ありがとうございました。',initial:'先日はお時間をいただき、ありがとうございました。ご案内内容について、ご不明な点があればお知らせください。'}[stage];
+ const extra={general:'内容の確認や追加資料が必要でしたら、お気軽にお知らせください。',timing:'開始時期についてご都合が変わっていましたら、それに合わせてご案内いたします。',cost:'料金の内訳や内容について、分かりづらい点があればご説明いたします。',compare:'比較に必要な仕様や条件がありましたら、整理してご案内いたします。'}[concern];
+ return ['〇〇様','',channel==='mail'?'お世話になっております。〇〇です。':'先日はありがとうございました。〇〇です。','',intro,extra,'','お急ぎではありませんので、ご都合のよい際にご確認いただけますと幸いです。','',channel==='mail'?'引き続きよろしくお願いいたします。':'どうぞよろしくお願いいたします。'].join('\n');
+}
+function generate(){
+ const days=Number($('days').value);if($('days').value.trim()===''||!Number.isInteger(days)||days<0||days>365){$('days').setCustomValidity('0〜365の整数を入力してください');$('days').reportValidity();return;}
+ $('days').setCustomValidity('');const stage=$('stage').value,channel=$('channel').value,concern=$('concern').value;const a=assess(days,stage);
+ $('priority').textContent=a.label;$('reason').textContent=a.reason;$('message').value=compose(stage,channel,concern);$('feedback').textContent='';$('result').classList.add('visible');$('message').focus();
+}
+$('generate').addEventListener('click',generate);$('days').addEventListener('input',()=>{$('days').setCustomValidity('');});
+$('copy').addEventListener('click',async()=>{try{if(!navigator.clipboard||!navigator.clipboard.writeText)throw Error('clipboard unavailable');await navigator.clipboard.writeText($('message').value);$('feedback').textContent='コピーしました。送信前にご確認ください。';}catch(e){$('message').focus();$('message').select();$('feedback').textContent='自動コピーできませんでした。選択された文章を手動でコピーしてください。';}});
+$('download').addEventListener('click',()=>{const a=document.createElement('a');const u=URL.createObjectURL(new Blob(['\uFEFF'+$('message').value],{type:'text/plain;charset=utf-8'}));a.href=u;a.download='商談フォロー文面.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);$('feedback').textContent='テキストを保存しました。送信前に内容をご確認ください。';});
+})();
+</script></body></html>
