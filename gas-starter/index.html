@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Googleスプレッドシート自動化の始め方｜GASで減らせる定型業務10選</title>
+<meta name="description" content="Googleスプレッドシート・Gmailの繰り返し作業をGASで自動化したい方向け。10の具体例、導入前チェック、テスト手順と有料テンプレート集を紹介。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/gas-starter/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Googleスプレッドシート自動化の始め方｜GASで減らせる定型業務10選">
+<meta property="og:description" content="まず1業務だけ。自動化候補を選び、安全に試す手順とテンプレート集。">
+<meta name="theme-color" content="#0f3d4c">
+<style>
+:root{--ink:#19343c;--sub:#516773;--brand:#0f3d4c;--accent:#086c61;--line:#d5e1e3;--bg:#f4f8f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}a{color:#086d73}a:focus-visible{outline:3px solid #e1b957;outline-offset:3px}
+.wrap{max-width:800px;margin:0 auto;padding:0 18px}
+header{background:var(--brand);color:white;padding:32px 0 38px}
+.eyebrow{font-size:13px;letter-spacing:.06em;opacity:.86;margin:0 0 10px}
+h1{font-size:clamp(27px,5vw,38px);line-height:1.4;margin:0 0 16px}
+h2{font-size:23px;margin:0 0 12px;line-height:1.5}h3{font-size:17px;line-height:1.5;margin:0 0 6px}
+.lead{font-size:16px;line-height:1.9;margin:0 0 24px;max-width:730px}
+.hero-links{display:flex;flex-wrap:wrap;gap:12px}.hero-links a{display:inline-block;border-radius:8px;padding:12px 16px;background:white;color:var(--brand);text-decoration:none;font-weight:750}
+.hero-links a.secondary{background:transparent;color:white;border:1px solid #9fbdc3}
+main{padding:24px 0 48px}.card{background:white;border:1px solid var(--line);border-radius:14px;padding:24px;margin:0 0 18px}
+p{margin:8px 0 14px}.muted{color:var(--sub);font-size:14px}
+.small{font-size:13px}.steps{padding-left:1.4em}.steps li{margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.item{border:1px solid var(--line);border-radius:10px;padding:15px}
+.item p{font-size:14px;color:var(--sub);margin:0}
+.tag{font-size:12px;color:#08655c;font-weight:750}
+.callout{border-left:4px solid var(--accent);background:#eef6f4;padding:12px 16px;border-radius:0 8px 8px 0}
+.cta{display:block;padding:15px 18px;background:var(--accent);color:#fff;border-radius:9px;text-align:center;text-decoration:none;font-weight:800}
+.note{font-size:13px;color:var(--sub)}
+.checks{list-style:none;padding:0}.checks li{padding:10px 0;border-bottom:1px solid var(--line)}.checks li::before{content:"□";margin-right:10px;color:var(--accent);font-weight:750}
+footer{padding:26px 0 40px;border-top:1px solid var(--line);font-size:14px;color:var(--sub)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:18px}}
+</style>
+<script data-goatcounter="https://michishirube-ai.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <p class="eyebrow">ミチシルベ業務ラボ｜無料ガイド</p>
+  <h1>Googleスプレッドシートの<br>「毎回同じ作業」をGASで減らす</h1>
+  <p class="lead">GAS（Google Apps Script）は、スプレッドシートやGmailなどのGoogleサービスで、決まった処理を自動化するための仕組みです。まずは小さな1業務から。自動化候補の選び方と、導入前に確認すべきことを整理しました。</p>
+  <nav class="hero-links" aria-label="このページの案内">
+   <a href="#tasks">できること10選を見る</a>
+   <a class="secondary" href="#start">失敗を減らす導入手順</a>
+   <a class="secondary" href="#paid">テンプレート集の内容</a>
+  </nav>
+ </div>
+</header>
+<main class="wrap">
+<section id="choose" class="card">
+ <h2>最初に選ぶのは「毎週繰り返す1つの作業」</h2>
+ <p>全部を一度に自動化すると、設定・権限・エラー対応が複雑になります。次の3つに当てはまる作業を選ぶと、試した結果を比較しやすくなります。</p>
+ <ol class="steps">
+  <li><strong>手順が毎回ほぼ同じ：</strong>決まった列のチェック、通知、一覧化など</li>
+  <li><strong>もとのデータを壊さず試せる：</strong>コピーしたスプレッドシートやテスト用データで再現できる</li>
+  <li><strong>成功を数えられる：</strong>処理件数、所要時間、エラー数を導入前後で記録できる</li>
+ </ol>
+ <p class="callout">例：毎朝タスク一覧を見て期限を確認しているなら、最初は「期限が近いタスクの通知」だけを試す。</p>
+</section>
+<section id="tasks" class="card">
+ <h2>GASで自動化を検討できる10の定型業務</h2>
+ <p class="muted">以下は有料テンプレート集に収録しているテーマの一覧です。すべての職場・アカウントでの動作を保証するものではありません。</p>
+ <div class="grid">
+  <div class="item"><span class="tag">通知</span><h3>01｜期限タスクの朝の通知</h3><p>期限が近い行を確認し、メールで知らせる</p></div>
+  <div class="item"><span class="tag">通知</span><h3>02｜フォーム回答の通知</h3><p>新しい回答をメールで受け取る</p></div>
+  <div class="item"><span class="tag">保存</span><h3>03｜シートの日次バックアップ</h3><p>コピーをGoogle Driveに残す</p></div>
+  <div class="item"><span class="tag">転記</span><h3>04｜ラベル付きメールの記録</h3><p>Gmailの指定ラベルをシートへ一覧化</p></div>
+  <div class="item"><span class="tag">予定</span><h3>05｜カレンダーの予定一覧</h3><p>今後の予定をシートに書き出す</p></div>
+  <div class="item"><span class="tag">確認</span><h3>06｜重複データのチェック</h3><p>重複したセルを色で分かりやすくする</p></div>
+  <div class="item"><span class="tag">整理</span><h3>07｜Driveファイル一覧</h3><p>フォルダ内のファイルを一覧化する</p></div>
+  <div class="item"><span class="tag">書類</span><h3>08｜書類の差し込み作成</h3><p>行データを文書テンプレートへ反映する</p></div>
+  <div class="item"><span class="tag">集計</span><h3>09｜週次集計メール</h3><p>件数や合計の要約を週単位で送る</p></div>
+  <div class="item"><span class="tag">記録</span><h3>10｜編集時の更新日時</h3><p>編集した行に時刻を記録する</p></div>
+ </div>
+</section>
+<section id="start" class="card">
+ <h2>初めて試すときの5ステップ</h2>
+ <ol class="steps">
+  <li><strong>コピーしたテスト用シートを準備：</strong>本番の顧客・社員データは使わず、架空のサンプルを用意。</li>
+  <li><strong>必要なGoogleサービスを確認：</strong>Gmail・Drive・カレンダーを使うスクリプトは、それぞれの権限が必要になる場合があります。</li>
+  <li><strong>Apps Scriptに貼り付けて設定：</strong>スクリプトの設定値やシート名、対象の列を自分の環境に合わせて確認。</li>
+  <li><strong>手動実行して結果を照合：</strong>最初から自動トリガーを有効化せず、期待した件数・宛先・出力先か確認。</li>
+  <li><strong>問題なければ少量で運用：</strong>トリガーを使う場合は重複実行や失敗通知を確認し、停止方法も把握しておく。</li>
+ </ol>
+ <div class="callout">メール送信など外部へ影響する処理は、特に慎重に確認してください。職場のIT管理者や個人情報保護ルールの承認が必要な場合があります。</div>
+</section>
+<section id="check" class="card">
+ <h2>導入前のチェックリスト</h2>
+ <ul class="checks">
+  <li>業務内容と「成功」の条件がはっきりしている</li>
+  <li>テスト用のデータと保存先を分けた</li>
+  <li>必要な権限と職場のルールを確認した</li>
+  <li>最初は手動で結果を検証する</li>
+  <li>エラー時の担当と停止方法を決めた</li>
+ </ul>
+ <p class="muted">このチェックを満たしてから、必要なスクリプトを選んでください。</p>
+</section>
+<section id="paid" class="card">
+ <p class="tag">当ラボの有料商品・noteで購入</p>
+ <h2>コードを書くところから始めたくない方へ</h2>
+ <p><strong>Googleスプレッドシート自動化スクリプト10本＋業務プロンプト30個</strong>を、導入手順付きのnote記事として販売しています。上の10テーマのGASコード全文と、文章・会議・表計算・営業対応などのAIプロンプト30個を収録しています。</p>
+ <p>公開中の販売ページには、内容の詳しい説明と無料お試し部分があります。価格は購入画面で確認してください。設定値の変更・Googleアカウント上での動作確認は必要です。</p>
+ <a class="cta" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener noreferrer" data-goatcounter-click="gas-starter-to-note">noteで10本＋30個の内容を確認する</a>
+ <p class="note">外部のnoteへ移動します。購入は任意で、導入効果や時間削減を保証するものではありません。</p>
+</section>
+<section class="card">
+ <h2>まず無料で確認したい方へ</h2>
+ <p><a href="../?src=gas_starter#gas">宛名入りメール送信の無料GASテンプレート</a>や<a href="../time-saver/?src=gas_starter">定型業務の時間削減シミュレーター</a>を公開しています。両方とも購入なしで確認できます。</p>
+ <p class="muted">実運用する前に、ご自身の会社のルール・権限・内容を必ず確認してください。</p>
+</section>
+</main>
+<footer><div class="wrap"><p>ミチシルベ業務ラボ｜<a href="../#about">運営者情報・プライバシーポリシー</a></p><p>このページではフォーム入力は受け付けません。アクセス状況とリンククリックの集計には、サイトと同じGoatCounterを使用しています。</p></div></footer>
+</body>
+</html>
