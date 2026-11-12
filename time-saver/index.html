@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="毎週の定型業務にかかる時間と改善後の削減時間を無料で試算。登録不要、入力内容の送信なし。">
+<title>定型業務の時間削減シミュレーター｜ミチシルベ業務ラボ</title>
+<style>
+:root{--ink:#193641;--sub:#526a74;--brand:#0b675e;--line:#d4e2e2;--bg:#f3f8f7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif}a{color:#086c6b}
+header{background:linear-gradient(120deg,#173c4b,#0b675e);color:white;padding:30px 16px}main,.wrap{max-width:790px;margin:auto}main{padding:20px 12px 45px}.wrap{padding:0 8px}
+h1{font-size:clamp(25px,5vw,36px);line-height:1.35;margin:8px 0}h2{font-size:20px;margin:0 0 8px}p{margin:8px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 5px 20px #1438440a}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field label{font-weight:700;font-size:14px;display:block;margin:4px 0}.field small{display:block;color:var(--sub);font-size:12px}
+input{width:100%;padding:11px;border:1px solid #8aa7aa;border-radius:8px;font:inherit;color:var(--ink)}input:focus,button:focus-visible,a:focus-visible{outline:3px solid #9cdbcf;outline-offset:2px}
+.task{border:1px solid var(--line);border-radius:10px;padding:13px;margin:10px 0}.task strong{display:block;margin:0 0 5px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
+button,.cta{background:var(--brand);border:0;border-radius:9px;color:white;font:inherit;font-weight:700;padding:12px 18px;cursor:pointer}
+.cta{display:block;text-align:center;text-decoration:none;margin-top:14px}.secondary{color:var(--brand);background:#e8f3f1;border:1px solid #a9cbc5}
+small,.note{font-size:13px;color:var(--sub)}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{background:#ebf6f3;border-radius:10px;padding:15px}.metric b{display:block;font-size:27px;line-height:1.4;color:#0b6056}.metric span{font-size:13px}
+#result[hidden]{display:none}.warn{background:#fff7e6;padding:12px;border-radius:8px;font-size:13px}
+footer{text-align:center;padding:16px;color:var(--sub);font-size:12px}
+@media(max-width:600px){.grid,.metrics{grid-template-columns:1fr}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><p style="font-size:13px">ミチシルベ業務ラボ / 無料ツール</p><h1>定型業務の時間削減シミュレーター</h1><p>メール・集計・転記など、繰り返し作業の削減可能時間を見える化。導入判断のための目安を計算します。</p></div></header>
+<main>
+<section class="card" aria-labelledby="input-title">
+<h2 id="input-title">1. 今の作業量を入力</h2>
+<p class="note">個人情報・会社名の入力は不要。すべてブラウザ内で計算し、送信・保存しません。</p>
+<div class="task"><strong>作業1：メール・定型文の作成</strong><div class="grid">
+<div class="field"><label for="m1">1回の作業時間（分）</label><input id="m1" type="number" min="0" max="480" step="any" value="10" inputmode="decimal"></div>
+<div class="field"><label for="f1">週あたりの回数</label><input id="f1" type="number" min="0" max="300" step="any" value="12" inputmode="decimal"></div>
+<div class="field"><label for="r1">改善で減らせる割合（%）</label><input id="r1" type="number" min="0" max="100" step="any" value="40" inputmode="decimal"></div>
+</div></div>
+<div class="task"><strong>作業2：集計・レポート作成</strong><div class="grid">
+<div class="field"><label for="m2">1回の作業時間（分）</label><input id="m2" type="number" min="0" max="480" step="any" value="30" inputmode="decimal"></div>
+<div class="field"><label for="f2">週あたりの回数</label><input id="f2" type="number" min="0" max="300" step="any" value="3" inputmode="decimal"></div>
+<div class="field"><label for="r2">改善で減らせる割合（%）</label><input id="r2" type="number" min="0" max="100" step="any" value="50" inputmode="decimal"></div>
+</div></div>
+<div class="task"><strong>作業3：表への転記・入力</strong><div class="grid">
+<div class="field"><label for="m3">1回の作業時間（分）</label><input id="m3" type="number" min="0" max="480" step="any" value="15" inputmode="decimal"></div>
+<div class="field"><label for="f3">週あたりの回数</label><input id="f3" type="number" min="0" max="300" step="any" value="8" inputmode="decimal"></div>
+<div class="field"><label for="r3">改善で減らせる割合（%）</label><input id="r3" type="number" min="0" max="100" step="any" value="60" inputmode="decimal"></div>
+</div></div>
+<div class="field"><label for="hourly">時間単価の仮定（円/時）</label><input id="hourly" type="number" min="0" max="100000" step="any" value="1800" inputmode="decimal"><small>賃金・労務費の参考単価。利益や実際の人件費削減額ではありません。</small></div>
+<div class="actions"><button type="button" id="calculate">削減時間を計算する</button><button type="button" class="secondary" id="reset">初期値に戻す</button></div>
+<p id="error" role="alert" style="color:#a53722"></p>
+</section>
+<section class="card" id="result" hidden aria-live="polite"><h2>2. 試算結果</h2>
+<div class="metrics">
+<div class="metric"><span>現在の作業時間（月あたり）</span><b id="base-hours"></b></div>
+<div class="metric"><span>削減できる可能性のある時間（月あたり）</span><b id="saved-hours"></b></div>
+<div class="metric"><span>削減後の作業時間（月あたり）</span><b id="after-hours"></b></div>
+<div class="metric"><span>削減時間を時間単価で換算</span><b id="cost-equivalent"></b></div>
+</div>
+<p class="note" id="assumptions"></p>
+<div class="actions"><button type="button" id="copy" class="secondary">計算結果をコピー</button></div><p id="feedback" class="note" role="status"></p>
+<p class="warn">これは仮定に基づく概算です。改善率は実績ではなく入力値です。初期設定費用・運用費・確認作業・ミス対応は含みません。削減した時間を他業務に使っても、現金利益が同額増えるとは限りません。</p>
+</section>
+<section class="card">
+<h2>3. 次の一歩：定型業務を減らす</h2>
+<p>まずは1つの業務を選び、改善前後の所要時間を7日間計測してください。作業を減らす選択肢として、当ラボではGASスクリプト10本と業務プロンプト30個の有料テンプレート集を案内しています。</p>
+<a class="cta" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener noreferrer">テンプレート集の内容を見る（note）</a>
+<p class="note">価格、動作環境、利用条件をnoteの販売ページで確認してください。購入は任意。スクリプトの設定や検証は自身の環境で行う必要があります。</p>
+<p><a href="../?src=time_saver#pack">ほかの無料テンプレートも見る</a>　<a href="../followup/?src=time_saver">商談フォロー文面メーカー</a></p>
+</section>
+</main>
+<footer>ミチシルベ業務ラボ｜入力情報はこのページから送信されません</footer>
+<script>
+(function(){
+'use strict';
+const el=id=>document.getElementById(id);
+const defaults={m1:10,f1:12,r1:40,m2:30,f2:3,r2:50,m3:15,f3:8,r3:60,hourly:1800};
+const fmt=new Intl.NumberFormat('ja-JP',{maximumFractionDigits:1});
+const yen=new Intl.NumberFormat('ja-JP',{maximumFractionDigits:0});
+function num(id,max){const raw=el(id).value.trim(),n=Number(raw);if(raw===''||!Number.isFinite(n)||n<0||n>max)throw new Error(id+'：0〜'+max+'の数値を入力してください。');return n;}
+function compute(rows,hourly){
+let base=0,saved=0;
+rows.forEach(row=>{base+=row.m*row.f;saved+=row.m*row.f*row.r/100;});
+const factor=52/12;
+return {base:base*factor/60,saved:saved*factor/60,after:(base-saved)*factor/60,equivalent:saved*factor/60*hourly};
+}
+function show(){
+try{
+const rows=[1,2,3].map(i=>({m:num('m'+i,480),f:num('f'+i,300),r:num('r'+i,100)}));
+const hourly=num('hourly',100000),c=compute(rows,hourly);
+el('error').textContent='';
+el('base-hours').textContent=fmt.format(c.base)+' 時間';
+el('saved-hours').textContent=fmt.format(c.saved)+' 時間';
+el('after-hours').textContent=fmt.format(c.after)+' 時間';
+el('cost-equivalent').textContent=yen.format(c.equivalent)+' 円相当';
+el('assumptions').textContent='週52回の7分の1日ではなく、1年52週÷12か月で試算。時間単価 '+yen.format(hourly)+'円。';
+el('result').hidden=false;el('feedback').textContent='';
+el('result').scrollIntoView({behavior:'smooth',block:'start'});
+}catch(e){el('result').hidden=true;el('error').textContent=e.message;}
+}
+el('calculate').addEventListener('click',show);
+el('reset').addEventListener('click',()=>{Object.keys(defaults).forEach(k=>{el(k).value=defaults[k];});el('result').hidden=true;el('error').textContent='';});
+el('copy').addEventListener('click',async()=>{
+const str='定型業務の時間削減試算\n現在：'+el('base-hours').textContent+'\n削減可能：'+el('saved-hours').textContent+'\n改善後：'+el('after-hours').textContent+'\n換算：'+el('cost-equivalent').textContent+'\n※仮定に基づく概算で、利益増加を保証するものではありません。';
+try{if(!navigator.clipboard)throw new Error();await navigator.clipboard.writeText(str);el('feedback').textContent='コピーしました。';}
+catch(_){el('feedback').textContent='自動コピーできない環境です。結果を選択してコピーしてください。';}
+});
+})();
+</script>
+</body></html>
