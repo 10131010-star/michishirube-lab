@@ -91,7 +91,7 @@ el('base-hours').textContent=fmt.format(c.base)+' 時間';
 el('saved-hours').textContent=fmt.format(c.saved)+' 時間';
 el('after-hours').textContent=fmt.format(c.after)+' 時間';
 el('cost-equivalent').textContent=yen.format(c.equivalent)+' 円相当';
-el('assumptions').textContent='週52回の7分の1日ではなく、1年52週÷12か月で試算。時間単価 '+yen.format(hourly)+'円。';
+el('assumptions').textContent='1年52週÷12か月で換算した月平均の概算です。時間単価 '+yen.format(hourly)+'円。';
 el('result').hidden=false;el('feedback').textContent='';
 el('result').scrollIntoView({behavior:'smooth',block:'start'});
 }catch(e){el('result').hidden=true;el('error').textContent=e.message;}
