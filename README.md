@@ -3,6 +3,7 @@
 Googleスプレッドシート・Gmail の手作業を減らすための **無料テンプレート** をまとめたページのリポジトリです。
 
 - 公開ページ：<https://10131010-star.github.io/michishirube-lab/?src=gh&p=readme#pack>
+- 新しい無料ツール：<https://10131010-star.github.io/michishirube-lab/followup/>（商談フォロー文面メーカー・ブラウザ内でのみ処理）
 - 内容：議事録・メール・表計算などの AI プロンプト、Google Apps Script（GAS）の例
 - 登録・ログイン不要で、ページからそのままコピーできます
 
