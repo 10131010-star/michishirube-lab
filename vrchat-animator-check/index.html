@@ -31,9 +31,9 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 .note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
 </style></head><body><main>
 <p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
-<h1>アバター改変前の<br>Animator 5項目チェック</h1>
+<h1>VRChatの衣装・表情トラブルを<br>Animator 5項目で手動確認</h1>
 <p class="lead">UnityのAnimator Controllerを自分で確認し、気になる設定を整理する無料ガイド。<strong>Unityファイルの読み込みや自動解析はしません。</strong> 回答はこの画面でのみ処理され、自動保存・外部送信しません。コピー操作をした場合のみクリップボードへ保存されます。</p>
-<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a></nav>
+<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
 <section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
 <p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
 <section class="card"><h2>5つの確認ポイント</h2>
@@ -92,6 +92,19 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <ol><li>Avatar DescriptorのPlayable Layers（Base / Additive / Gesture / Action / FX）を確認する。</li><li>意図せず同じプロパティを複数レイヤーから操作していないか確認する。</li><li>特にFXレイヤーの役割とAvatar Maskを確認し、変更前の設定を保存してから1箇所ずつテストする。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/playable-layers/" target="_blank" rel="noopener noreferrer">VRChat公式：Playable Layers</a>。</p>
 <p>症状の切り分けに迷ったら、上の<strong>5項目チェック</strong>で「気になる」を記録し、コピーしたメモを自分のUnity作業に使ってください。手動確認から一歩進めたい場合にのみ、上記の有料版の仕様と対応環境を確認してください。</p>
+</section>
+<section class="card" id="purchase-faq" aria-labelledby="purchase-faq-title">
+<p class="top">BEFORE YOU BUY / FAQ</p>
+<h2 id="purchase-faq-title">無料チェックと有料版、使う前によくある質問</h2>
+<h3>Q. 無料チェックだけでも使えますか？</h3>
+<p>はい。登録・購入・Unityファイルのアップロードは不要です。UnityのAnimator Controllerを自分で見ながら5項目を選び、「気になる」「未確認」を確認メモとして残せます。結果が「問題なし」でも正常動作の保証ではありません。</p>
+<h3>Q. Expressions Menuの不具合も自動検出しますか？</h3>
+<p>いいえ。無料チェックも有料のAnimator Doctor Proも、Expressions Menu全体の自動診断や不具合の原因確定には対応しません。まずControl、Expression Parameters、Animatorの名前と型を手動で照合してください。<a href="#case-expressions-menu">具体的な確認順はこちら</a>。</p>
+<h3>Q. どのUnity・SDKで確認されていますか？</h3>
+<p>公開済みの検証記録はWindows、Unity 2022.3.22f1、VRChat SDK Base・Avatars 3.10.5でのテスト用Controllerに関するものです。ほかのUnity・SDK、市販アバターやModular Avatarとの組み合わせは未検証で、対応を保証しません。<a href="#verified-demo">検証例と無料・有料の機能差</a>を購入前に確認してください。</p>
+<h3>Q. Animator Doctor Proは自動修復しますか？</h3>
+<p>自動修復しません。Unity Editor内で選んだAnimator Controllerを読み取り専用で点検し、確認候補を日英UI・Markdownレポートで整理する先行版です。修正はバックアップ後に利用者が判断して行います。購入は任意です。</p>
+<p class="note">無料で症状を整理してから、必要な場合だけ既存のBOOTH商品詳細と最新の販売条件を確認してください。<a href="#verified-demo">検証例・機能比較・商品リンクへ戻る</a>。</p>
 </section>
 <section class="card" aria-label="共有"><h2>役立つ確認手順をBlueskyで共有</h2><p class="note">症状ごとに公式ガイドを参考にした手動の切り分け方を共有できます。リンク先は投稿の下書き画面です。<strong>自動投稿されません</strong>。投稿内容と公開範囲を確認してから操作してください。チェックの回答・結果は共有されません。</p><p><a class="cta" href="https://bsky.app/intent/compose?text=VRChat%E3%81%A7%E8%A1%A3%E8%A3%85%E3%82%84%E8%A1%A8%E6%83%85%E3%81%8C%E6%88%BB%E3%82%89%E3%81%AA%E3%81%84%E3%81%A8%E3%81%8D%E3%80%81Animator%E3%81%AEWrite%20Defaults%E3%81%A8%E6%88%BB%E3%81%99Animation%20Clip%E3%82%92%E9%A0%86%E3%81%AB%E7%A2%BA%E8%AA%8D%E3%80%82%E8%A8%AD%E5%AE%9A%E3%82%92%E4%B8%80%E6%8B%AC%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B%E5%89%8D%E3%81%AB%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%80%82%E7%97%87%E7%8A%B6%E5%88%A5%E3%81%AE%E7%A2%BA%E8%AA%8D%E6%89%8B%E9%A0%86%E3%81%A8%E7%84%A1%E6%96%995%E9%A0%85%E7%9B%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89%EF%BC%88%E6%89%8B%E5%8B%95%E3%83%BB%E8%87%AA%E5%8B%95%E4%BF%AE%E5%BE%A9%E3%81%AA%E3%81%97%EF%BC%89%EF%BC%9A%20https%3A%2F%2F10131010-star.github.io%2Fmichishirube-lab%2Fvrchat-animator-check%2F%3Futm_source%3Dbluesky%26utm_medium%3Dorganic%26utm_campaign%3Danimator_freecheck%26utm_content%3Dwrite_defaults" target="_blank" rel="noopener noreferrer" data-goatcounter-click="vrchat-freecheck-share-intent">Write Defaultsの確認手順を共有する（未投稿）</a></p><p><a class="cta" href="https://bsky.app/intent/compose?text=VRChat%E3%81%AEExpressions%20Menu%E3%81%8C%E5%8F%8D%E5%BF%9C%E3%81%97%E3%81%AA%E3%81%84%E3%81%A8%E3%81%8D%E3%81%AF%E3%80%81Control%E3%81%AEParameter%E5%90%8D%E3%83%BB%E5%9E%8B%E3%80%81Expression%20Parameters%E3%80%81Animator%E3%81%AE%E5%AE%9A%E7%BE%A9%E3%82%92%E9%A0%86%E3%81%AB%E8%A6%8B%E6%AF%94%E3%81%B9%E3%81%BE%E3%81%99%E3%80%82%E5%8E%9F%E5%9B%A0%E3%81%AE%E6%96%AD%E5%AE%9A%E3%81%AF%E3%81%9B%E3%81%9A%E5%88%87%E3%82%8A%E5%88%86%E3%81%91%E3%80%82%E7%84%A1%E6%96%995%E9%A0%85%E7%9B%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89%EF%BC%88%E6%89%8B%E5%8B%95%EF%BC%89%EF%BC%9A%20https%3A%2F%2F10131010-star.github.io%2Fmichishirube-lab%2Fvrchat-animator-check%2F%3Futm_source%3Dbluesky%26utm_medium%3Dorganic%26utm_campaign%3Danimator_freecheck%26utm_content%3Dexpression_menu" target="_blank" rel="noopener noreferrer" data-goatcounter-click="vrchat-freecheck-share-intent">Expressions Menuの確認手順を共有する（未投稿）</a></p><p class="note">2つの共有リンクは送客元を区別するUTMを含みます。UTMだけで投稿・クリック・購入を証明するものではありません。共有画面を開いた回数は既存の匿名イベントで計測します。</p></section>
 <footer>Nokino Tools｜本ページは無料の手動チェックガイドです。回答データはブラウザ内だけで処理し、外部送信しません。既存のGoatCounter（Cookieなし）を使い、ページ閲覧数、結果生成の実行回数（同一ページ内で最初の1回）、BOOTHへのリンククリック数、共有画面を開いた回数のみを集計します。回答項目・診断結果・クリップボード内容は計測に含めません。外部リンクの遷移は任意です。<a href="../#privacy">アクセス解析の説明</a>。ミチシルベ業務ラボとは別の商品ラインです。</footer>
