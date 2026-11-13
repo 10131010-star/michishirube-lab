@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="VRChatアバター改変向け、Unity Animatorの無料手動5項目チェック。ファイルの送信・自動解析は行いません。">
+<title>VRChat Animator 5項目セルフチェック（無料）｜Nokino Tools</title>
+<link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="VRChat Animator 5項目セルフチェック｜Nokino Tools">
+<meta property="og:description" content="Layer、Write Defaults、Transition、Parameterの5項目をUnityで手動確認。診断結果はブラウザ内だけで作成。">
+<meta property="og:url" content="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top right,#273e5b,#0b1320 55%);color:#eff6ff;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.7}
+main{width:min(780px,calc(100% - 36px));margin:34px auto 70px}
+h1{font-size:clamp(27px,5vw,43px);line-height:1.3;margin:12px 0}h2{font-size:22px;margin:0 0 8px}
+.top{color:#90caff;font-weight:750;letter-spacing:.15em;font-size:12px}.lead,.note{color:#c7d7eb}.lead{font-size:17px}
+.card{background:#162338;border:1px solid #3a4c67;border-radius:18px;padding:23px;margin:18px 0}
+fieldset{border:0;border-bottom:1px solid #394a63;padding:18px 0;margin:0}
+fieldset:last-of-type{border:0}legend{font-weight:750;font-size:17px;padding:0}
+fieldset p{color:#c7d7eb;font-size:14px;margin:3px 0 11px}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+label{display:inline-flex;align-items:center;gap:7px;border:1px solid #586883;background:#22314a;border-radius:10px;padding:7px 10px;cursor:pointer}
+label:has(input:checked){border-color:#a4d2ff;background:#304d74}input{accent-color:#b4dcff}
+button,.cta{display:inline-block;background:#a6daff;border:0;border-radius:12px;padding:12px 17px;color:#0a1c2e;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}
+button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:3px}
+#report{background:#0e1a2b;padding:15px;border-radius:12px;margin-top:16px;white-space:pre-line}
+.note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
+</style></head><body><main>
+<p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
+<h1>アバター改変前の<br>Animator 5項目チェック</h1>
+<p class="lead">UnityのAnimator Controllerを自分で確認し、気になる設定を整理する無料ガイド。<strong>Unityファイルの読み込みや自動解析はしません。</strong> 回答はこの画面でのみ処理され、自動保存・外部送信しません。コピー操作をした場合のみクリップボードへ保存されます。</p>
+<section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
+<p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
+<section class="card"><h2>5つの確認ポイント</h2>
+<form id="checks">
+<fieldset><legend>1. Animator Layerの重複</legend><p>同じ役割のLayerが重複していないか、名前と構成を見直す。</p><div class="choices" data-question="1"></div></fieldset>
+<fieldset><legend>2. Write Defaultsの混在</legend><p>対象ステート間でWrite Defaultsの設定が不必要に混在していないか。</p><div class="choices" data-question="2"></div></fieldset>
+<fieldset><legend>3. 不審なTransition</legend><p>状態削除・変更後に遷移先がおかしいTransitionが残っていないか。</p><div class="choices" data-question="3"></div></fieldset>
+<fieldset><legend>4. ConditionのParameter</legend><p>Transition条件で参照するParameterが定義されているか。</p><div class="choices" data-question="4"></div></fieldset>
+<fieldset><legend>5. 未使用Parameter</legend><p>未使用に見えるParameterの用途を、他の参照元も含め確認したか。</p><div class="choices" data-question="5"></div></fieldset>
+<button type="submit">確認状況をまとめる</button>
+</form><div id="report" aria-live="polite" hidden></div><p><button id="copyreport" type="button" hidden>確認メモをコピー</button> <span id="copystatus" role="status"></span></p></section>
+<section class="card"><p class="top">OPTIONAL / READ-ONLY DIAGNOSTICS</p><h2>Animator Doctor Pro（先行版）</h2>
+<p>Unity Editor上でAnimator Controllerを読み取り専用で調べ、日本語・英語のレポートを出力するツール。自動修復は行いません。</p>
+<p><strong>販売ページ掲載価格 ¥980</strong>（現時点の価格・販売状態はBOOTHでご確認ください）</p>
+<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=freecheck&utm_medium=html&utm_campaign=animator_doctor" target="_blank" rel="noopener noreferrer">BOOTHの商品詳細を見る</a></p>
+<p class="note">検証済み環境：Windows / Unity 2022.3.22f1 / VRChat SDK Base・Avatars 3.10.5。別バージョン、市販アバター、Modular Avatarとの組み合わせは未検証。非公式ツールです。</p></section>
+<section class="card" aria-label="共有"><h2>無料チェックを共有</h2><p class="note">共有するのはこのガイドのURLだけです。チェックの回答・結果は含みません。投稿内容はBlueskyで確認してから公開してください。</p><p><a class="cta" href="https://bsky.app/intent/compose?text=VRChat%E3%81%AEAnimator%E3%82%92%E6%94%B9%E5%A4%89%E3%81%99%E3%82%8B%E5%89%8D%E3%81%AB%E3%80%81Layer%E3%83%BBWrite%20Defaults%E3%83%BBTransition%E3%83%BBParameter%E3%82%925%E9%A0%85%E7%9B%AE%E3%81%A7%E6%89%8B%E5%8B%95%E7%A2%BA%E8%AA%8D%E3%81%A7%E3%81%8D%E3%82%8B%E7%84%A1%E6%96%99%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%80%82%E8%87%AA%E5%8B%95%E8%A7%A3%E6%9E%90%E3%81%A7%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E3%80%82%20https%3A%2F%2F10131010-star.github.io%2Fmichishirube-lab%2Fvrchat-animator-check%2F" target="_blank" rel="noopener noreferrer">Blueskyで共有文を開く（未投稿）</a></p></section>
+<footer>Nokino Tools｜本ページは無料の手動チェックガイドです。Cookie・解析タグ・回答データの外部送信は使用しません。リンクをクリックした場合のみ外部サイトへ移動します。ミチシルベ業務ラボとは別の商品ラインです。</footer>
+</main><script>
+(function(){
+'use strict';
+var labels=[['risk','気になる'],['ok','問題なし'],['unknown','未確認']];
+document.querySelectorAll('[data-question]').forEach(function(box){
+  var number=box.getAttribute('data-question');
+  labels.forEach(function(entry){
+    var label=document.createElement('label');
+    var input=document.createElement('input');
+    input.type='radio';input.name='q'+number;input.value=entry[0];input.checked=(entry[0]==='unknown');
+    label.appendChild(input);label.appendChild(document.createTextNode(entry[1]));box.appendChild(label);
+  });
+});
+document.getElementById('checks').addEventListener('submit',function(e){
+ e.preventDefault();var counts={risk:0,ok:0,unknown:0};
+ document.querySelectorAll('input:checked').forEach(function(el){counts[el.value]++;});
+ var report='気になる '+counts.risk+'件 ／ 問題なし '+counts.ok+'件 ／ 未確認 '+counts.unknown+'件';
+ if(counts.risk)report+='\n気になる項目はUnityの設定と参照先を再確認してください。';
+ if(counts.unknown)report+='\n未確認の項目は安全と判定しません。';
+ if(!counts.risk&&!counts.unknown)report+='\nこの手動チェックで気になる項目がなかっただけで、動作保証ではありません。';
+ var needs=[];
+ document.querySelectorAll('[data-question]').forEach(function(box){
+  var picked=box.querySelector('input:checked');
+  if(!picked||picked.value==='ok')return;
+  var heading=box.closest('fieldset').querySelector('legend').textContent;
+  needs.push('・'+heading+'：'+(picked.value==='risk'?'気になる':'未確認'));
+ });
+ if(needs.length)report+='\n\n再確認メモ\n'+needs.join('\n');
+ var target=document.getElementById('report');target.textContent=report;target.hidden=false;
+ document.getElementById('copyreport').hidden=false;
+ document.getElementById('copystatus').textContent='';
+});
+document.getElementById('copyreport').addEventListener('click',function(){
+ var status=document.getElementById('copystatus');
+ if(!navigator.clipboard||!navigator.clipboard.writeText){
+  status.textContent='コピー機能が使えません。結果を選択してコピーしてください。';return;
+ }
+ navigator.clipboard.writeText(document.getElementById('report').textContent)
+ .then(function(){status.textContent='確認メモをコピーしました。';},
+       function(){status.textContent='コピーに失敗しました。結果を選択してコピーしてください。';});
+});
+}());
+</script></body></html>
