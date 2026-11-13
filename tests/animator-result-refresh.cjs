@@ -3,16 +3,17 @@ const path=require('node:path');
 const root=__dirname,html=fs.readFileSync(path.join(root,'../vrchat-animator-check/index.html'),'utf8');
 const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
 function fixture(opts={}){
- const elements={checks:{handlers:{}},report:{hidden:true,textContent:''},copyreport:{hidden:true,handlers:{}},copystatus:{textContent:''}};
+ const elements={checks:{handlers:{}},report:{hidden:true,textContent:''},nextsteps:{hidden:true},nextstepslist:{children:[],replaceChildren(){this.children=[]},appendChild(x){this.children.push(x)}},copyreport:{hidden:true,handlers:{}},copystatus:{textContent:''}};
  for(const el of Object.values(elements))el.addEventListener=(name,fn)=>(el.handlers[name]=fn);
  const boxes=Array.from({length:5},(_,i)=>({number:String(i+1),labels:[],getAttribute(){return this.number},appendChild(x){this.labels.push(x)},querySelector(){return this.labels.map(l=>l.children[0]).find(x=>x.checked)},closest(){return {querySelector:()=>({textContent:`${i+1}. Q${i+1}`})}}}));
  const document={getElementById:id=>elements[id],createTextNode:text=>({textContent:text}),createElement:tag=>tag==='input'?{}:{children:[],appendChild(x){this.children.push(x)}},querySelectorAll:sel=>sel==='[data-question]'?boxes:boxes.map(b=>b.querySelector()).filter(Boolean)};
- let calls=[],resolveCopy,rejectCopy;
+ let calls=[],events=[],resolveCopy,rejectCopy;
  const navigator=opts.unsupported?{}:{clipboard:{writeText(text){calls.push(text);return new Promise((resolve,reject)=>{resolveCopy=resolve;rejectCopy=reject})}}};
- vm.runInNewContext(script,{document,navigator});
+ const window={goatcounter:opts.noAnalytics?undefined:{count(event){if(opts.analyticsFails)throw new Error('analytics unavailable');events.push(event)}}};
+ vm.runInNewContext(script,{document,navigator,window});
  const fire=name=>elements.checks.handlers[name]?.({preventDefault(){}});
  const select=(i,val)=>{boxes[i].labels.forEach(l=>l.children[0].checked=l.children[0].value===val);fire('change')};
- return {elements,calls,select,submit:()=>fire('submit'),copy:()=>elements.copyreport.handlers.click(),resolve:()=>resolveCopy(),reject:()=>rejectCopy()};
+ return {elements,calls,events,select,submit:()=>fire('submit'),copy:()=>elements.copyreport.handlers.click(),resolve:()=>resolveCopy(),reject:()=>rejectCopy()};
 }
 (async()=>{
  const passed=[];
@@ -22,6 +23,19 @@ function fixture(opts={}){
  f.submit();assert.match(f.elements.report.textContent,/気になる 1件 ／ 問題なし 4件 ／ 未確認 0件/);assert.equal(f.elements.copyreport.hidden,false);assert.equal(f.elements.copystatus.textContent,'');passed.push('resubmit produces current counts and restores copy');
  f.copy();assert.equal(f.calls.length,1);f.select(1,'risk');const message=f.elements.copystatus.textContent;f.resolve();await Promise.resolve();assert.equal(f.elements.copystatus.textContent,message);passed.push('late clipboard success cannot overwrite answer-change warning');
  f=fixture({unsupported:true});f.submit();f.copy();assert.match(f.elements.copystatus.textContent,/コピー機能が使えません/);passed.push('unsupported clipboard keeps manual fallback');
+ f=fixture();for(let i=0;i<5;i++)f.select(i,'ok');f.select(1,'risk');f.select(3,'unknown');f.submit();
+ assert.equal(f.elements.nextsteps.hidden,false);assert.equal(f.elements.nextstepslist.children.length,2);
+ assert.match(f.elements.nextstepslist.children[0].children[0].textContent,/項目2/);
+ assert.equal(f.elements.nextstepslist.children[0].children[1].href,'#case-write-defaults');
+ assert.match(f.elements.nextstepslist.children[1].children[0].textContent,/項目4/);passed.push('risk-first next steps link to existing troubleshooting sections');
+ assert.equal(f.events.length,1);assert.equal(f.events[0].path,'vrchat-freecheck-report-generated');
+ assert.equal(f.events[0].event,true);assert.equal(JSON.stringify(f.events[0]).includes('risk'),false);
+ f.submit();assert.equal(f.events.length,1);passed.push('report completion is counted once without sending answers or report');
+ f.select(1,'ok');assert.equal(f.elements.nextsteps.hidden,true);assert.equal(f.elements.nextstepslist.children.length,0);
+ f.submit();assert.equal(f.elements.nextstepslist.children.length,1);passed.push('answer changes clear stale next-step links');
+ f=fixture({noAnalytics:true});f.submit();assert.equal(f.elements.report.hidden,false);assert.equal(f.events.length,0);
+ f=fixture({analyticsFails:true});f.submit();assert.equal(f.elements.report.hidden,false);assert.equal(f.events.length,0);
+ passed.push('missing or failing analytics does not block the free check');
  const result={status:'passed',passed:passed.length,cases:passed,scope:'Node VM DOM fixture plus CSS source assertion; not a rendered-browser or mobile-device pass',public_site_changed:false};
 console.log(JSON.stringify(result,null,2));
 })().catch(e=>{console.error(e);process.exit(1)});
