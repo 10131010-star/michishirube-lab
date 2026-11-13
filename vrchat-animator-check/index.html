@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="VRChatアバター改変向け、Unity Animatorの無料手動5項目チェック。ファイルの送信・自動解析は行いません。">
+<meta name="description" content="VRChat AnimatorのWrite Defaults混在・遷移条件・Parameterの確認方法。無料5項目セルフチェックとUnityで検証した診断レポート例を紹介。自動解析は有料版のみ。">
 <title>VRChat Animator 5項目セルフチェック（無料）｜Nokino Tools</title>
 <link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:title" content="VRChat Animator 5項目セルフチェック｜Nokino Tools">
-<meta property="og:description" content="Layer、Write Defaults、Transition、Parameterの5項目をUnityで手動確認。診断結果はブラウザ内だけで作成。">
+<meta property="og:description" content="Write Defaults・未定義Parameterの確認順と実際のUnity診断レポート例。無料5項目は手動、先行版は読み取り専用。">
 <meta property="og:url" content="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
 <style>
 [hidden]{display:none!important}
@@ -23,7 +23,7 @@ label{display:inline-flex;align-items:center;gap:7px;border:1px solid #586883;ba
 label:has(input:checked){border-color:#a4d2ff;background:#304d74}input{accent-color:#b4dcff}
 button,.cta{display:inline-block;background:#a6daff;border:0;border-radius:12px;padding:12px 17px;color:#0a1c2e;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}
 button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:3px}
-#report{background:#0e1a2b;padding:15px;border-radius:12px;margin-top:16px;white-space:pre-line}
+#report{background:#0e1a2b;padding:15px;border-radius:12px;margin-top:16px;white-space:pre-line}.compare{border-collapse:collapse;width:100%;font-size:14px}.compare th,.compare td{border:1px solid #3a4c67;padding:9px;text-align:left;vertical-align:top}.compare th{background:#22314a}
 .note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
 </style></head><body><main>
 <p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
@@ -41,6 +41,28 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <button type="submit">確認状況をまとめる</button>
 </form><div id="report" aria-live="polite" hidden></div><p><button id="copyreport" type="button" hidden>確認メモをコピー</button> <span id="copystatus" role="status"></span></p>
 <p class="note"><strong>Unity上でさらに確認したい方へ：</strong>この無料チェックは手動の整理用です。Animator Controllerの状態を読み取り専用でレポート化する<a href="https://nokino-tools.booth.pm/items/9133855?utm_source=freecheck&amp;utm_medium=html&amp;utm_campaign=animator_doctor&amp;utm_content=check_section" target="_blank" rel="noopener noreferrer">Animator Doctor Proの商品詳細（有料・先行版）</a>も確認できます。自動修復は行わず、未検証環境での動作は保証しません。</p></section>
+<section class="card" id="verified-demo" aria-labelledby="verified-demo-title">
+<p class="top">VERIFIED UNITY EXAMPLE / NOT A COMMERCIAL AVATAR</p>
+<h2 id="verified-demo-title">実例：Animatorの「未定義Parameter」とWrite Defaults混在をどう見つける？</h2>
+<p>「衣装の切替が動かない」「遷移条件が正しいか分からない」という方向けに、<strong>Unity上で実際に検証したテスト用Controller</strong>の診断例を紹介します。これは不具合を意図的に含む合成データで、実在の市販アバターの診断結果ではありません。</p>
+<ol>
+<li>Unityで対象の <strong>Animator Controller</strong> を開き、Transitionの <strong>Conditions</strong> と <strong>Parameters</strong> タブを見比べます。EntryやAny Stateなどの遷移も確認対象です。</li>
+<li>実機検証に使った <code>RC3_Demo_A</code> では、<code>Base Layer/Entry → Idle</code> の条件が参照する <code>MissingEntryParameter</code> がControllerに定義されていないことが検出されました（<code>NAD004 / Error</code>）。無料チェックでは<strong>4番「ConditionのParameter」</strong>を「気になる」として記録できます。</li>
+<li>同じControllerでは <strong>Write Defaults ON 1件 / OFF 1件</strong>の混在（<code>NAD002 / Warning</code>）と、遷移条件から未参照の <code>ReviewUsage</code>（<code>NAD005 / Info</code>）も確認されました。未使用の表示だけでParameterを削除しないでください。</li>
+</ol>
+<p><strong>検証済みの挙動：</strong>Windows / Unity 2022.3.22f1 / VRChat SDK Base・Avatars 3.10.5 で、Controller Aの3件を日本語・英語UIとMarkdownレポートに出力し、別のController Bへ切り替えた後は旧結果が消え、Bの診断結果は0件でした。25件のEditModeテストも成功しています。これらは<strong>テスト用Controllerでの検証</strong>であり、すべての環境やVRChat内の動作を保証しません。</p>
+<h3>無料チェックと有料版の違い</h3>
+<div style="overflow-x:auto"><table class="compare">
+<thead><tr><th scope="col">項目</th><th scope="col">無料5項目チェック</th><th scope="col">Animator Doctor Pro（先行版）</th></tr></thead>
+<tbody>
+<tr><th scope="row">調べ方</th><td>自分でUnityを見て3択で整理。Unityファイルを読み込みません。</td><td>選択したAnimator ControllerをUnity Editor内で読み取り専用診断します。</td></tr>
+<tr><th scope="row">結果</th><td>気になる項目のメモ表示・コピー。</td><td>Layer・Write Defaults・遷移・Parameterの候補を日英UI・Markdownで出力。</td></tr>
+<tr><th scope="row">できないこと</th><td>問題の自動検出・自動修正。</td><td>自動修復・完全検出・Expressions Menu全体の診断・全SDK互換性保証。</td></tr>
+</tbody></table></div>
+<p class="note">公式参考：<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat Animator Parameters</a>。実機検証の内部記録は <a href="https://github.com/10131010-star/nokino-ai-growth-os/pull/12" target="_blank" rel="noopener noreferrer">RC3検証PR #12</a>（非公開リポジトリのため閲覧権限が必要）に保存しています。画像の無断転用は行いません。</p>
+<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=freecheck&amp;utm_medium=html&amp;utm_campaign=animator_doctor&amp;utm_content=verified_demo" target="_blank" rel="noopener noreferrer">検証済み機能と対応環境をBOOTHで確認する（980円）</a></p>
+<p class="note">このリンクのUTMは識別用の文字列であり、閲覧・クリック・購入の実測値ではありません。価格・販売状態はBOOTHの表示を優先してください。</p>
+</section>
 <section class="card"><p class="top">OPTIONAL / READ-ONLY DIAGNOSTICS</p><h2>Animator Doctor Pro（先行版）</h2>
 <p>Unity Editor上でAnimator Controllerを読み取り専用で調べ、日本語・英語のレポートを出力するツール。自動修復は行いません。</p>
 <p><strong>販売ページ掲載価格 ¥980</strong>（現時点の価格・販売状態はBOOTHでご確認ください）</p>
