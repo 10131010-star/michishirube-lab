@@ -40,7 +40,12 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <fieldset><legend>4. ConditionのParameter</legend><p>Transition条件で参照するParameterが定義されているか。</p><div class="choices" data-question="4"></div></fieldset>
 <fieldset><legend>5. 未使用Parameter</legend><p>未使用に見えるParameterの用途を、他の参照元も含め確認したか。</p><div class="choices" data-question="5"></div></fieldset>
 <button type="submit">確認状況をまとめる</button>
-</form><div id="report" aria-live="polite" hidden></div><p><button id="copyreport" type="button" hidden>確認メモをコピー</button> <span id="copystatus" role="status"></span></p>
+</form><div id="report" aria-live="polite" hidden></div>
+<div id="nextsteps" hidden aria-live="polite">
+  <h3>選んだ項目に応じた、次の手動確認</h3>
+  <ol id="nextstepslist"></ol>
+  <p class="note">入力した回答から確認順を案内するだけで、不具合の自動診断や原因特定ではありません。回答・結果は外部送信しません。変更前にプロジェクトのバックアップを取ってください。</p>
+</div><p><button id="copyreport" type="button" hidden>確認メモをコピー</button> <span id="copystatus" role="status"></span></p>
 <p class="note"><strong>Unity上でさらに確認したい方へ：</strong>この無料チェックは手動の整理用です。Animator Controllerの状態を読み取り専用でレポート化する<a href="https://nokino-tools.booth.pm/items/9133855?utm_source=freecheck&amp;utm_medium=html&amp;utm_campaign=animator_doctor&amp;utm_content=check_section" data-goatcounter-click="vrchat-freecheck-check-to-booth" target="_blank" rel="noopener noreferrer">Animator Doctor Proの商品詳細（有料・先行版）</a>も確認できます。自動修復は行わず、未検証環境での動作は保証しません。</p></section>
 <section class="card" id="verified-demo" aria-labelledby="verified-demo-title">
 <p class="top">VERIFIED UNITY EXAMPLE / NOT A COMMERCIAL AVATAR</p>
@@ -73,13 +78,13 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <p class="top">CHECK BEFORE EDITING / 3 COMMON CASES</p>
 <h2 id="troubletitle">よくある3つのつまずきと確認順</h2>
 <p class="note">まずUnityプロジェクトをバックアップし、症状が起きる条件を控えてください。ここで紹介するのは切り分けの手順であり、自動修復・原因の確定ではありません。</p>
-<h3>Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
+<h3 id="case-write-defaults">Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
 <ol><li>該当するステートの <strong>Write Defaults</strong> が混在していないか確認する。</li><li>次のステートに戻す値を設定するAnimation Clipがあるか確認する。</li><li>一律にOn/Offを変更せず、AdditiveやDirect Blend Treeなどの例外も含めて設定を見直す。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/#write-defaults-on-states" target="_blank" rel="noopener noreferrer">VRChat公式：Write Defaults</a>。VRChatは基本的に設定を揃えることを勧めていますが、例外があります。</p>
-<h3>Q2. Expressions Menuの操作で期待した動きにならない</h3>
+<h3 id="case-expressions-menu">Q2. Expressions Menuの操作で期待した動きにならない</h3>
 <ol><li>Expressions MenuのControlが指定するParameter名・型を確認する。</li><li>Avatar Descriptorに割り当てたExpression ParametersとAnimator側の定義を見比べる。</li><li>VRChat標準の組み込みParameterと自作Parameterを混同していないか確認する。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">VRChat公式：Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
-<h3>Q3. 表情と衣装のアニメーションが干渉する</h3>
+<h3 id="case-layer-conflict">Q3. 表情と衣装のアニメーションが干渉する</h3>
 <ol><li>Avatar DescriptorのPlayable Layers（Base / Additive / Gesture / Action / FX）を確認する。</li><li>意図せず同じプロパティを複数レイヤーから操作していないか確認する。</li><li>特にFXレイヤーの役割とAvatar Maskを確認し、変更前の設定を保存してから1箇所ずつテストする。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/playable-layers/" target="_blank" rel="noopener noreferrer">VRChat公式：Playable Layers</a>。</p>
 <p>症状の切り分けに迷ったら、上の<strong>5項目チェック</strong>で「気になる」を記録し、コピーしたメモを自分のUnity作業に使ってください。手動確認から一歩進めたい場合にのみ、上記の有料版の仕様と対応環境を確認してください。</p>
@@ -103,6 +108,8 @@ document.getElementById('checks').addEventListener('change',function(){
  var report=document.getElementById('report');
  if(report.hidden)return;
  report.hidden=true;report.textContent='';
+ document.getElementById('nextsteps').hidden=true;
+ document.getElementById('nextstepslist').replaceChildren();
  document.getElementById('copyreport').hidden=true;
  document.getElementById('copystatus').textContent='回答を変更しました。「確認状況をまとめる」をもう一度押してください。';
 });
@@ -122,6 +129,32 @@ document.getElementById('checks').addEventListener('submit',function(e){
  });
  if(needs.length)report+='\n\n再確認メモ\n'+needs.join('\n');
  var target=document.getElementById('report');target.textContent=report;target.hidden=false;
+ // The suggestions are static help text; no answers are included in analytics.
+ var guideByQuestion={
+  '1':['同じ役割のLayerが重複していないかPlayable Layersを確認する。','#case-layer-conflict'],
+  '2':['対象ステートのWrite Defaults設定と戻し先のAnimation Clipを確認する。','#case-write-defaults'],
+  '3':['遷移先のステートとConditionsの参照先を見比べる。','#verified-demo'],
+  '4':['Conditionsに書かれた名前がParametersで定義されているか確認する。','#verified-demo'],
+  '5':['削除せず、参照元やVRChat標準Parameterとの関係を確認する。','#case-expressions-menu']
+ };
+ var selected=[];
+ document.querySelectorAll('[data-question]').forEach(function(box){
+  var picked=box.querySelector('input:checked');
+  if(picked&&picked.value!=='ok'){
+   var key=box.getAttribute('data-question');
+   selected.push({key:key,status:picked.value,tip:guideByQuestion[key]});
+  }
+ });
+ selected.sort(function(a,b){return (a.status==='risk'?0:1)-(b.status==='risk'?0:1);});
+ var guide=document.getElementById('nextsteps');
+ var guideList=document.getElementById('nextstepslist');guideList.replaceChildren();
+ selected.forEach(function(item){
+  var li=document.createElement('li');
+  li.appendChild(document.createTextNode('項目'+item.key+'（'+(item.status==='risk'?'気になる':'未確認')+'）：'+item.tip[0]+' '));
+  var link=document.createElement('a');link.href=item.tip[1];link.textContent='具体的な確認手順へ';
+  li.appendChild(link);guideList.appendChild(li);
+ });
+ guide.hidden=selected.length===0;
  document.getElementById('copyreport').hidden=false;
  document.getElementById('copystatus').textContent='';
 });
