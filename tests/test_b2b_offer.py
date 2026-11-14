@@ -45,7 +45,13 @@ class OfferTests(unittest.TestCase):
         p.feed(HTML)
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
-        self.assertEqual([a.get("href") for a in p.links], ["./audit.html", "./demo.html", "./audit.html", "./demo.html"])
+        hrefs = [a.get("href") for a in p.links]
+        self.assertEqual(hrefs[:4], ["./audit.html", "./demo.html", "./audit.html", "./demo.html"])
+        self.assertEqual(len(hrefs), 5)
+        # This mailto only opens the visitor's mail app; it never sends automatically.
+        self.assertTrue(hrefs[4].startswith("mailto:michishirube.office@gmail.com?subject="))
+        self.assertIn("所有・受信試験", HTML)
+        self.assertIn("一般公開・営業送信しません", HTML)
         self.assertIn('class="header-ctas"', HTML)
         self.assertIn("無料5項目チェックを試す", HTML)
         self.assertIn("予約・問い合わせ・注文は受け付けません", HTML)
