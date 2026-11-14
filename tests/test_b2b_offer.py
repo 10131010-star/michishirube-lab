@@ -111,6 +111,18 @@ class OfferTests(unittest.TestCase):
             self.assertIn(item, note)
 
 
+    def test_audit_provides_actionable_local_copy_and_fresh_result(self):
+        audit = (Path(__file__).resolve().parents[1] / "service-offer" / "audit.html").read_text(encoding="utf-8")
+        for marker in ['id="copy-result" hidden', "navigator.clipboard.writeText(latestResult)",
+                       "addEventListener('change',reset)", "今週試す1手",
+                       "優先順は仮の案", "latestResult=''",
+                       "外部への送信はしません"]:
+            with self.subTest(marker=marker):
+                self.assertIn(marker, audit)
+        for banned in ["fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "<form", 'type="email"']:
+            self.assertNotIn(banned, audit)
+
+
     def test_audit_cannot_submit_answers_if_javascript_is_disabled(self):
         # Without JavaScript, an ordinary form+submit button silently sends
         # answers as query parameters despite the browser-only privacy claim.
