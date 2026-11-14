@@ -45,7 +45,7 @@ class OfferTests(unittest.TestCase):
         p.feed(HTML)
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
-        self.assertEqual([a.get("href") for a in p.links], ["./demo.html"])
+        self.assertEqual([a.get("href") for a in p.links], ["./audit.html", "./demo.html"])
 
     def test_synthetic_demo_is_not_real_client(self):
         demo = (Path(__file__).resolve().parents[1] / "service-offer" / "demo.html").read_text(encoding="utf-8")
@@ -54,6 +54,23 @@ class OfferTests(unittest.TestCase):
         self.assertIn("予約や問い合わせは送信できません", demo)
         self.assertIn('id="menu"', demo)
         self.assertIn('id="contact"', demo)
+
+    def test_browser_only_audit_prelaunch(self):
+        audit = (Path(__file__).resolve().parents[1] / "service-offer" / "audit.html").read_text(encoding="utf-8")
+        self.assertIn('name="robots" content="noindex,nofollow"', audit)
+        self.assertIn('id="audit"', audit)
+        self.assertIn('id="result"', audit)
+        self.assertIn("event.preventDefault()", audit)
+        self.assertIn("すべての項目に回答してください", audit)
+        self.assertIn("売上改善を保証", HTML)
+        self.assertNotIn("fetch(", audit)
+        self.assertNotIn("XMLHttpRequest", audit)
+        self.assertNotIn("localStorage", audit)
+        self.assertNotIn("sendBeacon", audit)
+        self.assertNotIn('type="email"', audit)
+        self.assertNotIn('action="http', audit)
+        self.assertIn('href="./demo.html"', audit)
+        self.assertIn('href="./index.html"', audit)
 
     def test_no_premature_search_indexing(self):
         self.assertIn('name="robots" content="noindex,nofollow"', HTML)
