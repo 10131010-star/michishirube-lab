@@ -221,6 +221,14 @@ function compareParameterNames(definedText,usedText) {
   notInCheckedConditions:defined.filter(function(x){return !usedSet.has(x);})
  };
 }
+// A comparison belongs only to the current two input lists.
+function clearParameterComparison() {
+ var out=document.getElementById('parameter-result');
+ out.hidden=true;out.textContent='';
+}
+['parameter-defined','parameter-used'].forEach(function(id){
+ document.getElementById(id).addEventListener('input',clearParameterComparison);
+});
 document.getElementById('parameter-compare-button').addEventListener('click',function(){
  var first=document.getElementById('parameter-defined').value;
  var second=document.getElementById('parameter-used').value;
