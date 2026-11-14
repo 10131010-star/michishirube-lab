@@ -24,4 +24,51 @@ assert.match(html,/入力文字列はこの端末のブラウザ内で照合す�
 assert.match(html,/「未参照候補」を理由にParameterを削除しないでください/);
 const section=html.split('id="parameter-compare"')[1].split('</section>')[0];
 assert.doesNotMatch(section, /https:\/\/nokino-tools\.booth\.pm\/items\/\d+/,'comparison tool itself does not add an untracked outbound CTA');
-console.log(JSON.stringify({status:'passed',checks:13,scope:'pure JS comparison function + static DOM and privacy assertions; no real-browser/GA4 or Unity test'}));
+
+// Exercise real page handlers with a minimal offline DOM, not a real browser.
+const localBlock=html.match(/\/\/ Pure local comparison:[\s\S]*?(?=\n\}\(\)\);)/);
+assert.ok(localBlock,'local comparison UI block must exist');
+const elements={};
+for(const id of ['parameter-defined','parameter-used','parameter-result','parameter-compare-button']){
+ elements[id]={value:'',textContent:'',hidden:true,listeners:{},
+  addEventListener(type,handler){(this.listeners[type]??=[]).push(handler);}};
+ Object.defineProperty(elements[id],'innerHTML',{set(){throw new Error('Input must not be inserted as HTML');}});
+}
+vm.runInNewContext(localBlock[0],{document:{getElementById:id=>elements[id]}});
+const fire=(id,type)=>{for(const fn of elements[id].listeners[type]||[])fn();};
+const edit=(id,text)=>{elements[id].value=text;fire(id,'input');};
+const runComparison=()=>fire('parameter-compare-button','click');
+const result=elements['parameter-result'];
+const scenarios=[];
+assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+scenarios.push('initially hidden');
+edit('parameter-defined','FaceMode');edit('parameter-used','facemode');runComparison();
+assert.equal(result.hidden,false);assert.ok(result.textContent.includes('facemode'));
+scenarios.push('case mismatch shown');
+edit('parameter-used','FaceMode');
+assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+scenarios.push('used-list edit clears old result');
+runComparison();assert.equal(result.hidden,false);assert.ok(result.textContent.includes('0件'));
+assert.ok(!result.textContent.includes('facemode'));
+scenarios.push('recompare reflects edited input');
+edit('parameter-defined','Other');
+assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+runComparison();assert.ok(result.textContent.includes('FaceMode'));
+scenarios.push('defined-list edit clears old result');
+edit('parameter-defined','');runComparison();
+assert.ok(result.textContent.includes('両方の欄'));
+edit('parameter-defined','Other');
+assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+scenarios.push('blank-input message cleared on editing');
+edit('parameter-defined',Array.from({length:101},(_,i)=>'P'+i).join('\n'));runComparison();
+assert.ok(result.textContent.includes('100個'));
+edit('parameter-defined','Other');
+assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+scenarios.push('limit message cleared on editing');
+edit('parameter-used','<img src=x onerror=alert(1)>');runComparison();
+assert.ok(result.textContent.includes('<img src=x onerror=alert(1)>'));
+scenarios.push('HTML-looking input remains plain text');
+const last=result.textContent;runComparison();
+assert.equal(result.textContent,last);
+scenarios.push('repeated compare stable');
+console.log(JSON.stringify({status:'passed',interactionScenarios:scenarios,scope:'pure JS and static/offline DOM handlers; no real-browser, GA4 or Unity test'}));
