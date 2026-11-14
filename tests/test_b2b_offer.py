@@ -45,7 +45,10 @@ class OfferTests(unittest.TestCase):
         p.feed(HTML)
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
-        self.assertEqual([a.get("href") for a in p.links], ["./audit.html", "./demo.html"])
+        self.assertEqual([a.get("href") for a in p.links], ["./audit.html", "./demo.html", "./audit.html", "./demo.html"])
+        self.assertIn('class="header-ctas"', HTML)
+        self.assertIn("無料5項目チェックを試す", HTML)
+        self.assertIn("予約・問い合わせ・注文は受け付けません", HTML)
 
     def test_synthetic_demo_is_not_real_client(self):
         demo = (Path(__file__).resolve().parents[1] / "service-offer" / "demo.html").read_text(encoding="utf-8")
@@ -102,6 +105,8 @@ class OfferTests(unittest.TestCase):
         for unsafe in ["fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage", "<iframe", "type=\"email\""]:
             self.assertNotIn(unsafe, demo)
         self.assertIn('name="robots" content="noindex,nofollow"', demo)
+        self.assertIn('<a class="btn" href="#hours">次に営業時間・定休日を確認する</a>', demo)
+        self.assertIn('<a class="btn" href="#contact">営業時間を確認したら、予約・問い合わせ案内へ</a>', demo)
 
     def test_costs_and_official_alternatives_are_disclosed(self):
         self.assertIn("継続利用料", HTML)
