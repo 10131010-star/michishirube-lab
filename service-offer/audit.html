@@ -12,6 +12,9 @@
 <button type="button" id="audit-run">改善候補を確認</button></div>
 <noscript><p class="muted">このセルフチェックはJavaScriptが有効な場合のみ動作します。入力内容は送信されません。</p></noscript>
 <div id="result" class="result" role="status" aria-live="polite" hidden></div>
+<button type="button" id="copy-result" hidden>診断結果と次の1手をコピー</button>
+<p id="copy-status" class="muted" role="status" aria-live="polite"></p>
+<p class="muted">コピー操作を選んだ場合のみ、結果を端末のクリップボードへ書き込みます。外部への送信はしません。共有前に内容を確認してください。</p>
 <p class="muted">未回答項目がある場合は診断を行いません。各項目は自己申告に基づき、実際のサイトを自動調査するものではありません。</p></section>
 <section><h2>次の一歩</h2><p>「いいえ／不明」がある場合は、まず情報の掲載場所を整理しましょう。たとえば営業時間、メニュー、アクセス、予約先を1ページにまとめることができます。</p><p><a href="./demo.html">架空飲食店の1ページデモを見る</a>／<a href="./index.html">制作サービスの提案内容を見る</a></p><p class="warning">現時点ではサービスの正式受付・決済は行っていません。改善が売上に直結することを保証する診断ではありません。</p></section>
 <script>
@@ -24,16 +27,48 @@ var questions=[
 ['contact','予約・問い合わせ方法'],
 ['mobile','スマホ表示・リンクの確認']
 ];
-document.getElementById('audit-run').addEventListener('click',function(){
-var answers=questions.map(function(q){var selected=document.querySelector('input[name="'+q[0]+'"]:checked');return selected?selected.value:null;});
 var target=document.getElementById('result');
-target.hidden=false;
-if(answers.some(function(a){return a===null;})){target.textContent='すべての項目に回答してください。';return;}
-var needs=questions.filter(function(q,i){return answers[i]==='no';}).map(function(q){return '・'+q[1];});
-var count=5-needs.length;
-target.textContent='自己チェック: '+count+'/5項目が「はい」でした。\n'
-+(needs.length?'見直し候補:\n'+needs.join('\n'):'今回の自己チェックでは5項目に「はい」と回答しました。')
-+'\nこれはサイトの実測や売上改善効果を保証するものではありません。';
+var copyButton=document.getElementById('copy-result');
+var copyStatus=document.getElementById('copy-status');
+var latestResult='';
+var nextSteps={
+ contact:'予約・問い合わせへの公式リンクを1つ選び、スマホのトップ画面から辿れる場所に明記する（リンク先の権限と動作も確認）。',
+ hours:'営業時間・定休日の最新情報を確認し、店舗案内とSNS・地図の記載を照合する。',
+ menu:'代表的なメニュー・料金・提供条件を1画面で確認できるようにする（掲載許可と更新担当を確認）。',
+ map:'店舗が管理する正しい地図・アクセス先を確認し、案内ページから辿れるようにする。',
+ mobile:'実際のスマホで文字の読みやすさと予約・地図リンクの操作を一つずつ確認する。'
+};
+var priority=['contact','hours','menu','map','mobile'];
+function reset(){
+ latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';
+}
+document.getElementById('audit').addEventListener('change',reset);
+document.getElementById('audit-run').addEventListener('click',function(){
+ var answers=questions.map(function(q){var selected=document.querySelector('input[name="'+q[0]+'"]:checked');return selected?selected.value:null;});
+ reset();
+ target.hidden=false;
+ if(answers.some(function(a){return a===null;})){target.textContent='すべての項目に回答してください。';return;}
+ var needs=questions.filter(function(q,i){return answers[i]==='no';}).map(function(q){return '・'+q[1];});
+ var count=5-needs.length;
+ var key=priority.find(function(name){return answers[questions.findIndex(function(q){return q[0]===name;})]==='no';});
+ var action=key?nextSteps[key]:'まず実際のスマホで案内ページを開き、連絡先のリンクと営業日の整合性を確認する。';
+ latestResult='店舗Web導線の自己チェック: '+count+'/5項目が「はい」。\n'
+  +(needs.length?'見直し候補:\n'+needs.join('\n'):'5項目すべて「はい」と回答。')
+  +'\n今週試す1手（優先順は仮の案です）:\n'+action
+  +'\n※ 自己申告に基づく例であり、サイト実測・売上改善・受注を保証しません。';
+ target.textContent=latestResult;
+ copyButton.hidden=false;
+});
+copyButton.addEventListener('click',function(){
+ if(!latestResult){return;}
+ if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function'){
+  copyStatus.textContent='このブラウザでは自動コピーできません。上の結果を選択してコピーしてください。';return;
+ }
+ navigator.clipboard.writeText(latestResult).then(function(){
+  copyStatus.textContent='コピーしました。共有前に内容をご確認ください。';
+ }).catch(function(){
+  copyStatus.textContent='コピーできませんでした。上の結果を選択してコピーしてください。';
+ });
 });
 }());
 </script></main></body></html>
