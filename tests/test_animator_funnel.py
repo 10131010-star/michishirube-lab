@@ -61,7 +61,7 @@ class AnimatorFunnelTests(unittest.TestCase):
 
     def test_click_ids_unique_and_no_pii_in_urls(self):
         event_ids = [a.get("data-goatcounter-click") for a in self.doc.links
-                     if "data-goatcounter-click" in a]
+                     if urlparse(a.get("href", "")).hostname == PRODUCT_HOST]
         self.assertEqual(len(event_ids), len(set(event_ids)), "Event IDs must be unique per action")
         for a in self.doc.links:
             url = urlparse(a.get("href", ""))
