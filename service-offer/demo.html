@@ -54,8 +54,8 @@ footer{text-align:center;padding:32px 18px;color:#5d574e;font-size:13px}
 <section class="panel" id="hours"><h2>営業時間・アクセス</h2><div class="grid"><div class="tile"><h3>営業時間の例</h3><p>11:30〜15:00（仮）</p><p>定休日：火曜日（仮）</p></div><div class="tile"><h3>アクセスの例</h3><p>大阪市内・架空の所在地</p><p class="muted">デモのため実地図にはつなぎません。顧客案件では公式の地図リンクを確認します。</p></div></div>
 <p class="muted">公開前に営業時間・定休日・予約方法の更新担当者を決めます。</p><p><a class="btn" href="#contact">営業時間を確認したら、予約・問い合わせ案内へ</a></p></section>
 <section class="panel" id="contact"><h2>予約・お問い合わせの案内</h2><p>本番ページなら、店側で管理権限と掲載許可を確認した<strong>既存の予約・電話・問い合わせ先</strong>に接続します。新しい予約契約を勝手に作るものではありません。</p>
-<p><button type="button" class="btn demo-link" id="try-contact" aria-haspopup="dialog">予約案内の動作を試す（デモ）</button></p>
-<div class="notice"><strong>送信先はありません。</strong> デモにつき予約や問い合わせは送信できません。実店舗の電話番号・住所・顧客情報は使っていません。</div></section>
+<p><button type="button" class="btn demo-link" id="try-contact" aria-haspopup="dialog" aria-describedby="demo-contact-note">予約案内の動作を試す（デモ）</button></p>
+<div class="notice" id="demo-contact-note" tabindex="-1"><strong>送信先はありません。</strong> デモにつき予約や問い合わせは送信できません。実店舗の電話番号・住所・顧客情報は使っていません。</div></section>
 <section class="panel" id="journey" aria-labelledby="journey-heading"><h2 id="journey-heading">改善前と改善後を比べる（仮想例）</h2><p>複数の案内先を探し回る例と、必要な情報をまとめた例を切り替えて確認できます。<strong>どちらも想定シナリオで、実測の転換率比較ではありません。</strong></p>
 <div role="group" aria-label="閲覧導線のサンプル"><button type="button" class="choice" id="show-before" aria-pressed="false">情報が分散している例</button><button type="button" class="choice" id="show-after" aria-pressed="true">1ページにまとめた例</button></div>
 <ol class="steps" id="journey-steps" aria-live="polite"><li>メニューと価格を確認する</li><li>営業時間・アクセスを確認する</li><li>店の公式予約リンクに進む（このデモでは模擬表示）</li></ol>
