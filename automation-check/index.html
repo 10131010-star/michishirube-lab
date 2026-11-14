@@ -45,7 +45,7 @@ footer{padding:24px 18px;text-align:center;color:var(--sub);font-size:13px}
 <section id="result" class="card" hidden aria-live="polite">
 <h2>比較結果</h2><p id="total"></p><div id="ranking"></div>
 <p class="small">作業時間が長い＝自動化が必ず容易、とは限りません。作業の標準化、例外処理、情報管理、権限、検証負担も必ず確認してください。</p>
-<div class="task" aria-label="診断後の次の一歩"><h3>結果を使って次の作業を選ぶ</h3><p>上位の業務と収録テーマが合うか確認したい方へ。既存のnote有料商品にはGASスクリプト10本と業務プロンプト30個を収録しています。内容・販売価格・動作上の注意を先にご確認ください。</p><a class="cta" id="result-note-link" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener noreferrer" data-goatcounter-click="automation-check-result-to-note">収録内容を確認する（note・有料）</a><p class="small">この診断結果に合わせて自動でコードが作られる商品ではありません。購入は任意です。</p></div>
+<div class="task" aria-label="診断後の次の一歩"><h3>結果を使って次の作業を選ぶ</h3><p>上位の業務と収録テーマが合うか確認したい方へ。既存のnote有料商品にはGASスクリプト10本と業務プロンプト30個を収録しています。内容・販売価格・動作上の注意を先にご確認ください。</p><a class="cta" id="result-note-link" href="https://note.com/leal_coot9232/n/n819e0bc5df54?utm_source=michishirube_lab&amp;utm_medium=free_diagnostic&amp;utm_campaign=gas10_prompts30&amp;utm_content=diagnosis_result" target="_blank" rel="noopener noreferrer" data-goatcounter-click="automation-check-result-to-note">収録内容を確認する（note・有料）</a><p class="small">この診断結果に合わせて自動でコードが作られる商品ではありません。購入は任意です。</p></div>
 <button id="copy" type="button">結果をコピー</button><p id="feedback" class="small" role="status"></p>
 </section>
 <section class="card">
@@ -58,12 +58,12 @@ footer{padding:24px 18px;text-align:center;color:var(--sub);font-size:13px}
 <p class="small">ミチシルベ業務ラボの有料商品</p>
 <h2>ゼロからスクリプトを書く時間を減らしたい方へ</h2>
 <p>noteで<strong>Googleスプレッドシートなどの自動化スクリプト10本＋業務プロンプト30個</strong>を提供しています。内容・無料部分・販売価格はnoteのページで確認できます。</p>
-<a class="cta" href="https://note.com/leal_coot9232/n/n819e0bc5df54" target="_blank" rel="noopener noreferrer" data-goatcounter-click="automation-check-to-note">noteで内容を確認する（購入は任意）</a>
+<a class="cta" href="https://note.com/leal_coot9232/n/n819e0bc5df54?utm_source=michishirube_lab&amp;utm_medium=free_diagnostic&amp;utm_campaign=gas10_prompts30&amp;utm_content=below_diagnostic" target="_blank" rel="noopener noreferrer" data-goatcounter-click="automation-check-to-note">noteで内容を確認する（購入は任意）</a>
 <p class="small">効果や時間削減は保証されません。導入前に利用環境と権限を確認してください。</p>
 </section>
 <p><a href="../">← ミチシルベ業務ラボのトップへ</a></p>
 </main>
-<footer>登録不要・無料。業務名・回数・時間は外部送信しません。アクセスとリンククリックだけGoatCounterで集計します。<a href="../#privacy">プライバシーポリシー</a></footer>
+<footer>登録不要・無料。業務名・回数・時間は外部送信しません。アクセス、結果生成の回数（入力値なし）、リンククリックだけGoatCounterで集計します。<a href="../#privacy">プライバシーポリシー</a></footer>
 <script>
 (function(){
 "use strict";
@@ -75,6 +75,7 @@ const read=(id,max)=>{
   return n;
 };
 let report="";
+let completionTracked=false;
 $("calculate").addEventListener("click",()=>{
   $("error").textContent="";$("result").hidden=true;$("feedback").textContent="";
   try{
@@ -97,6 +98,13 @@ $("calculate").addEventListener("click",()=>{
     $("total").textContent="3業務の月平均作業時間 合計 "+fmt.format(total)+"時間";
     report="定型業務の作業時間比較（月平均の概算）\n"+data.map((x,i)=>(i+1)+"位 "+x.name+"："+fmt.format(x.hours)+"時間").join("\n")+"\n合計 "+fmt.format(total)+"時間\n※作業時間であり、自動化による削減見込みではありません。";
     $("result").hidden=false;
+    // 匿名・1ページ1回のみ。入力した業務名・回数・時間・順位は送信しない。
+    if(!completionTracked && window.goatcounter && typeof window.goatcounter.count==="function"){
+      try{
+        window.goatcounter.count({path:"automation-check-report-generated",title:"Automation priority check completed",event:true});
+        completionTracked=true;
+      }catch(_){/* 計測障害時も無料の診断機能は継続 */ }
+    }
   }catch(e){$("error").textContent=e.message;report="";}
 });
 $("copy").addEventListener("click",async()=>{
