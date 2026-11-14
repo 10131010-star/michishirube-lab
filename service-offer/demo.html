@@ -81,7 +81,7 @@ items.forEach(function(item){var li=document.createElement("li");li.textContent=
 before.addEventListener("click",function(){render("before");});
 after.addEventListener("click",function(){render("after");});
 var dialog=document.getElementById("contact-dialog");
-document.getElementById("try-contact").addEventListener("click",function(){if(typeof dialog.showModal==="function"){dialog.showModal();}else{document.getElementById("contact").scrollIntoView();}});
+document.getElementById("try-contact").addEventListener("click",function(){if(typeof dialog.showModal==="function"){dialog.showModal();}else{document.getElementById("demo-contact-note").focus();}});
 document.getElementById("close-dialog").addEventListener("click",function(){dialog.close();});
 })();
 </script>
