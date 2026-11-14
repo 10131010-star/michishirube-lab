@@ -83,5 +83,33 @@ class OfferTests(unittest.TestCase):
         self.assertIn("個別見積", HTML)
 
 
+    def test_interactive_synthetic_demo_has_a_safe_click_path(self):
+        demo = (Path(__file__).resolve().parents[1] / "service-offer" / "demo.html").read_text(encoding="utf-8")
+        for required in [
+            'id="menu"', 'id="hours"', 'id="contact"',
+            'href="#menu"', 'href="#hours"', 'href="#contact"',
+            'id="show-before"', 'id="show-after"', 'aria-pressed="true"',
+            'id="contact-dialog"', 'id="try-contact"', 'dialog.showModal()',
+            '予約や問い合わせは送信できません', '架空店舗',
+        ]:
+            with self.subTest(required=required):
+                self.assertIn(required, demo)
+        # No fake booking, analytics, customer data collection, or external links.
+        parser = Parse()
+        parser.feed(demo)
+        self.assertEqual(parser.forms, [])
+        self.assertFalse(any((link.get("href") or "").startswith(("http:", "https:", "mailto:", "tel:")) for link in parser.links))
+        for unsafe in ["fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage", "<iframe", "type=\"email\""]:
+            self.assertNotIn(unsafe, demo)
+        self.assertIn('name="robots" content="noindex,nofollow"', demo)
+
+    def test_costs_and_official_alternatives_are_disclosed(self):
+        self.assertIn("継続利用料", HTML)
+        self.assertIn("支払い担当", HTML)
+        note = (Path(__file__).resolve().parents[1] / "service-offer" / "COMPETITOR-AND-SCOPE.md").read_text(encoding="utf-8")
+        for item in ["studio.design/ja/pricing", "peraichi.com/news/press_2025_0818", "未承認", "外部通信なし", "受注", "粗利益"]:
+            self.assertIn(item, note)
+
+
 if __name__ == "__main__":
     unittest.main()
