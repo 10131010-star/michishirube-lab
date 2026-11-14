@@ -45,7 +45,15 @@ class OfferTests(unittest.TestCase):
         p.feed(HTML)
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
-        self.assertEqual(p.links, [])
+        self.assertEqual([a.get("href") for a in p.links], ["./demo.html"])
+
+    def test_synthetic_demo_is_not_real_client(self):
+        demo = (Path(__file__).resolve().parents[1] / "service-offer" / "demo.html").read_text(encoding="utf-8")
+        self.assertIn("架空店舗", demo)
+        self.assertIn('name="robots" content="noindex,nofollow"', demo)
+        self.assertIn("予約や問い合わせは送信できません", demo)
+        self.assertIn('id="menu"', demo)
+        self.assertIn('id="contact"', demo)
 
     def test_no_premature_search_indexing(self):
         self.assertIn('name="robots" content="noindex,nofollow"', HTML)
