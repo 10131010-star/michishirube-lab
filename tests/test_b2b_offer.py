@@ -127,6 +127,12 @@ class OfferTests(unittest.TestCase):
         self.assertIn('name="robots" content="noindex,nofollow"', demo)
         self.assertIn('<a class="btn" href="#hours">次に営業時間・定休日を確認する</a>', demo)
         self.assertIn('<a class="btn" href="#contact">営業時間を確認したら、予約・問い合わせ案内へ</a>', demo)
+        # Prospects must not hit a dead end after the fictional booking demo.
+        self.assertIn('href="./index.html#offer-price"', demo)
+        self.assertIn('href="./index.html#contact"', demo)
+        self.assertIn('相談文を準備する（正式受付前）', demo)
+        # Touch-sized navigation; these checks are not a mobile device test.
+        self.assertIn('nav a{display:inline-flex;align-items:center;min-height:44px', demo)
 
     def test_costs_and_official_alternatives_are_disclosed(self):
         self.assertIn("継続利用料", HTML)
