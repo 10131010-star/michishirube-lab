@@ -85,6 +85,26 @@ class AnimatorFunnelTests(unittest.TestCase):
             self.assertIn("utm_medium%3Dorganic", a["href"])
         self.assertIn("自動投稿されません", self.html)
 
+    def test_parameter_comparison_share_is_manual_and_privacy_safe(self):
+        from urllib.parse import parse_qs, unquote, urlparse
+        shares = [a for a in self.doc.links if "bsky.app/intent/compose" in a.get("href", "")]
+        targeted = [a for a in shares if a.get("data-goatcounter-click") == "vrchat-freecheck-parameter-share-intent"]
+        self.assertEqual(len(targeted), 1)
+        href = targeted[0]["href"]
+        post_text = parse_qs(urlparse(href).query)["text"][0]
+        self.assertLessEqual(len(post_text), 300)
+        self.assertIn("utm_source=bluesky", post_text)
+        self.assertIn("utm_medium=organic", post_text)
+        self.assertIn("utm_campaign=animator_pro_launch", post_text)
+        self.assertIn("utm_content=parameter_compare_share", post_text)
+        self.assertIn("#parameter-compare", post_text)
+        self.assertIn("自動解析・修復なし", post_text)
+        self.assertNotIn("parameter-defined=", post_text.lower())
+        self.assertNotIn("parameter-used=", post_text.lower())
+        self.assertEqual(targeted[0].get("target"), "_blank")
+        self.assertIn("noopener", targeted[0].get("rel", "").split())
+        self.assertIn("noreferrer", targeted[0].get("rel", "").split())
+
     def test_disclosures_and_real_measurement_boundary(self):
         self.assertIn("自動修復は行わず", self.html)
         self.assertIn("購入", self.html)
