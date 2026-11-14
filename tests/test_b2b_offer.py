@@ -3,6 +3,7 @@
 import unittest
 from pathlib import Path
 from html.parser import HTMLParser
+from urllib.parse import unquote
 
 HTML = (Path(__file__).resolve().parents[1] / "service-offer" / "index.html").read_text(encoding="utf-8")
 
@@ -46,15 +47,18 @@ class OfferTests(unittest.TestCase):
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
         hrefs = [a.get("href") for a in p.links]
-        self.assertEqual(hrefs[:4], ["./audit.html", "./demo.html", "./audit.html", "./demo.html"])
-        self.assertEqual(len(hrefs), 5)
-        # This mailto only opens the visitor's mail app; it never sends automatically.
-        self.assertTrue(hrefs[4].startswith("mailto:michishirube.office@gmail.com?subject="))
-        self.assertIn("所有・受信試験", HTML)
+        self.assertEqual(hrefs[:5], ["./audit.html", "./demo.html", "#contact", "./audit.html", "./demo.html"])
+        self.assertEqual(len(hrefs), 6)
+        # This mailto prepares a minimal draft only; it never sends automatically.
+        self.assertTrue(hrefs[5].startswith("mailto:michishirube.office@gmail.com?subject="))
+        self.assertIn("&body=", hrefs[5])
+        self.assertIn("いちばん困っていること（1つだけでOK）", unquote(hrefs[5]))
+        self.assertIn("独立した到達試験は未実施", HTML)
         self.assertIn("一般公開・営業送信しません", HTML)
         self.assertIn('class="header-ctas"', HTML)
         self.assertIn("無料5項目チェックを試す", HTML)
-        self.assertIn("予約・問い合わせ・注文は受け付けません", HTML)
+        self.assertIn("正式な受注・予約・決済は開始していません", HTML)
+        self.assertIn("相談文を準備（受付前）", HTML)
 
     def test_synthetic_demo_is_not_real_client(self):
         demo = (Path(__file__).resolve().parents[1] / "service-offer" / "demo.html").read_text(encoding="utf-8")
