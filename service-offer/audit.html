@@ -11,7 +11,7 @@
 <fieldset><legend>5. スマートフォンで読みやすく、リンクも使える</legend><label><input type="radio" name="mobile" value="yes"> はい</label><label><input type="radio" name="mobile" value="no"> いいえ／不明</label></fieldset>
 <button type="button" id="audit-run">改善候補を確認</button></div>
 <noscript><p class="muted">このセルフチェックはJavaScriptが有効な場合のみ動作します。入力内容は送信されません。</p></noscript>
-<div id="result" class="result" role="status" aria-live="polite" hidden></div>
+<div id="result" class="result" role="status" aria-live="polite" tabindex="-1" hidden></div>
 <button type="button" id="copy-result" hidden>診断結果と次の1手をコピー</button>
 <p id="copy-status" class="muted" role="status" aria-live="polite"></p>
 <div id="audit-next" hidden><p><strong>診断した項目の見本と、改善パックの対象範囲を確認できます。</strong> いずれも受付前のデモです。</p><div class="next-actions"><a id="audit-demo-link" href="./demo.html">関連する架空店舗の見本を見る</a><a href="./index.html#offer-price">39,800円（税込・仮説）の範囲を確認</a><a id="audit-contact-link" href="./index.html#contact">診断をもとに相談文を準備する（受付前）</a></div><p class="muted">「相談文を準備」を押すとメールアプリで診断結果の下書きが開きます。送信はされません。現在は正式受付前で、対外案内は未承認です。</p></div>
@@ -53,7 +53,11 @@ document.getElementById('audit-run').addEventListener('click',function(){
  var answers=questions.map(function(q){var selected=document.querySelector('input[name="'+q[0]+'"]:checked');return selected?selected.value:null;});
  reset();
  target.hidden=false;
- if(answers.some(function(a){return a===null;})){target.textContent='すべての項目に回答してください。';return;}
+ if(answers.some(function(a){return a===null;})){
+  var missing=questions.filter(function(q,i){return answers[i]===null;}).map(function(q){return q[1];});
+  target.textContent='未回答の項目：'+missing.join('、')+'。すべての項目に回答してください。';
+  target.focus();return;
+ }
  var needs=questions.filter(function(q,i){return answers[i]==='no';}).map(function(q){return '・'+q[1];});
  var count=5-needs.length;
  var key=priority.find(function(name){return answers[questions.findIndex(function(q){return q[0]===name;})]==='no';});
@@ -70,6 +74,7 @@ document.getElementById('audit-run').addEventListener('click',function(){
  var body='ご相談内容：\n\n'+latestResult+'\n\n店舗名・URL（任意）：\n\n※ パスワード、顧客名簿などの機密情報は記載しないでください。\n※ サービスの正式受付はまだ開始していません。';
  contactLink.href='mailto:michishirube.office@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
  auditNext.hidden=false;
+ target.focus(); // モバイルで送信ボタン直下に結果が隠れず、キーボード利用者も読めるようにする。
 });
 copyButton.addEventListener('click',function(){
  if(!latestResult){return;}
