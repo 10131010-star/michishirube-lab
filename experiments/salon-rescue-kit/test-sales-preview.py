@@ -36,15 +36,17 @@ def main():
         'Japanese locale and viewport': 'lang="ja"' in page and any(m.get('name') == 'viewport' for m in parser.meta),
         'not indexed before approval': any(m.get('name') == 'robots' and m.get('content') == 'noindex,nofollow' for m in parser.meta),
         'draft-only, no checkout': all(x in page for x in ('販売準備中','購入ボタン・決済・注文受付はありません','仮価格')),
-        'two free-tool destinations only': {a.get('href') for a in parser.links} == {'./checklist.html','./index.html'},
-        'all links are explicitly campaign-propagatable': all('data-utm-pass' in a for a in parser.links),
+        'two free-tool destinations only': {a.get('href') for a in parser.links if a.get('href','').startswith('./')} == {'./checklist.html','./index.html'},
+        'free links explicitly campaign-propagatable': all('data-utm-pass' in a for a in parser.links if a.get('href','').startswith('./')),
         'no external scripts or forms': all('src' not in s for s in parser.scripts) and '<form' not in page.lower(),
         'no network/tracking scripts': not re.search(r'\b(fetch\s*\(|XMLHttpRequest|sendBeacon\s*\(|gtag\s*\(|localStorage|document\.cookie)\b', page),
         'five allowlisted UTM labels': all("'"+key+"'" in page for key in ('utm_source','utm_medium','utm_campaign','utm_content','utm_term')),
         'UTM value validation and safe relative link targets': "{1,60}" in page and 'index|checklist' in page,
         'responsive and reduced motion': '@media(max-width:760px)' in page and 'prefers-reduced-motion' in page,
         'privacy/limitations FAQ': all(s in page for s in ('個人を特定','自動連携・自動メッセージ配信','売上増加は保証しません','法的判断')),
-        'no active external sales links': not any((a.get('href') or '').startswith(('https:','http:','mailto:','tel:')) for a in parser.links),
+        'no external sales or checkout links': not any((a.get('href') or '').startswith(('https:','http:','tel:')) for a in parser.links),
+        'only one vetted nonbinding interest email': len([a for a in parser.links if 'data-intent-mail' in a]) == 1 and all((a.get('href') or '').startswith('mailto:michishirube.office@gmail.com?subject=') and '&body=' in (a.get('href') or '') for a in parser.links if 'data-intent-mail' in a) and not any((a.get('href') or '').startswith('mailto:') and 'data-intent-mail' not in a for a in parser.links),
+        'clear no-order and privacy warning': all(s in page for s in ('購入前の相談文を準備（注文ではありません）','クリックしても自動送信されません','このページ自体は入力を自動収集しません','メールを送信した場合のみ','個人情報の管理/保存方針・公開承認は未完了')),
     }
     for name, okay in checks.items(): print(('PASS' if okay else 'FAIL') + ': ' + name)
     if not all(checks.values()): raise SystemExit('Preview staging QA failed')
