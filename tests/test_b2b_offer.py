@@ -90,7 +90,11 @@ class OfferTests(unittest.TestCase):
     def test_no_premature_search_indexing(self):
         self.assertIn('name="robots" content="noindex,nofollow"', HTML)
         self.assertIn("販売開始前", HTML)
-        self.assertIn("個人情報の取得も行いません", HTML)
+        # The HTML demo transmits no data; actual email inquiries necessarily
+        # contain sender data, so the prelaunch notice must distinguish them.
+        self.assertIn("Webページから情報を自動収集しません", HTML)
+        self.assertIn("送信者のメールアドレス", HTML)
+        self.assertIn("詳細な管理責任者・保存期間", HTML)
 
     def test_no_false_performance_promises(self):
         self.assertIn("売上増加は保証できません", HTML)
