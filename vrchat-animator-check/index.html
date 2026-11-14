@@ -28,12 +28,12 @@ label:has(input:checked){border-color:#a4d2ff;background:#304d74}input{accent-co
 button,.cta{display:inline-block;background:#a6daff;border:0;border-radius:12px;padding:12px 17px;color:#0a1c2e;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}
 button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:3px}
 #report{background:#0e1a2b;padding:15px;border-radius:12px;margin-top:16px;white-space:pre-line}.compare{border-collapse:collapse;width:100%;font-size:14px}.compare th,.compare td{border:1px solid #3a4c67;padding:9px;text-align:left;vertical-align:top}.compare th{background:#22314a}
-.note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
+.note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}.param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:14px 0}.param-grid label{display:block;border:0;background:transparent;padding:0;cursor:default}.param-grid textarea{display:block;width:100%;min-height:130px;margin-top:8px;padding:10px;background:#0e1a2b;border:1px solid #59799d;border-radius:8px;color:#eff6ff;font:inherit;resize:vertical}.param-grid textarea:focus-visible{outline:3px solid #a6daff;outline-offset:2px}#parameter-result{background:#0e1a2b;border-radius:12px;padding:14px;margin-top:14px;white-space:pre-line;overflow-wrap:anywhere}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
 </style></head><body><main>
 <p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
 <h1>VRChatの衣装・表情トラブルを<br>Animator 5項目で手動確認</h1>
 <p class="lead">UnityのAnimator Controllerを自分で確認し、気になる設定を整理する無料ガイド。<strong>Unityファイルの読み込みや自動解析はしません。</strong> 回答はこの画面でのみ処理され、自動保存・外部送信しません。コピー操作をした場合のみクリップボードへ保存されます。</p>
-<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
+<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#parameter-compare">Parameter名の手動照合</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
 <section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
 <p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
 <section class="card"><h2>5つの確認ポイント</h2>
@@ -95,6 +95,19 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <ol><li>Avatar DescriptorのPlayable Layers（Base / Additive / Gesture / Action / FX）を確認する。</li><li>意図せず同じプロパティを複数レイヤーから操作していないか確認する。</li><li>特にFXレイヤーの役割とAvatar Maskを確認し、変更前の設定を保存してから1箇所ずつテストする。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/playable-layers/" target="_blank" rel="noopener noreferrer">VRChat公式：Playable Layers</a>。</p>
 <p>症状の切り分けに迷ったら、上の<strong>5項目チェック</strong>で「気になる」を記録し、コピーしたメモを自分のUnity作業に使ってください。手動確認から一歩進めたい場合にのみ、上記の有料版の仕様と対応環境を確認してください。</p>
+</section>
+<section class="card" id="parameter-compare" aria-labelledby="parameter-compare-title">
+<p class="top">FREE / LOCAL NAME COMPARISON</p>
+<h2 id="parameter-compare-title">AnimatorのParameter名を手動で照合する（無料）</h2>
+<p>UnityのAnimatorウィンドウで見えている<strong>Parameters</strong>と、Transitionの<strong>Conditions</strong>に書かれた名前を、各欄へ<strong>1行に1個</strong>ずつ転記します。名前の大文字・小文字も区別します。ファイル読込や自動解析ではありません。</p>
+<div class="param-grid">
+<label for="parameter-defined"><strong>ControllerのParameters欄</strong><textarea id="parameter-defined" rows="6" maxlength="4000" spellcheck="false" placeholder="IsDressed&#10;FaceMode&#10;Toggle"></textarea></label>
+<label for="parameter-used"><strong>確認したTransitionのConditions欄</strong><textarea id="parameter-used" rows="6" maxlength="4000" spellcheck="false" placeholder="IsDressed&#10;FaceMode&#10;Toggl"></textarea></label>
+</div>
+<p><button type="button" id="parameter-compare-button">2つの名前リストを照合する</button></p>
+<div id="parameter-result" role="status" aria-live="polite" hidden></div>
+<p class="note"><strong>結果は断定的なエラー判定ではありません。</strong> 調べたTransition以外の参照、VRChat組み込みParameter、StateMachineBehaviour、Animation Clipなどは検査しません。名前が一致しても型・条件値・遷移動作の正しさは分かりません。「未参照候補」を理由にParameterを削除しないでください。変更前にバックアップを取ってください。</p>
+<p class="note">入力文字列はこの端末のブラウザ内で照合するだけで、保存・送信・分析イベントへの付加はしません。無料の手動比較と、<a href="#verified-demo">Unity Editor内でControllerを読み取り専用検査する先行版（機能比較・購入前の制限）</a>は別機能です。</p>
 </section>
 <section class="card" id="purchase-faq" aria-labelledby="purchase-faq-title">
 <p class="top">BEFORE YOU BUY / FAQ</p>
@@ -195,6 +208,37 @@ document.getElementById('copyreport').addEventListener('click',function(){
  navigator.clipboard.writeText(copiedText)
  .then(function(){if(!report.hidden&&report.textContent===copiedText)status.textContent='確認メモをコピーしました。';},
        function(){if(!report.hidden&&report.textContent===copiedText)status.textContent='コピーに失敗しました。結果を選択してコピーしてください。';});
+});
+// Pure local comparison: never transmit either list or match results.
+function compareParameterNames(definedText,usedText) {
+ function names(text) {return Array.from(new Set(text.split(/\r?\n/).map(function(x){return x.trim();}).filter(Boolean)));}
+ var defined=names(definedText), used=names(usedText);
+ var definedSet=new Set(defined), usedSet=new Set(used);
+ return {defined:defined,used:used,
+  missingFromDefined:used.filter(function(x){return !definedSet.has(x);}),
+  notInCheckedConditions:defined.filter(function(x){return !usedSet.has(x);})
+ };
+}
+document.getElementById('parameter-compare-button').addEventListener('click',function(){
+ var first=document.getElementById('parameter-defined').value;
+ var second=document.getElementById('parameter-used').value;
+ var out=document.getElementById('parameter-result');
+ var names=compareParameterNames(first,second);
+ out.hidden=false;
+ if(!names.defined.length||!names.used.length){
+  out.textContent='両方の欄にParameter名を1行ずつ入力してください。';return;
+ }
+ if(names.defined.length>100||names.used.length>100){
+  out.textContent='1つの欄につき重複除去後100個までで比較してください。';return;
+ }
+ var missing=names.missingFromDefined;
+ var unchecked=names.notInCheckedConditions;
+ out.textContent='転記した名前の照合結果（自動的な不具合診断ではありません）\n'
+  +'・Conditionsに書かれているがController一覧に見つからない名前：'+missing.length+'件\n'
+  +(missing.length?'  '+missing.join(' / ')+'\n':'  （この一覧ではなし）\n')
+  +'・Controller一覧にあるが今回のConditionsには書かれていない名前：'+unchecked.length+'件\n'
+  +(unchecked.length?'  '+unchecked.join(' / ')+'\n':'  （この一覧ではなし）\n')
+  +'この結果だけで未定義・未使用や削除の可否は断定できません。';
 });
 }());
 </script></body></html>

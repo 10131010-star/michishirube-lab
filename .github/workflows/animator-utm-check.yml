@@ -4,12 +4,14 @@ on:
     paths:
       - 'vrchat-animator-check/index.html'
       - 'tests/animator-utm-links.cjs'
+      - 'tests/animator-parameter-compare.cjs'
       - '.github/workflows/animator-utm-check.yml'
   push:
     branches: [main]
     paths:
       - 'vrchat-animator-check/index.html'
       - 'tests/animator-utm-links.cjs'
+      - 'tests/animator-parameter-compare.cjs'
       - '.github/workflows/animator-utm-check.yml'
 permissions:
   contents: read
@@ -22,4 +24,6 @@ jobs:
         with:
           node-version: '22'
       - name: Verify tracking URLs and existing click events
-        run: node tests/animator-utm-links.cjs
+        run: |
+          node tests/animator-utm-links.cjs
+          node tests/animator-parameter-compare.cjs
