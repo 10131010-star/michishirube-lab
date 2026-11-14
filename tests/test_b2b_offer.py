@@ -60,7 +60,7 @@ class OfferTests(unittest.TestCase):
         self.assertIn('name="robots" content="noindex,nofollow"', audit)
         self.assertIn('id="audit"', audit)
         self.assertIn('id="result"', audit)
-        self.assertIn("event.preventDefault()", audit)
+        self.assertIn("getElementById('audit-run').addEventListener('click'", audit)
         self.assertIn("すべての項目に回答してください", audit)
         self.assertIn("売上改善を保証", HTML)
         self.assertNotIn("fetch(", audit)
@@ -109,6 +109,18 @@ class OfferTests(unittest.TestCase):
         note = (Path(__file__).resolve().parents[1] / "service-offer" / "COMPETITOR-AND-SCOPE.md").read_text(encoding="utf-8")
         for item in ["studio.design/ja/pricing", "peraichi.com/news/press_2025_0818", "未承認", "外部通信なし", "受注", "粗利益"]:
             self.assertIn(item, note)
+
+
+    def test_audit_cannot_submit_answers_if_javascript_is_disabled(self):
+        # Without JavaScript, an ordinary form+submit button silently sends
+        # answers as query parameters despite the browser-only privacy claim.
+        audit = (Path(__file__).resolve().parents[1] / "service-offer" / "audit.html").read_text(encoding="utf-8")
+        parser = Parse()
+        parser.feed(audit)
+        self.assertEqual(parser.forms, [], "Never allow an implicit GET form submission")
+        self.assertIn('type="button" id="audit-run"', audit)
+        self.assertIn("getElementById('audit-run').addEventListener('click'", audit)
+        self.assertIn("<noscript>", audit)
 
 
 if __name__ == "__main__":

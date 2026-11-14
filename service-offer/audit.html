@@ -3,13 +3,14 @@
 <style>:root{color-scheme:light}*{box-sizing:border-box}body{background:#f4f7f7;color:#18323b;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.75;margin:0}main{max-width:800px;padding:30px 16px 80px;margin:auto}h1{font-size:clamp(28px,5vw,40px);line-height:1.35}section{background:white;padding:22px;margin:16px 0;border:1px solid #dbe7e9;border-radius:14px}fieldset{margin:14px 0;padding:15px;border:1px solid #d0dde0;border-radius:10px}legend{font-weight:700}label{display:block;padding:5px 0}input{accent-color:#12675c}button{border:0;border-radius:10px;background:#116a5f;color:white;padding:12px 22px;font-size:16px;font-weight:700;cursor:pointer}.muted{font-size:14px;color:#5b7078}.result{white-space:pre-wrap;padding:16px;border-radius:10px;background:#eff8f5}a{color:#0b5c70}.warning{border-left:4px solid #ac8530;padding-left:12px}</style></head>
 <body><main><p class="muted">架空店舗にも利用可能な簡易診断・販売前デモ</p><h1>お客様が迷わない店舗案内になっていますか？</h1>
 <p>Web・SNS・地図・問い合わせの案内を5項目でセルフチェックできます。<strong>入力はこのブラウザ内だけで処理され、外部送信・保存はしません。</strong></p>
-<section><form id="audit" novalidate>
+<section><div id="audit" role="group" aria-label="店舗Web導線の5項目セルフチェック">
 <fieldset><legend>1. 営業時間・定休日はすぐ分かる</legend><label><input type="radio" name="hours" value="yes"> はい</label><label><input type="radio" name="hours" value="no"> いいえ／不明</label></fieldset>
 <fieldset><legend>2. メニュー・サービス内容と料金が見つかる</legend><label><input type="radio" name="menu" value="yes"> はい</label><label><input type="radio" name="menu" value="no"> いいえ／不明</label></fieldset>
 <fieldset><legend>3. 公式の地図・アクセス先が分かる</legend><label><input type="radio" name="map" value="yes"> はい</label><label><input type="radio" name="map" value="no"> いいえ／不明</label></fieldset>
 <fieldset><legend>4. 予約・問い合わせ方法が1つ以上明確</legend><label><input type="radio" name="contact" value="yes"> はい</label><label><input type="radio" name="contact" value="no"> いいえ／不明</label></fieldset>
 <fieldset><legend>5. スマートフォンで読みやすく、リンクも使える</legend><label><input type="radio" name="mobile" value="yes"> はい</label><label><input type="radio" name="mobile" value="no"> いいえ／不明</label></fieldset>
-<button type="submit">改善候補を確認</button></form>
+<button type="button" id="audit-run">改善候補を確認</button></div>
+<noscript><p class="muted">このセルフチェックはJavaScriptが有効な場合のみ動作します。入力内容は送信されません。</p></noscript>
 <div id="result" class="result" role="status" aria-live="polite" hidden></div>
 <p class="muted">未回答項目がある場合は診断を行いません。各項目は自己申告に基づき、実際のサイトを自動調査するものではありません。</p></section>
 <section><h2>次の一歩</h2><p>「いいえ／不明」がある場合は、まず情報の掲載場所を整理しましょう。たとえば営業時間、メニュー、アクセス、予約先を1ページにまとめることができます。</p><p><a href="./demo.html">架空飲食店の1ページデモを見る</a>／<a href="./index.html">制作サービスの提案内容を見る</a></p><p class="warning">現時点ではサービスの正式受付・決済は行っていません。改善が売上に直結することを保証する診断ではありません。</p></section>
@@ -23,8 +24,7 @@ var questions=[
 ['contact','予約・問い合わせ方法'],
 ['mobile','スマホ表示・リンクの確認']
 ];
-document.getElementById('audit').addEventListener('submit',function(event){
-event.preventDefault();
+document.getElementById('audit-run').addEventListener('click',function(){
 var answers=questions.map(function(q){var selected=document.querySelector('input[name="'+q[0]+'"]:checked');return selected?selected.value:null;});
 var target=document.getElementById('result');
 target.hidden=false;
