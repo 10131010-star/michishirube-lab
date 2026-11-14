@@ -1,0 +1,91 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>店舗Web導線の5項目チェック｜制作前診断デモ</title>
+<style>:root{color-scheme:light}*{box-sizing:border-box}body{background:#f4f7f7;color:#18323b;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.75;margin:0}main{max-width:800px;padding:30px 16px 80px;margin:auto}h1{font-size:clamp(28px,5vw,40px);line-height:1.35}section{background:white;padding:22px;margin:16px 0;border:1px solid #dbe7e9;border-radius:14px}fieldset{margin:14px 0;padding:15px;border:1px solid #d0dde0;border-radius:10px}legend{font-weight:700}label{display:flex;align-items:center;gap:10px;min-height:46px;padding:9px 8px;cursor:pointer}input{accent-color:#12675c}input[type="radio"]{width:20px;height:20px;flex:none}button{border:0;border-radius:10px;background:#116a5f;color:white;padding:12px 22px;font-size:16px;font-weight:700;cursor:pointer}.muted{font-size:14px;color:#5b7078}.result{white-space:pre-wrap;padding:16px;border-radius:10px;background:#eff8f5}a{color:#0b5c70}.warning{border-left:4px solid #ac8530;padding-left:12px}.next-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.next-actions a{display:inline-flex;align-items:center;min-height:48px;padding:10px 14px;border:2px solid #116a5f;border-radius:10px;font-weight:700;text-decoration:none}.next-actions a:first-child{background:#116a5f;color:#fff}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #0b5c70;outline-offset:3px}</style></head>
+<body><main><p class="muted">架空店舗にも利用可能な簡易診断・販売前デモ</p><h1>お客様が迷わない店舗案内になっていますか？</h1>
+<p>Web・SNS・地図・問い合わせの案内を5項目でセルフチェックできます。<strong>入力はこのブラウザ内だけで処理され、外部送信・保存はしません。</strong></p>
+<section><div id="audit" role="group" aria-label="店舗Web導線の5項目セルフチェック">
+<fieldset><legend>1. 営業時間・定休日はすぐ分かる</legend><label><input type="radio" name="hours" value="yes"> はい</label><label><input type="radio" name="hours" value="no"> いいえ／不明</label></fieldset>
+<fieldset><legend>2. メニュー・サービス内容と料金が見つかる</legend><label><input type="radio" name="menu" value="yes"> はい</label><label><input type="radio" name="menu" value="no"> いいえ／不明</label></fieldset>
+<fieldset><legend>3. 公式の地図・アクセス先が分かる</legend><label><input type="radio" name="map" value="yes"> はい</label><label><input type="radio" name="map" value="no"> いいえ／不明</label></fieldset>
+<fieldset><legend>4. 予約・問い合わせ方法が1つ以上明確</legend><label><input type="radio" name="contact" value="yes"> はい</label><label><input type="radio" name="contact" value="no"> いいえ／不明</label></fieldset>
+<fieldset><legend>5. スマートフォンで読みやすく、リンクも使える</legend><label><input type="radio" name="mobile" value="yes"> はい</label><label><input type="radio" name="mobile" value="no"> いいえ／不明</label></fieldset>
+<button type="button" id="audit-run">改善候補を確認</button></div>
+<noscript><p class="muted">このセルフチェックはJavaScriptが有効な場合のみ動作します。入力内容は送信されません。</p></noscript>
+<div id="result" class="result" role="status" aria-live="polite" tabindex="-1" hidden></div>
+<button type="button" id="copy-result" hidden>診断結果と次の1手をコピー</button>
+<p id="copy-status" class="muted" role="status" aria-live="polite"></p>
+<div id="audit-next" hidden><p><strong>診断した項目の見本と、改善パックの対象範囲を確認できます。</strong> いずれも受付前のデモです。</p><div class="next-actions"><a id="audit-demo-link" href="./demo.html">関連する架空店舗の見本を見る</a><a href="./index.html#offer-price">39,800円（税込・仮説）の範囲を確認</a><a id="audit-contact-link" href="./index.html#contact">診断をもとに相談文を準備する（受付前）</a></div><p class="muted">「相談文を準備」を押すとメールアプリで診断結果の下書きが開きます。送信はされません。現在は正式受付前で、対外案内は未承認です。</p><p class="muted">メールアプリが開かない場合は、上の「診断結果と次の1手をコピー」から結果をコピーし、michishirube.office@gmail.com 宛のメールに貼り付けられます。機密情報は送らないでください。正式受付はまだ開始していません。</p></div>
+<p class="muted">コピー操作を選んだ場合のみ、結果を端末のクリップボードへ書き込みます。外部への送信はしません。共有前に内容を確認してください。</p>
+<p class="muted">未回答項目がある場合は診断を行いません。各項目は自己申告に基づき、実際のサイトを自動調査するものではありません。</p></section>
+<section><h2>次の一歩</h2><p>「いいえ／不明」がある場合は、まず情報の掲載場所を整理しましょう。たとえば営業時間、メニュー、アクセス、予約先を1ページにまとめることができます。</p><p><a href="./demo.html">架空飲食店の1ページデモを見る</a>／<a href="./index.html">制作サービスの提案内容を見る</a></p><p class="warning">現時点ではサービスの正式受付・決済は行っていません。改善が売上に直結することを保証する診断ではありません。</p></section>
+<script>
+(function(){
+'use strict';
+var questions=[
+['hours','営業時間・定休日の表示'],
+['menu','メニュー・料金の表示'],
+['map','地図・アクセス先の表示'],
+['contact','予約・問い合わせ方法'],
+['mobile','スマホ表示・リンクの確認']
+];
+var target=document.getElementById('result');
+var copyButton=document.getElementById('copy-result');
+var copyStatus=document.getElementById('copy-status');
+var latestResult='';
+var auditNext=document.getElementById('audit-next');
+var demoLink=document.getElementById('audit-demo-link');
+var contactLink=document.getElementById('audit-contact-link');
+var contactDefaultHref='./index.html#contact';
+var demoAnchors={contact:'contact',hours:'hours',menu:'menu',map:'hours',mobile:'journey'};
+var nextSteps={
+ contact:'予約・問い合わせへの公式リンクを1つ選び、スマホのトップ画面から辿れる場所に明記する（リンク先の権限と動作も確認）。',
+ hours:'営業時間・定休日の最新情報を確認し、店舗案内とSNS・地図の記載を照合する。',
+ menu:'代表的なメニュー・料金・提供条件を1画面で確認できるようにする（掲載許可と更新担当を確認）。',
+ map:'店舗が管理する正しい地図・アクセス先を確認し、案内ページから辿れるようにする。',
+ mobile:'実際のスマホで文字の読みやすさと予約・地図リンクの操作を一つずつ確認する。'
+};
+var priority=['contact','hours','menu','map','mobile'];
+function reset(){
+ latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';auditNext.hidden=true;demoLink.href='./demo.html';contactLink.href=contactDefaultHref;
+}
+document.getElementById('audit').addEventListener('change',reset);
+document.getElementById('audit-run').addEventListener('click',function(){
+ var answers=questions.map(function(q){var selected=document.querySelector('input[name="'+q[0]+'"]:checked');return selected?selected.value:null;});
+ reset();
+ target.hidden=false;
+ if(answers.some(function(a){return a===null;})){
+  var missing=questions.filter(function(q,i){return answers[i]===null;}).map(function(q){return q[1];});
+  target.textContent='未回答の項目：'+missing.join('、')+'。すべての項目に回答してください。';
+  target.focus();return;
+ }
+ var needs=questions.filter(function(q,i){return answers[i]==='no';}).map(function(q){return '・'+q[1];});
+ var count=5-needs.length;
+ var key=priority.find(function(name){return answers[questions.findIndex(function(q){return q[0]===name;})]==='no';});
+ var action=key?nextSteps[key]:'まず実際のスマホで案内ページを開き、連絡先のリンクと営業日の整合性を確認する。';
+ latestResult='店舗Web導線の自己チェック: '+count+'/5項目が「はい」。\n'
+  +(needs.length?'見直し候補:\n'+needs.join('\n'):'5項目すべて「はい」と回答。')
+  +'\n今週試す1手（優先順は仮の案です）:\n'+action
+  +'\n※ 自己申告に基づく例であり、サイト実測・売上改善・受注を保証しません。';
+ target.textContent=latestResult;
+ copyButton.hidden=false;
+ demoLink.href='./demo.html#'+(demoAnchors[key]||'journey');
+ // 完了した自己診断だけを利用者の明示クリック時にメール下書きへ渡す。送信・収集・保存はしない。
+ var subject='【店舗Web案内】診断結果からの相談';
+ var body='ご相談内容：\n\n'+latestResult+'\n\n店舗名・URL（任意）：\n\n※ パスワード、顧客名簿などの機密情報は記載しないでください。\n※ サービスの正式受付はまだ開始していません。';
+ contactLink.href='mailto:michishirube.office@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+ auditNext.hidden=false;
+ target.focus(); // モバイルで送信ボタン直下に結果が隠れず、キーボード利用者も読めるようにする。
+});
+copyButton.addEventListener('click',function(){
+ if(!latestResult){return;}
+ if(!navigator.clipboard||typeof navigator.clipboard.writeText!=='function'){
+  copyStatus.textContent='このブラウザでは自動コピーできません。上の結果を選択してコピーしてください。';return;
+ }
+ navigator.clipboard.writeText(latestResult).then(function(){
+  copyStatus.textContent='コピーしました。共有前に内容をご確認ください。';
+ }).catch(function(){
+  copyStatus.textContent='コピーできませんでした。上の結果を選択してコピーしてください。';
+ });
+});
+}());
+</script></main></body></html>
