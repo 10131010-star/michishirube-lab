@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="VRChatで衣装・表情が元に戻らない、Expressions Menuが動かない時の確認順。Write Defaults、Parameter、Playable Layersを公式資料とともに解説。Unityで使える無料5項目チェック付き。自動修復ではありません。">
+<meta name="description" content="VRChatで衣装・表情が戻らない、AnimatorのTransitionが動かない、Expressions Menuが反応しない時の確認順。Write Defaults、Has Exit Time、Parameterを公式資料に沿って解説。無料5項目チェック付き。">
 <title>VRChat Animatorの確認順｜衣装・表情が戻らない・Write Defaults・Parameter｜無料5項目</title>
 <link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
 <meta property="og:type" content="website">
@@ -33,7 +33,7 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
 <h1>VRChatの衣装・表情トラブルを<br>Animator 5項目で手動確認</h1>
 <p class="lead">UnityのAnimator Controllerを自分で確認し、気になる設定を整理する無料ガイド。<strong>Unityファイルの読み込みや自動解析はしません。</strong> 回答はこの画面でのみ処理され、自動保存・外部送信しません。コピー操作をした場合のみクリップボードへ保存されます。</p>
-<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
+<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
 <section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
 <p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
 <section class="card"><h2>5つの確認ポイント</h2>
@@ -80,7 +80,7 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <p class="note">検証済み環境：Windows / Unity 2022.3.22f1 / VRChat SDK Base・Avatars 3.10.5。別バージョン、市販アバター、Modular Avatarとの組み合わせは未検証。非公式ツールです。</p></section>
 <section class="card" id="troubleshooting" aria-labelledby="troubletitle">
 <p class="top">CHECK BEFORE EDITING / 3 COMMON CASES</p>
-<h2 id="troubletitle">よくある3つのつまずきと確認順</h2>
+<h2 id="troubletitle">よくある4つのつまずきと確認順</h2>
 <p class="note">まずUnityプロジェクトをバックアップし、症状が起きる条件を控えてください。ここで紹介するのは切り分けの手順であり、自動修復・原因の確定ではありません。</p>
 <h3 id="case-write-defaults">Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
 <ol><li>該当するステートの <strong>Write Defaults</strong> が混在していないか確認する。</li><li>次のステートに戻す値を設定するAnimation Clipがあるか確認する。</li><li>一律にOn/Offを変更せず、AdditiveやDirect Blend Treeなどの例外も含めて設定を見直す。</li></ol>
@@ -88,7 +88,10 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <h3 id="case-expressions-menu">Q2. Expressions Menuの操作で期待した動きにならない</h3>
 <ol><li>Expressions MenuのControlが指定するParameter名・型を確認する。</li><li>Avatar Descriptorに割り当てたExpression ParametersとAnimator側の定義を見比べる。</li><li>VRChat標準の組み込みParameterと自作Parameterを混同していないか確認する。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">VRChat公式：Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
-<h3 id="case-layer-conflict">Q3. 表情と衣装のアニメーションが干渉する</h3>
+<h3 id="case-transition">Q3. AnimatorのTransitionが動かない・元のステートに戻れない</h3>
+<ol><li>UnityのAnimatorウィンドウで、戻りたいステートへつながる<strong>Transitionの線</strong>を選択し、Inspectorの<strong>Conditions</strong>にあるParameter名・条件値を確認します。ControllerのParametersに同名の定義があるかも比較します。</li><li><strong>Has Exit Time</strong>が有効なら、条件が正しくても指定されたExit Timeに達するまで遷移しない場合があります。無効化を決めつけず、アニメーション再生時間・ループ・必要な動作タイミングを先に確認します。</li><li>戻り先へつながる遷移自体があるか、<strong>Any State / Entry / 子StateMachine</strong>側に関連条件がないかを調べます。設定を変える前にControllerをバックアップし、一度に1項目ずつ再確認してください。</li></ol>
+<p class="note">参照：<a href="https://docs.unity3d.com/ja/2022.3/Manual/class-Transition.html" target="_blank" rel="noopener noreferrer">Unity 2022.3公式：アニメーション遷移（Exit Time・Conditions）</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat公式：Animator Parameters</a>。<strong>無料チェックは症状の手動整理のみ</strong>。有料版で確認したのは遷移条件に関する候補検出であり、Exit TimeやVRChat内の復帰動作を自動で検証する機能はありません。<a href="#verified-demo">検証用Controllerの実例と機能差を確認</a>。</p>
+<h3 id="case-layer-conflict">Q4. 表情と衣装のアニメーションが干渉する</h3>
 <ol><li>Avatar DescriptorのPlayable Layers（Base / Additive / Gesture / Action / FX）を確認する。</li><li>意図せず同じプロパティを複数レイヤーから操作していないか確認する。</li><li>特にFXレイヤーの役割とAvatar Maskを確認し、変更前の設定を保存してから1箇所ずつテストする。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/playable-layers/" target="_blank" rel="noopener noreferrer">VRChat公式：Playable Layers</a>。</p>
 <p>症状の切り分けに迷ったら、上の<strong>5項目チェック</strong>で「気になる」を記録し、コピーしたメモを自分のUnity作業に使ってください。手動確認から一歩進めたい場合にのみ、上記の有料版の仕様と対応環境を確認してください。</p>
