@@ -74,6 +74,12 @@ class OfferTests(unittest.TestCase):
         self.assertNotIn('action="http', audit)
         self.assertIn('href="./demo.html"', audit)
         self.assertIn('href="./index.html"', audit)
+        # Prioritized next-step links contain only static fragments, not audit answers.
+        self.assertIn('id="audit-next" hidden', audit)
+        self.assertIn('id="audit-demo-link"', audit)
+        self.assertIn("demoLink.href='./demo.html#'+(demoAnchors[key]||'journey')", audit)
+        self.assertIn('href="./index.html#offer-price"', audit)
+        self.assertIn('id="offer-price"', HTML)
 
     def test_no_premature_search_indexing(self):
         self.assertIn('name="robots" content="noindex,nofollow"', HTML)

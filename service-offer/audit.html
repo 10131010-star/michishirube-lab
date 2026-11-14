@@ -1,6 +1,6 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>店舗Web導線の5項目チェック｜制作前診断デモ</title>
-<style>:root{color-scheme:light}*{box-sizing:border-box}body{background:#f4f7f7;color:#18323b;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.75;margin:0}main{max-width:800px;padding:30px 16px 80px;margin:auto}h1{font-size:clamp(28px,5vw,40px);line-height:1.35}section{background:white;padding:22px;margin:16px 0;border:1px solid #dbe7e9;border-radius:14px}fieldset{margin:14px 0;padding:15px;border:1px solid #d0dde0;border-radius:10px}legend{font-weight:700}label{display:block;padding:5px 0}input{accent-color:#12675c}button{border:0;border-radius:10px;background:#116a5f;color:white;padding:12px 22px;font-size:16px;font-weight:700;cursor:pointer}.muted{font-size:14px;color:#5b7078}.result{white-space:pre-wrap;padding:16px;border-radius:10px;background:#eff8f5}a{color:#0b5c70}.warning{border-left:4px solid #ac8530;padding-left:12px}</style></head>
+<style>:root{color-scheme:light}*{box-sizing:border-box}body{background:#f4f7f7;color:#18323b;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.75;margin:0}main{max-width:800px;padding:30px 16px 80px;margin:auto}h1{font-size:clamp(28px,5vw,40px);line-height:1.35}section{background:white;padding:22px;margin:16px 0;border:1px solid #dbe7e9;border-radius:14px}fieldset{margin:14px 0;padding:15px;border:1px solid #d0dde0;border-radius:10px}legend{font-weight:700}label{display:flex;align-items:center;gap:10px;min-height:46px;padding:9px 8px;cursor:pointer}input{accent-color:#12675c}input[type="radio"]{width:20px;height:20px;flex:none}button{border:0;border-radius:10px;background:#116a5f;color:white;padding:12px 22px;font-size:16px;font-weight:700;cursor:pointer}.muted{font-size:14px;color:#5b7078}.result{white-space:pre-wrap;padding:16px;border-radius:10px;background:#eff8f5}a{color:#0b5c70}.warning{border-left:4px solid #ac8530;padding-left:12px}.next-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.next-actions a{display:inline-flex;align-items:center;min-height:48px;padding:10px 14px;border:2px solid #116a5f;border-radius:10px;font-weight:700;text-decoration:none}.next-actions a:first-child{background:#116a5f;color:#fff}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #0b5c70;outline-offset:3px}</style></head>
 <body><main><p class="muted">架空店舗にも利用可能な簡易診断・販売前デモ</p><h1>お客様が迷わない店舗案内になっていますか？</h1>
 <p>Web・SNS・地図・問い合わせの案内を5項目でセルフチェックできます。<strong>入力はこのブラウザ内だけで処理され、外部送信・保存はしません。</strong></p>
 <section><div id="audit" role="group" aria-label="店舗Web導線の5項目セルフチェック">
@@ -14,6 +14,7 @@
 <div id="result" class="result" role="status" aria-live="polite" hidden></div>
 <button type="button" id="copy-result" hidden>診断結果と次の1手をコピー</button>
 <p id="copy-status" class="muted" role="status" aria-live="polite"></p>
+<div id="audit-next" hidden><p><strong>診断した項目の見本と、改善パックの対象範囲を確認できます。</strong> いずれも受付前のデモです。</p><div class="next-actions"><a id="audit-demo-link" href="./demo.html">関連する架空店舗の見本を見る</a><a href="./index.html#offer-price">39,800円（税込・仮説）の範囲を確認</a></div></div>
 <p class="muted">コピー操作を選んだ場合のみ、結果を端末のクリップボードへ書き込みます。外部への送信はしません。共有前に内容を確認してください。</p>
 <p class="muted">未回答項目がある場合は診断を行いません。各項目は自己申告に基づき、実際のサイトを自動調査するものではありません。</p></section>
 <section><h2>次の一歩</h2><p>「いいえ／不明」がある場合は、まず情報の掲載場所を整理しましょう。たとえば営業時間、メニュー、アクセス、予約先を1ページにまとめることができます。</p><p><a href="./demo.html">架空飲食店の1ページデモを見る</a>／<a href="./index.html">制作サービスの提案内容を見る</a></p><p class="warning">現時点ではサービスの正式受付・決済は行っていません。改善が売上に直結することを保証する診断ではありません。</p></section>
@@ -31,6 +32,9 @@ var target=document.getElementById('result');
 var copyButton=document.getElementById('copy-result');
 var copyStatus=document.getElementById('copy-status');
 var latestResult='';
+var auditNext=document.getElementById('audit-next');
+var demoLink=document.getElementById('audit-demo-link');
+var demoAnchors={contact:'contact',hours:'hours',menu:'menu',map:'hours',mobile:'journey'};
 var nextSteps={
  contact:'予約・問い合わせへの公式リンクを1つ選び、スマホのトップ画面から辿れる場所に明記する（リンク先の権限と動作も確認）。',
  hours:'営業時間・定休日の最新情報を確認し、店舗案内とSNS・地図の記載を照合する。',
@@ -40,7 +44,7 @@ var nextSteps={
 };
 var priority=['contact','hours','menu','map','mobile'];
 function reset(){
- latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';
+ latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';auditNext.hidden=true;demoLink.href='./demo.html';
 }
 document.getElementById('audit').addEventListener('change',reset);
 document.getElementById('audit-run').addEventListener('click',function(){
@@ -58,6 +62,8 @@ document.getElementById('audit-run').addEventListener('click',function(){
   +'\n※ 自己申告に基づく例であり、サイト実測・売上改善・受注を保証しません。';
  target.textContent=latestResult;
  copyButton.hidden=false;
+ demoLink.href='./demo.html#'+(demoAnchors[key]||'journey');
+ auditNext.hidden=false;
 });
 copyButton.addEventListener('click',function(){
  if(!latestResult){return;}
