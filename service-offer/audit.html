@@ -14,7 +14,7 @@
 <div id="result" class="result" role="status" aria-live="polite" hidden></div>
 <button type="button" id="copy-result" hidden>診断結果と次の1手をコピー</button>
 <p id="copy-status" class="muted" role="status" aria-live="polite"></p>
-<div id="audit-next" hidden><p><strong>診断した項目の見本と、改善パックの対象範囲を確認できます。</strong> いずれも受付前のデモです。</p><div class="next-actions"><a id="audit-demo-link" href="./demo.html">関連する架空店舗の見本を見る</a><a href="./index.html#offer-price">39,800円（税込・仮説）の範囲を確認</a></div></div>
+<div id="audit-next" hidden><p><strong>診断した項目の見本と、改善パックの対象範囲を確認できます。</strong> いずれも受付前のデモです。</p><div class="next-actions"><a id="audit-demo-link" href="./demo.html">関連する架空店舗の見本を見る</a><a href="./index.html#offer-price">39,800円（税込・仮説）の範囲を確認</a><a id="audit-contact-link" href="./index.html#contact">診断をもとに相談文を準備する（受付前）</a></div><p class="muted">「相談文を準備」を押すとメールアプリで診断結果の下書きが開きます。送信はされません。現在は正式受付前で、対外案内は未承認です。</p></div>
 <p class="muted">コピー操作を選んだ場合のみ、結果を端末のクリップボードへ書き込みます。外部への送信はしません。共有前に内容を確認してください。</p>
 <p class="muted">未回答項目がある場合は診断を行いません。各項目は自己申告に基づき、実際のサイトを自動調査するものではありません。</p></section>
 <section><h2>次の一歩</h2><p>「いいえ／不明」がある場合は、まず情報の掲載場所を整理しましょう。たとえば営業時間、メニュー、アクセス、予約先を1ページにまとめることができます。</p><p><a href="./demo.html">架空飲食店の1ページデモを見る</a>／<a href="./index.html">制作サービスの提案内容を見る</a></p><p class="warning">現時点ではサービスの正式受付・決済は行っていません。改善が売上に直結することを保証する診断ではありません。</p></section>
@@ -34,6 +34,8 @@ var copyStatus=document.getElementById('copy-status');
 var latestResult='';
 var auditNext=document.getElementById('audit-next');
 var demoLink=document.getElementById('audit-demo-link');
+var contactLink=document.getElementById('audit-contact-link');
+var contactDefaultHref='./index.html#contact';
 var demoAnchors={contact:'contact',hours:'hours',menu:'menu',map:'hours',mobile:'journey'};
 var nextSteps={
  contact:'予約・問い合わせへの公式リンクを1つ選び、スマホのトップ画面から辿れる場所に明記する（リンク先の権限と動作も確認）。',
@@ -44,7 +46,7 @@ var nextSteps={
 };
 var priority=['contact','hours','menu','map','mobile'];
 function reset(){
- latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';auditNext.hidden=true;demoLink.href='./demo.html';
+ latestResult='';target.textContent='';target.hidden=true;copyButton.hidden=true;copyStatus.textContent='';auditNext.hidden=true;demoLink.href='./demo.html';contactLink.href=contactDefaultHref;
 }
 document.getElementById('audit').addEventListener('change',reset);
 document.getElementById('audit-run').addEventListener('click',function(){
@@ -63,6 +65,10 @@ document.getElementById('audit-run').addEventListener('click',function(){
  target.textContent=latestResult;
  copyButton.hidden=false;
  demoLink.href='./demo.html#'+(demoAnchors[key]||'journey');
+ // 完了した自己診断だけを利用者の明示クリック時にメール下書きへ渡す。送信・収集・保存はしない。
+ var subject='【店舗Web案内】診断結果からの相談';
+ var body='ご相談内容：\n\n'+latestResult+'\n\n店舗名・URL（任意）：\n\n※ パスワード、顧客名簿などの機密情報は記載しないでください。\n※ サービスの正式受付はまだ開始していません。';
+ contactLink.href='mailto:michishirube.office@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
  auditNext.hidden=false;
 });
 copyButton.addEventListener('click',function(){
