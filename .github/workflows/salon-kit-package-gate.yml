@@ -1,0 +1,49 @@
+name: Salon kit offline package verification
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/salon-rescue-kit/**'
+      - '.github/workflows/salon-kit-package-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout exact PR commit
+        uses: actions/checkout@v4
+
+      - name: Existing 20-case offline tracker regression
+        run: node experiments/salon-rescue-kit/test-tracker.js
+
+      - name: Sales LP offline safety checks
+        run: python3 experiments/salon-rescue-kit/test-sales-preview.py
+
+      - name: Verify product ZIP contents and reproducible SHA256
+        run: python3 experiments/salon-rescue-kit/test-package.py
+
+      - name: Produce actual staging ZIP in runner temp (do not publish)
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip_path="$RUNNER_TEMP/salon-rescue-kit-v0.3-staging.zip"
+          python3 experiments/salon-rescue-kit/build-package.py --output "$zip_path"
+          test -s "$zip_path"
+          sha256sum -c "$zip_path.sha256"
+          python3 - "$zip_path" <<'PY'
+          import sys
+          from zipfile import ZipFile
+          path = sys.argv[1]
+          with ZipFile(path) as archive:
+              bad = archive.testzip()
+              assert bad is None, f"Corrupt ZIP member: {bad}"
+              names = archive.namelist()
+              assert len(names) == 6, names
+              print("STAGING ZIP integrity verified; members:", len(names))
+          PY
+          echo "No upload, release, website publication, customer contact, or checkout."
