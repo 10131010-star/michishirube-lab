@@ -147,7 +147,8 @@ class OfferTests(unittest.TestCase):
         for marker in ['id="copy-result" hidden', "navigator.clipboard.writeText(latestResult)",
                        "addEventListener('change',reset)", "今週試す1手",
                        "優先順は仮の案", "latestResult=''",
-                       "外部への送信はしません"]:
+                       "外部への送信はしません", 'tabindex="-1" hidden',
+                       "未回答の項目：", "target.focus()"]:
             with self.subTest(marker=marker):
                 self.assertIn(marker, audit)
         for banned in ["fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "<form", 'type="email"']:
