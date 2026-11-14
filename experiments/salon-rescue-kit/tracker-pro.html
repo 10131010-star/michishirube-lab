@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="サロン向け7日間の予約確認・キャンセル・空き枠埋め直し記録。ブラウザ上だけで集計し、CSVを保存できます。">
+<title>サロン予約ロス対策｜7日間の実績記録ツール（試作）</title>
+<style>
+:root{color-scheme:light;--ink:#17342e;--sage:#076b59;--muted:#4a5f58;--edge:#c9d9d1;--white:#fff;--bg:#f5f7f4}
+*{box-sizing:border-box}body{font:16px/1.65 system-ui,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);margin:0}
+main{max-width:1100px;margin:auto;padding:22px}header{background:#143a33;color:white;padding:38px 22px}header>div{max-width:1056px;margin:auto}
+h1{font-size:clamp(24px,4.5vw,36px);line-height:1.4;margin:.25em 0}h2{font-size:20px;margin:0 0 8px}
+p{margin:8px 0}header p{color:#d7e9df}.small{font-size:13px;color:var(--muted)}
+.panel{padding:20px;border:1px solid var(--edge);border-radius:15px;background:var(--white);margin:18px 0}
+label{display:block;font-weight:700;font-size:14px}input{font:inherit;padding:8px;border:1px solid #839e91;border-radius:8px;color:var(--ink);max-width:100%}
+input:focus-visible,button:focus-visible{outline:3px solid #d5b454;outline-offset:2px}
+button{background:var(--sage);color:white;font-weight:700;cursor:pointer;border:0;border-radius:8px;min-height:44px;padding:9px 14px}
+button.subtle{background:#e9f2ed;color:#17342e}button:disabled{opacity:.5;cursor:not-allowed}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+button{font-size:14px}.toolbar label{margin-right:5px}
+.tablewrap{overflow:auto;max-width:100%}table{border-collapse:collapse;min-width:920px;width:100%}
+th,td{padding:9px 6px;border-bottom:1px solid var(--edge);text-align:left}th{font-size:12px;line-height:1.35;background:#eaf2ec}
+td input[type=number]{width:94px}td input[type=text]{width:170px}th:first-child,td:first-child{white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.stat{background:#e8f4ed;padding:15px;border-radius:10px}.stat strong{font-size:clamp(20px,3vw,27px);display:block;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px}.error{color:#9a2c20;white-space:pre-wrap}.ok{color:#17624c}
+code{font-size:13px;overflow-wrap:anywhere}footer{margin:36px 0;color:var(--muted);font-size:12px}
+@media(max-width:640px){main{padding:12px}.panel{padding:14px}.stats{grid-template-columns:1fr 1fr}.toolbar{align-items:stretch}.toolbar>*{flex-grow:1}}
+</style>
+</head>
+<body>
+<header><div>
+<p style="font-size:12px;letter-spacing:.14em">SALON RECOVERY LAB / OFFLINE TRACKER</p>
+<h1>7日間の予約ロスを、数字で振り返る。</h1>
+<p>翌日確認・直前キャンセル・無断キャンセル・空き枠の再予約を1日ずつ記録。顧客名・電話番号は入力しません。</p>
+</div></header>
+<main>
+<section class="panel">
+<h2>1. 記録期間とデータ操作</h2>
+<div class="toolbar">
+<div><label for="startDate">1日目の日付</label><input type="date" id="startDate" value="2026-11-12"></div>
+<button type="button" id="setDates">空欄の7日間を作成</button>
+<button type="button" id="mock" class="subtle">架空サンプルを表示</button>
+<button type="button" id="load" class="subtle">CSVを読み込む</button>
+<button type="button" id="save">CSVを保存</button>
+<input id="file" type="file" accept=".csv,text/csv" hidden aria-label="専用CSVを選択">
+</div>
+<p class="small">保存先はあなたの端末です。ページを閉じる前にCSVを保存してください。再度開いた際は「CSVを読み込む」から復元できます。架空サンプルは実績として使わないでください。</p>
+</section>
+<section class="panel">
+<h2>2. 1日ずつ入力</h2>
+<p class="small">予約数・前日確認数・直前キャンセル数・無断キャンセル数・埋め直し数をすべて入力してください。空欄は「未記録」で、0は「実績0」です。メモに個人情報を記録しないでください。</p>
+<div class="tablewrap"><table><thead><tr><th>日付</th><th>予約数</th><th>前日確認</th><th>直前キャンセル</th><th>無断キャンセル</th><th>埋め直し</th><th>任意メモ（個人情報禁止）</th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+<p id="status" role="status" aria-live="polite"></p>
+</section>
+<section class="panel">
+<h2>3. 7日間の集計</h2>
+<div class="stats" aria-live="polite">
+<div class="stat"><span>入力済みの日数</span><strong id="days">—</strong></div>
+<div class="stat"><span>予約件数</span><strong id="reservations">—</strong></div>
+<div class="stat"><span>予約前日の確認率</span><strong id="reminderRate">—</strong></div>
+<div class="stat"><span>直前＋無断キャンセル率</span><strong id="cancelRate">—</strong></div>
+<div class="stat"><span>空き枠の埋め直し率</span><strong id="refillRate">—</strong></div>
+<div class="stat"><span>埋まらなかった枠数</span><strong id="unfilled">—</strong></div>
+</div>
+<p class="small">率は入力済みの日の集計です。比較対象・曜日差・予約経路の違いがあるため、確認連絡がキャンセルを減らしたと断定できません。売上・利益の増加額も算出しません。</p>
+</section>
+<section class="panel"><h2>このツールに含まれない機能</h2>
+<p class="small">予約サイト・LINEへの接続、顧客名簿、通知の自動送信、キャンセル料請求、効果保証、保存データの同期はありません。データは外部サーバーへ送らず、ブラウザ内で処理してCSVで保存します。</p>
+<p class="small">これは有料商品候補の試作であり、現時点で注文・決済を受け付けていません。販売条件・価格・サポート範囲は別途確定します。</p>
+</section>
+<footer>© 2026 SALON RECOVERY LAB. 試験用ツール。入力・CSVの管理は利用者が行ってください。</footer>
+</main>
+<script src="./tracker-core.js"></script>
+<script>
+(function () {
+  "use strict";
+  var core=window.SalonTracker, rows=core.emptyWeek("2026-11-12"), mock=false;
+  var keys=["reservations","day_before_reminders","late_cancellations","no_shows","slots_refilled","notes"];
+  var labels=["予約数","前日確認","直前キャンセル","無断キャンセル","埋め直し","任意メモ"];
+  function elem(id){return document.getElementById(id);}
+  function status(text,error){var e=elem("status");e.textContent=text;e.className=error?"error":"ok";}
+  function paint() {
+    var body=elem("rows");body.replaceChildren();
+    rows.forEach(function(row,index) {
+      var tr=document.createElement("tr"),date=document.createElement("td");
+      date.textContent=row.date;tr.appendChild(date);
+      keys.forEach(function(key,j) {
+        var td=document.createElement("td"),inp=document.createElement("input");
+        inp.type=key==="notes"?"text":"number";
+        if(key==="notes"){inp.maxLength=120;inp.placeholder="個人情報は記入しない";}
+        else{inp.min="0";inp.max="100000";inp.step="1";inp.placeholder="未記録";}
+        inp.value=row[key];inp.setAttribute("aria-label",row.date+"の"+labels[j]);
+        inp.addEventListener("input",function(){rows[index][key]=inp.value;refresh();});
+        td.appendChild(inp);tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    });
+    refresh();
+  }
+  function refresh() {
+    try {
+      var t=core.summarize(rows),pct=function(x){return x===null?"未算出":x.toFixed(1)+"%";};
+      elem("days").textContent=t.days+" / 7";
+      elem("reservations").textContent=t.reservations+"件";
+      elem("reminderRate").textContent=pct(t.reminderRate);
+      elem("cancelRate").textContent=pct(t.cancelRate);
+      elem("refillRate").textContent=pct(t.refillRate);
+      elem("unfilled").textContent=t.unfilled+"枠";
+      elem("save").disabled=false;
+      status(mock?"架空サンプルです。実績として使用しないでください。":"入力内容を集計しました。",false);
+    } catch(e) {
+      ["days","reservations","reminderRate","cancelRate","refillRate","unfilled"].forEach(function(id){elem(id).textContent="—";});
+      elem("save").disabled=true;status(e.message,true);
+    }
+  }
+  elem("setDates").addEventListener("click",function() {
+    try {rows=core.emptyWeek(elem("startDate").value);mock=false;paint();}
+    catch(e){status(e.message,true);}
+  });
+  elem("mock").addEventListener("click",function(){
+    var r=core.emptyWeek(elem("startDate").value||"2026-11-12");
+    var b=[5,7,6,4,8,7,6],rem=[4,6,5,3,7,6,5],late=[1,0,1,0,1,1,0],no=[0,1,0,0,0,0,1],ref=[1,0,0,0,1,1,0];
+    r.forEach(function(x,i){x.reservations=b[i];x.day_before_reminders=rem[i];x.late_cancellations=late[i];x.no_shows=no[i];x.slots_refilled=ref[i];x.notes="架空データ";});
+    rows=r;mock=true;paint();
+  });
+  elem("save").addEventListener("click",function(){
+    try {
+      var csv=core.toCsv(rows);
+      var url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+      var a=document.createElement("a");a.href=url;
+      a.download=(mock?"SAMPLE-":"")+"salon-7day-"+rows[0].date+".csv";document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url);},1500);
+      status(mock?"架空サンプルCSVを保存しました。実績として使わないでください。":"CSVを保存しました。",false);
+    }catch(e){status(e.message,true);}
+  });
+  elem("load").addEventListener("click",function(){elem("file").click();});
+  elem("file").addEventListener("change",async function(){
+    var file=this.files && this.files[0];if(!file)return;
+    try{
+      if(file.size>20000)throw Error("CSVファイルは20KBまでです");
+      var next=core.parseCsv(await file.text());
+      rows=next;elem("startDate").value=next[0].date;mock=false;paint();
+      status("CSVを読み込みました。数値を確認してください。",false);
+    }catch(e){status("CSVを読み込めませんでした："+e.message,true);}
+    this.value="";
+  });
+  paint();
+})();
+</script>
+</body></html>
