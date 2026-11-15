@@ -60,6 +60,16 @@ footer{text-align:center;padding:32px 18px;color:#5d574e;font-size:13px}
 <div role="group" aria-label="閲覧導線のサンプル"><button type="button" class="choice" id="show-before" aria-pressed="false">情報が分散している例</button><button type="button" class="choice" id="show-after" aria-pressed="true">1ページにまとめた例</button></div>
 <ol class="steps" id="journey-steps" aria-live="polite"><li>メニューと価格を確認する</li><li>営業時間・アクセスを確認する</li><li>店の公式予約リンクに進む（このデモでは模擬表示）</li></ol>
 <p class="muted">本番では顧客の既存導線を点検し、選択した媒体・費用・納品範囲の合意を経て制作します。</p></section>
+<section class="panel" aria-labelledby="handoff-heading">
+<h2 id="handoff-heading">納品内容を先に確認｜導線点検メモの完成見本</h2>
+<p class="muted">以下はこの<strong>架空店舗デモのHTMLを題材にした社内作成の見本</strong>です。実店舗の監査結果、改善実績、お客様の声ではありません。顧客向けの本番成果物には、許諾済みの実リンクと確認日を記録します。</p>
+<div class="grid">
+<div class="tile"><h3>1. メニューの入口</h3><p>デモでの所在：<code>#menu</code>／価格例3品を表示。</p><p><strong>本番の確認事項：</strong>公式メニューとの整合・価格変更担当者・掲載許可。</p></div>
+<div class="tile"><h3>2. 営業日時の入口</h3><p>デモでの所在：<code>#hours</code>／仮の営業時間・定休日を表示。</p><p><strong>本番の確認事項：</strong>Googleマップ・SNS側との一致、臨時休業時の更新方法。</p></div>
+<div class="tile"><h3>3. 予約の入口</h3><p>デモでの所在：<code>#contact</code>／模擬予約ダイアログのみ。</p><p><strong>本番の確認事項：</strong>正式な予約URL・管理権限・遷移先の実動作。<strong>このデモは実予約不可。</strong></p></div>
+</div>
+<p class="muted">納品メモには「確認できた事実」「要修正箇所」「店舗側確認待ち」を分けて記載します。既存の予約方式を変更せず、予約増や売上増を保証しません。実店舗での画面テスト・公開は契約/許諾/権限の確認後に限ります。</p>
+</section>
 <section class="panel" aria-labelledby="next-heading"><h2 id="next-heading">この案内を自分の店舗でも検討したい方へ</h2><p>メニュー・営業時間・予約先への導線をまとめた架空店舗の見本です。実際の集客効果や受注実績を表すものではありません。</p><div class="actions"><a class="btn demo-link" href="./index.html#offer-price">39,800円（税込・仮説）のサービス範囲を見る</a><a class="btn demo-link" href="./index.html#contact">相談文を準備する（正式受付前）</a></div><p class="muted">リンク先も未公開のサービス草案です。正式な申込み・決済・予約はできません。</p></section>
 </main>
 <dialog id="contact-dialog" aria-labelledby="dialog-title"><h2 id="dialog-title">これは予約画面の模擬表示です</h2><p>本番では店舗が承認した公式の予約先や電話リンクに接続します。このデモでは予約・問い合わせの送信は行われません。</p><button class="choice" type="button" id="close-dialog">閉じる</button></dialog>
