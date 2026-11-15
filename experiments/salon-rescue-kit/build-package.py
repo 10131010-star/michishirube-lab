@@ -18,24 +18,32 @@ PRODUCT_FILES = (
 )
 FIXED_ZIP_TIME = (2026, 11, 14, 0, 0, 0)
 MAX_FILE_BYTES = 2_000_000
-GUIDE = """SALON RECOVERY LAB - 7-day reservation log (staging prototype)
-===============================================================
-STATUS: NOT FOR SALE. No checkout, customer contact, or public launch.
-Suggested price JPY 1,480 is NOT an accepted offer.
+GUIDE = """サロン予約ロス対策キット｜7日間の記録ツール（試作品）
+===================================================
+NOT FOR SALE / 未販売・決済不可・お客様への配布前の検証版
+仮価格1,480円は未承認です。サポート窓口・返品返金・利用許諾・対応環境は未確定です。
 
-1. Keep tracker-pro.html and tracker-core.js in the SAME folder.
-2. Open tracker-pro.html locally in a modern browser.
-3. Start a blank seven-day tracker. Use counts only, no client names.
-4. Enter reservations, previous-day confirmations, late cancellations,
-   no-shows, and refilled slots. Use 0 for measured zero; blank for unknown.
-5. Download the CSV yourself each day, then import it to continue.
-6. Read paid-pack.md for operator guidance and message templates.
-7. Results are descriptive, not evidence that interventions caused gains.
+【このZIPだけでできること】
+予約件数・前日確認件数・直前キャンセル件数・無断キャンセル件数・
+空き枠の埋め直し件数を7日分手入力し、集計してCSV保存・再読込できます。
+予約システムへの接続、LINE自動送信、顧客情報の収集はできません。
+無料の損失概算ミニツール（index.html）は、このZIPには含まれません。
 
-The kit does not send messages, connect to bookings, save data to servers,
-or provide legal advice. Check consent and your salon's own booking terms.
-The included example figures are fictional.
-See manifest.json for SHA-256 checksums of every included source file.
+【はじめかた（パソコンを想定・スマホ動作は未保証）】
+1. ZIPを展開し、tracker-pro.html と tracker-core.js を同じフォルダーに置きます。
+2. Chrome/Edge等で tracker-pro.html を開き、開始日と「空欄の7日間」を設定します。
+3. 予約・前日確認・直前キャンセル・無断・埋め直しの件数を日ごとに入力します。
+4. 実際に計測した0件は「0」、未確認・未入力は空欄とし、推測で埋めません。
+5. 「CSVを保存」を押して端末に保管し、再開するときはCSVを読み込みます。
+6. 7日後の集計結果を確認します。増収やキャンセル減少の因果効果は証明しません。
+7. 同梱のpaid-pack.mdで、連絡文案・安全上の注意を確認してください。
+
+【情報・トラブル防止】
+予約者の氏名・連絡先・予約名簿は入力しないでください。端末外への自動保存はありません。
+予約者への連絡は店舗の既存の同意済み手段を使い、送信前に確認してください。
+CSVは利用者が適切に保管・バックアップしてください。効果・端末互換性は未保証です。
+このZIPは販売用最終版ではありません。現段階で購入・配布・サポート受付はありません。
+manifest.jsonに同梱元ファイルのSHA-256を記録しています。
 """
 
 def digest(data: bytes) -> str:
