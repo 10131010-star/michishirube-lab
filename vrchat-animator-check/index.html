@@ -136,7 +136,8 @@ Controller: RC3_Demo_A
 <label for="parameter-defined"><strong>ControllerのParameters欄</strong><textarea id="parameter-defined" rows="6" maxlength="4000" spellcheck="false" placeholder="IsDressed&#10;FaceMode&#10;Toggle"></textarea></label>
 <label for="parameter-used"><strong>確認したTransitionのConditions欄</strong><textarea id="parameter-used" rows="6" maxlength="4000" spellcheck="false" placeholder="IsDressed&#10;FaceMode&#10;Toggl"></textarea></label>
 </div>
-<p><button type="button" id="parameter-compare-button">2つの名前リストを照合する</button></p>
+<p><button type="button" id="parameter-compare-button">2つの名前リストを照合する</button> <button type="button" id="parameter-example-button" aria-describedby="parameter-example-note">検証済みの名前例で試す</button></p>
+<p class="note" id="parameter-example-note">初めての方は「検証済みの名前例で試す」を選んでください。実際の検証用Controller「RC3_Demo_A」で記録された2つの名前（定義済みの <code>ReviewUsage</code>／条件側の <code>MissingEntryParameter</code>）だけを入力して照合を体験できます。<strong>実際のControllerファイルを読み込まず、名前2つだけの例です。</strong> この結果は他のParameterや遷移を網羅した診断ではありません。</p>
 <div id="parameter-result" role="status" aria-live="polite" hidden></div>
 <p class="note"><strong>結果は断定的なエラー判定ではありません。</strong> 調べたTransition以外の参照、VRChat組み込みParameter、StateMachineBehaviour、Animation Clipなどは検査しません。名前が一致しても型・条件値・遷移動作の正しさは分かりません。「未参照候補」を理由にParameterを削除しないでください。変更前にバックアップを取ってください。</p>
 <p class="note">入力文字列はこの端末のブラウザ内で照合するだけで、保存・送信・分析イベントへの付加はしません。無料の手動比較と、<a href="#verified-demo">Unity Editor内でControllerを読み取り専用検査する正式版（機能比較・購入前の制限）</a>は別機能です。</p>
@@ -281,6 +282,13 @@ document.getElementById('parameter-compare-button').addEventListener('click',fun
   +'・Controller一覧にあるが今回のConditionsには書かれていない名前：'+unchecked.length+'件\n'
   +(unchecked.length?'  '+unchecked.join(' / ')+'\n':'  （この一覧ではなし）\n')
   +'この結果だけで未定義・未使用や削除の可否は断定できません。';
+});
+document.getElementById('parameter-example-button').addEventListener('click',function(){
+ // Names are excerpted from the previously verified RC3_Demo_A report; no user data is transmitted.
+ document.getElementById('parameter-defined').value='ReviewUsage';
+ document.getElementById('parameter-used').value='MissingEntryParameter';
+ clearParameterComparison();
+ document.getElementById('parameter-compare-button').click();
 });
 }());
 </script></body></html>
