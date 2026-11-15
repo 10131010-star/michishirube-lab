@@ -45,8 +45,8 @@ def main():
         'responsive and reduced motion': '@media(max-width:760px)' in page and 'prefers-reduced-motion' in page,
         'privacy/limitations FAQ': all(s in page for s in ('個人を特定','自動連携・自動メッセージ配信','売上増加は保証しません','法的判断')),
         'no external sales or checkout links': not any((a.get('href') or '').startswith(('https:','http:','tel:')) for a in parser.links),
-        'only one vetted nonbinding interest email': len([a for a in parser.links if 'data-intent-mail' in a]) == 1 and all((a.get('href') or '').startswith('mailto:michishirube.office@gmail.com?subject=') and '&body=' in (a.get('href') or '') for a in parser.links if 'data-intent-mail' in a) and not any((a.get('href') or '').startswith('mailto:') and 'data-intent-mail' not in a for a in parser.links),
-        'clear no-order and privacy warning': all(s in page for s in ('購入前の相談文を準備（注文ではありません）','クリックしても自動送信されません','このページ自体は入力を自動収集しません','メールを送信した場合のみ','個人情報の管理/保存方針・公開承認は未完了')),
+        'no unapproved personal or business email CTA': not any((a.get('href') or '').startswith('mailto:') for a in parser.links) and 'data-intent-mail' not in page and '@gmail.com' not in page,
+        'clear no-order and privacy warning': all(s in page for s in ('購入前の相談受付は停止中です','現在は注文・相談を受け付けていません','このページは入力を自動収集しません','未承認の事業用・個人用メールアドレス','個人情報の管理方針・公開承認は未完了')),
     }
     for name, okay in checks.items(): print(('PASS' if okay else 'FAIL') + ': ' + name)
     if not all(checks.values()): raise SystemExit('Preview staging QA failed')
