@@ -73,6 +73,26 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <li>同じControllerでは <strong>Write Defaults ON 1件 / OFF 1件</strong>の混在（<code>NAD002 / Warning</code>）と、遷移条件から未参照の <code>ReviewUsage</code>（<code>NAD005 / Info</code>）も確認されました。未使用の表示だけでParameterを削除しないでください。</li>
 </ol>
 <p><strong>検証済みの挙動：</strong>Windows / Unity 2022.3.22f1 / VRChat SDK Base・Avatars 3.10.5 で、Controller Aの3件を日本語・英語UIとMarkdownレポートに出力し、別のController Bへ切り替えた後は旧結果が消え、Bの診断結果は0件でした。25件のEditModeテストも成功しています。これらは<strong>テスト用Controllerでの検証</strong>であり、すべての環境やVRChat内の動作を保証しません。</p>
+<details id="verified-report-sample" class="card" style="margin:1rem 0"><summary><strong>実際の診断レポート例（日本語Markdown）を開く</strong></summary>
+<p class="note">Unity 2022.3.22f1 / VRChat SDK 3.10.5 で検証した<strong>テスト用Controller RC3_Demo_A</strong>の実際の出力例です。一般のアバターの不具合や、すべての環境で同じ結果が出ることを示すものではありません。自動修復はしません。</p>
+<pre style="overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;background:#0b1320;border:1px solid #475569;border-radius:.5rem"># Animator Doctor Pro 診断レポート
+
+Controller: RC3_Demo_A
+読み取り専用の診断結果です。変更前に各項目を確認してください。
+
+## [NAD004] Error
+- Path: `Base Layer/Entry -&gt; Idle`
+- 条件パラメータ「MissingEntryParameter」がControllerに定義されていません。
+
+## [NAD002] Warning
+- Path: `RC3_Demo_A`
+- Write Defaultsが混在しています（ON 1 / OFF 1）。一括変更せず設計を確認してください。
+
+## [NAD005] Info
+- Path: `Parameters/ReviewUsage`
+- 「ReviewUsage」は遷移条件から参照されていません。他のBehaviourやAnimationから使われる場合は正常です。</pre>
+<p class="note"><a href="https://github.com/10131010-star/nokino-ai-growth-os/blob/codex/animator-release-20261112/release/verified-rc3-20261112/ReleaseEvidence-20261112/Report-A-JA.md" target="_blank" rel="noopener noreferrer">検証済みレポート原本（GitHub）</a>。報告内容をもとに、利用者が必要に応じてUnity側を確認するための補助です。</p>
+</details>
 <h3>無料チェックと有料版の違い</h3>
 <div style="overflow-x:auto"><table class="compare">
 <thead><tr><th scope="col">項目</th><th scope="col">無料5項目チェック</th><th scope="col">Animator Doctor Pro（先行版）</th></tr></thead>
