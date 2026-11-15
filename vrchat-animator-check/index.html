@@ -30,7 +30,7 @@ fieldset p{color:#c7d7eb;font-size:14px;margin:3px 0 11px}
 .choices{display:flex;flex-wrap:wrap;gap:8px}
 label{display:inline-flex;align-items:center;gap:7px;border:1px solid #586883;background:#22314a;border-radius:10px;padding:7px 10px;cursor:pointer}
 label:has(input:checked){border-color:#a4d2ff;background:#304d74}input{accent-color:#b4dcff}
-button,.cta{display:inline-block;background:#a6daff;border:0;border-radius:12px;padding:12px 17px;color:#0a1c2e;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}
+.cta{max-width:100%;overflow-wrap:anywhere}button,.cta{display:inline-block;background:#a6daff;border:0;border-radius:12px;padding:12px 17px;color:#0a1c2e;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}
 button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:3px}
 #report{background:#0e1a2b;padding:15px;border-radius:12px;margin-top:16px;white-space:pre-line}.compare{border-collapse:collapse;width:100%;font-size:14px}.compare th,.compare td{border:1px solid #3a4c67;padding:9px;text-align:left;vertical-align:top}.compare th{background:#22314a}
 .note{font-size:13px;border-left:3px solid #ffd59a;padding-left:11px}.param-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:14px 0}.param-grid label{display:block;border:0;background:transparent;padding:0;cursor:default}.param-grid textarea{display:block;width:100%;min-height:130px;margin-top:8px;padding:10px;background:#0e1a2b;border:1px solid #59799d;border-radius:8px;color:#eff6ff;font:inherit;resize:vertical}.param-grid textarea:focus-visible{outline:3px solid #a6daff;outline-offset:2px}#parameter-result{background:#0e1a2b;border-radius:12px;padding:14px;margin-top:14px;white-space:pre-line;overflow-wrap:anywhere}footer{margin-top:25px;color:#a5b8d0;font-size:12px}
@@ -60,7 +60,9 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
   <ol id="nextstepslist"></ol>
   <p class="note">入力した回答から確認順を案内するだけで、不具合の自動診断や原因特定ではありません。回答・結果は外部送信しません。変更前にプロジェクトのバックアップを取ってください。</p>
 </div><p><button id="copyreport" type="button" hidden>確認メモをコピー</button> <span id="copystatus" role="status"></span></p>
-<p class="note"><strong>Unity上でさらに確認したい方へ：</strong>この無料チェックは手動の整理用です。Animator Controllerの状態を読み取り専用でレポート化する<a href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=check_section" data-goatcounter-click="vrchat-freecheck-check-to-booth" target="_blank" rel="noopener noreferrer">Animator Doctor Pro 1.0.0の商品詳細（有料）</a>も確認できます。自動修復は行わず、未検証環境での動作は保証しません。</p></section>
+<p class="note"><strong>Unity上でさらに確認したい方へ：</strong>無料チェックは手動の整理用です。検証用Controllerの実例と、読み取り専用の有料版の診断範囲を比較してから判断してください。</p>
+<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=check_section" data-goatcounter-click="vrchat-freecheck-check-to-booth" target="_blank" rel="noopener noreferrer">BOOTHで機能・対応環境・最新価格を確認する（任意）</a></p>
+<p class="note">自動修復は行わず、未検証環境での動作は保証しません。購入は任意です。</p></section>
 <section class="card" id="verified-demo" aria-labelledby="verified-demo-title">
 <p class="top">VERIFIED UNITY EXAMPLE / NOT A COMMERCIAL AVATAR</p>
 <h2 id="verified-demo-title">実例：Animatorの「未定義Parameter」とWrite Defaults混在をどう見つける？</h2>
