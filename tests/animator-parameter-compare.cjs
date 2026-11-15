@@ -29,9 +29,10 @@ assert.doesNotMatch(section, /https:\/\/nokino-tools\.booth\.pm\/items\/\d+/,'co
 const localBlock=html.match(/\/\/ Pure local comparison:[\s\S]*?(?=\n\}\(\)\);)/);
 assert.ok(localBlock,'local comparison UI block must exist');
 const elements={};
-for(const id of ['parameter-defined','parameter-used','parameter-result','parameter-compare-button']){
+for(const id of ['parameter-defined','parameter-used','parameter-result','parameter-compare-button','parameter-example-button']){
  elements[id]={value:'',textContent:'',hidden:true,listeners:{},
-  addEventListener(type,handler){(this.listeners[type]??=[]).push(handler);}};
+  addEventListener(type,handler){(this.listeners[type]??=[]).push(handler);},
+  click(){for(const fn of this.listeners.click||[])fn();}};
  Object.defineProperty(elements[id],'innerHTML',{set(){throw new Error('Input must not be inserted as HTML');}});
 }
 vm.runInNewContext(localBlock[0],{document:{getElementById:id=>elements[id]}});
@@ -71,4 +72,14 @@ scenarios.push('HTML-looking input remains plain text');
 const last=result.textContent;runComparison();
 assert.equal(result.textContent,last);
 scenarios.push('repeated compare stable');
+// Verified RC3_Demo_A names: an undefined condition parameter and one not used in checked conditions.
+assert.match(html,/id="parameter-example-button"/);
+fire('parameter-example-button','click');
+assert.equal(elements['parameter-defined'].value,'ReviewUsage');
+assert.equal(elements['parameter-used'].value,'MissingEntryParameter');
+assert.equal(result.hidden,false);
+assert.ok(result.textContent.includes('MissingEntryParameter'));
+assert.ok(result.textContent.includes('ReviewUsage'));
+assert.ok(result.textContent.includes('1件'),'example must show one missing and one not-in-checked-conditions name');
+scenarios.push('verified sample one-click fills names and runs local comparison');
 console.log(JSON.stringify({status:'passed',interactionScenarios:scenarios,scope:'pure JS and static/offline DOM handlers; no real-browser, GA4 or Unity test'}));
