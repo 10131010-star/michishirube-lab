@@ -47,7 +47,7 @@ class OfferTests(unittest.TestCase):
         self.assertEqual(p.forms, [])
         self.assertEqual(p.scripts, [])
         hrefs = [a.get("href") for a in p.links]
-        self.assertEqual(hrefs[:6], ["#contact", "./audit.html", "./demo.html", "./audit.html", "./demo.html", "#contact"])
+        self.assertEqual(hrefs[:6], ["#contact", "./audit.html", "./demo.html", "#contact", "./audit.html", "./demo.html"])
         self.assertEqual(len(hrefs), 7)
         # This mailto prepares a minimal draft only; it never sends automatically.
         self.assertTrue(hrefs[6].startswith("mailto:michishirube.office@gmail.com?subject="))
