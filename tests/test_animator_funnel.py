@@ -59,6 +59,19 @@ class AnimatorFunnelTests(unittest.TestCase):
             self.assertTrue(link.get("data-goatcounter-click", "").startswith("vrchat-freecheck-"))
         self.assertEqual(ids, {"check_section", "verified_demo", "footer"})
 
+    def test_result_area_checkout_cta_is_visible_and_tracked(self):
+        """The existing post-check link should be discoverable without extra links."""
+        result_links = [a for a in self.doc.links
+                        if urlparse(a.get("href", "")).hostname == PRODUCT_HOST
+                        and parse_qs(urlparse(a["href"]).query).get("utm_content") == ["check_section"]]
+        self.assertEqual(len(result_links), 1)
+        link = result_links[0]
+        self.assertIn("cta", link.get("class", "").split(),
+                      "The post-check link must be a visible primary CTA on mobile")
+        self.assertEqual(link.get("data-goatcounter-click"), "vrchat-freecheck-check-to-booth")
+        self.assertIn("BOOTHで機能・対応環境・最新価格を確認する（任意）", self.html)
+        self.assertIn("購入は任意です", self.html)
+
     def test_click_ids_unique_and_no_pii_in_urls(self):
         event_ids = [a.get("data-goatcounter-click") for a in self.doc.links
                      if urlparse(a.get("href", "")).hostname == PRODUCT_HOST]
