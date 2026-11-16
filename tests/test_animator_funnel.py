@@ -118,6 +118,15 @@ class AnimatorFunnelTests(unittest.TestCase):
         self.assertIn("noopener", targeted[0].get("rel", "").split())
         self.assertIn("noreferrer", targeted[0].get("rel", "").split())
 
+    def test_public_evidence_does_not_send_buyers_to_private_repo(self):
+        """Public buyers must be able to open the cited proof without repo access."""
+        self.assertNotIn("github.com/10131010-star/nokino-ai-growth-os", self.html)
+        self.assertIn('id="verified-demo"', self.html)
+        self.assertIn('href="./assets/animator-doctor-pro-rc3-demo-ja.jpg"', self.html)
+        self.assertIn('id="verified-report-sample"', self.html)
+        self.assertIn("撮影時の先行版RC3", self.html)
+        self.assertIn("購入者向け", self.html)
+
     def test_disclosures_and_real_measurement_boundary(self):
         self.assertIn("自動修復は行わず", self.html)
         self.assertIn("購入", self.html)
