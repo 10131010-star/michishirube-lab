@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="VRChatで衣装・表情が戻らない、AnimatorのTransitionが動かない、Expressions Menuが反応しない時の確認順。Write Defaults、Has Exit Time、Parameterを公式資料に沿って解説。無料5項目チェック付き。">
+<meta name="description" content="VRChatのAnimatorで衣装・表情が戻らない、遷移しない、Default Weightが0のときの確認順。Write Defaults・Parameter・Expressions Menuを公式資料に沿って解説。無料5項目チェック付き。">
 <title>VRChat Animatorの確認順｜衣装・表情が戻らない・Write Defaults・Parameter｜無料5項目</title>
 <link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
 <meta property="og:type" content="website">
@@ -43,7 +43,7 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 <p class="note"><strong>手動チェックだけでは足りない方へ：</strong>検証用Unity Controllerの実画面で、未定義ParameterとWrite Defaults混在の確認例を見られます。無料の手動整理と、Unity Editorで確認候補を一覧・日英レポート化する有料版との違いを、購入前に比較してください。</p>
 <p><a class="cta" href="#verified-demo">実Unity画面を見る・無料版との違いを比較する</a></p>
 <p class="note">Animator Doctor Pro 1.0.0は自動修復せず、設定上の問題候補と確認場所を読み取り専用で整理します。購入は任意です。</p>
-<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#parameter-compare">Parameter名の手動照合</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
+<nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#parameter-compare">Parameter名の手動照合</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#case-layer-weight">Default Weightが0</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
 <section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
 <p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
 <section class="card"><h2>5つの確認ポイント</h2>
@@ -113,8 +113,8 @@ Controller: RC3_Demo_A
 <p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=footer" data-goatcounter-click="vrchat-freecheck-footer-to-booth" target="_blank" rel="noopener noreferrer">BOOTHの商品詳細を見る</a></p>
 <p class="note">検証済み環境：Windows / Unity 2022.3.22f1 / VRChat SDK Avatars 3.10.5 / Modular Avatar 1.18.7あり・なし。別バージョンや市販アバター固有構成の動作を保証するものではありません。非公式ツールです。</p></section>
 <section class="card" id="troubleshooting" aria-labelledby="troubletitle">
-<p class="top">CHECK BEFORE EDITING / 3 COMMON CASES</p>
-<h2 id="troubletitle">よくある4つのつまずきと確認順</h2>
+<p class="top">CHECK BEFORE EDITING / 5 COMMON CASES</p>
+<h2 id="troubletitle">よくある5つのつまずきと確認順</h2>
 <p class="note">まずUnityプロジェクトをバックアップし、症状が起きる条件を控えてください。ここで紹介するのは切り分けの手順であり、自動修復・原因の確定ではありません。</p>
 <h3 id="case-write-defaults">Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
 <ol><li>該当するステートの <strong>Write Defaults</strong> が混在していないか確認する。</li><li>次のステートに戻す値を設定するAnimation Clipがあるか確認する。</li><li>一律にOn/Offを変更せず、AdditiveやDirect Blend Treeなどの例外も含めて設定を見直す。</li></ol>
@@ -128,6 +128,15 @@ Controller: RC3_Demo_A
 <h3 id="case-layer-conflict">Q4. 表情と衣装のアニメーションが干渉する</h3>
 <ol><li>Avatar DescriptorのPlayable Layers（Base / Additive / Gesture / Action / FX）を確認する。</li><li>意図せず同じプロパティを複数レイヤーから操作していないか確認する。</li><li>特にFXレイヤーの役割とAvatar Maskを確認し、変更前の設定を保存してから1箇所ずつテストする。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/playable-layers/" target="_blank" rel="noopener noreferrer">VRChat公式：Playable Layers</a>。</p>
+<h3 id="case-layer-weight">Q5. Animatorの非Base LayerでDefault Weightが0になっている</h3>
+<p>「特定の衣装や表情のアニメーションが反映されない」場合、<strong>Animator Controller内のレイヤーの初期Weight</strong>が確認候補です。ここでいうWeightは、Avatar DescriptorにあるBase / Gesture / FXなどの<strong>Playable Layer全体の重みとは別</strong>です。</p>
+<ol>
+<li>変更前にUnityプロジェクトをバックアップし、対象のController名・Layer名・現在のWeight値を記録します。</li>
+<li>UnityのAnimatorウィンドウで<strong>Layers</strong>を開き、Base Layer以外の対象レイヤーの歯車から<strong>Weight / Default Weight</strong>を確認します。Base Layerは一般の追加レイヤーと同じ基準で判断しません。</li>
+<li><strong>0が意図的な初期値か</strong>を先に調べます。VRChatの <code>VRC Animator Layer Control</code> はステートの動作に応じてAnimator LayerのWeightを変更できるため、初期値が0でも常に問題とは限りません。<code>VRC Playable Layer Control</code> とは作用先が異なります。</li>
+<li>対象ステートへの遷移条件やParameterも確認し、必要なら複製した検証用プロジェクトで<strong>変更を一つずつ</strong>試します。すべての0を一括で1にせず、VRChat内での挙動も別途検証してください。</li>
+</ol>
+<p class="note">Unity公式：<a href="https://docs.unity3d.com/ja/2022.3/Manual/AnimationLayers.html" target="_blank" rel="noopener noreferrer">Animation Layersの設定</a>／VRChat公式：<a href="https://creators.vrchat.com/avatars/state-behaviors/" target="_blank" rel="noopener noreferrer">Animator Layer Control / Playable Layer Control</a>。有料版Animator Doctor Pro 1.0.0では、非Base LayerのDefault Weight 0を<strong>NAD006の要確認候補</strong>として報告する設計です。読み取り専用であり、0が不具合かどうかの自動確定・修復や実際のVRChat内動作保証はしません。<a href="#verified-demo">既存の実Unity画面（別の診断項目の検証例）と有料版の機能差を見る</a>。</p>
 <p>症状の切り分けに迷ったら、上の<strong>5項目チェック</strong>で「気になる」を記録し、コピーしたメモを自分のUnity作業に使ってください。手動確認から一歩進めたい場合にのみ、上記の有料版の仕様と対応環境を確認してください。</p>
 </section>
 <section class="card" id="parameter-compare" aria-labelledby="parameter-compare-title">
