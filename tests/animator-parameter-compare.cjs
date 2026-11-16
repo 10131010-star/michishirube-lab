@@ -19,6 +19,8 @@ assert.equal(c.defined.length,0,'empty input must not become a named parameter')
 assert.match(html,/id="parameter-compare"/);
 assert.match(html,/id="parameter-compare-button"/);
 assert.match(html,/id="parameter-result" role="status" aria-live="polite" hidden/);
+assert.ok(html.includes('id="parameter-followup" class="note" hidden'));
+assert.ok(html.includes('<a href="#verified-demo">実Unity検証例と無料・有料版の違いを確認する</a>'));
 assert.match(html,/if\(names\.defined\.length>100\|\|names\.used\.length>100\)/);
 assert.match(html,/入力文字列はこの端末のブラウザ内で照合するだけ/);
 assert.match(html,/「未参照候補」を理由にParameterを削除しないでください/);
@@ -29,7 +31,7 @@ assert.doesNotMatch(section, /https:\/\/nokino-tools\.booth\.pm\/items\/\d+/,'co
 const localBlock=html.match(/\/\/ Pure local comparison:[\s\S]*?(?=\n\}\(\)\);)/);
 assert.ok(localBlock,'local comparison UI block must exist');
 const elements={};
-for(const id of ['parameter-defined','parameter-used','parameter-result','parameter-compare-button','parameter-example-button']){
+for(const id of ['parameter-defined','parameter-used','parameter-result','parameter-compare-button','parameter-example-button','parameter-followup']){
  elements[id]={value:'',textContent:'',hidden:true,listeners:{},
   addEventListener(type,handler){(this.listeners[type]??=[]).push(handler);},
   click(){for(const fn of this.listeners.click||[])fn();}};
@@ -40,14 +42,18 @@ const fire=(id,type)=>{for(const fn of elements[id].listeners[type]||[])fn();};
 const edit=(id,text)=>{elements[id].value=text;fire(id,'input');};
 const runComparison=()=>fire('parameter-compare-button','click');
 const result=elements['parameter-result'];
+const followup=elements['parameter-followup'];
+assert.equal(followup.hidden,true,'followup is initially hidden');
 const scenarios=[];
 assert.equal(result.hidden,true);assert.equal(result.textContent,'');
 scenarios.push('initially hidden');
 edit('parameter-defined','FaceMode');edit('parameter-used','facemode');runComparison();
 assert.equal(result.hidden,false);assert.ok(result.textContent.includes('facemode'));
+assert.equal(followup.hidden,false,'valid comparison reveals contextual next step');
 scenarios.push('case mismatch shown');
 edit('parameter-used','FaceMode');
 assert.equal(result.hidden,true);assert.equal(result.textContent,'');
+assert.equal(followup.hidden,true,'editing hides stale next step');
 scenarios.push('used-list edit clears old result');
 runComparison();assert.equal(result.hidden,false);assert.ok(result.textContent.includes('0件'));
 assert.ok(!result.textContent.includes('facemode'));
@@ -58,6 +64,7 @@ runComparison();assert.ok(result.textContent.includes('FaceMode'));
 scenarios.push('defined-list edit clears old result');
 edit('parameter-defined','');runComparison();
 assert.ok(result.textContent.includes('両方の欄'));
+assert.equal(followup.hidden,true,'blank comparison must not show next step');
 edit('parameter-defined','Other');
 assert.equal(result.hidden,true);assert.equal(result.textContent,'');
 scenarios.push('blank-input message cleared on editing');
