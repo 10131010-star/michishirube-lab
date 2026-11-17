@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="VRChatのAnimatorで衣装・表情が戻らない、遷移しない、Default Weightが0のときの確認順。Write Defaults・Parameter・Expressions Menuを公式資料に沿って解説。無料5項目チェック付き。">
+<meta name="description" content="VRChatで衣装Toggle・Expressions Menuが動かない場合のParameter名・型の照合、Animator遷移・Write Defaults・Default Weightの確認順。無料5項目チェックとUnity検証例を公開。">
 <title>VRChat Animatorの確認順｜衣装・表情が戻らない・Write Defaults・Parameter｜無料5項目</title>
 <link rel="canonical" href="https://10131010-star.github.io/michishirube-lab/vrchat-animator-check/">
 <meta property="og:type" content="website">
@@ -120,9 +120,15 @@ Controller: RC3_Demo_A
 <h3 id="case-write-defaults">Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
 <ol><li>該当するステートの <strong>Write Defaults</strong> が混在していないか確認する。</li><li>次のステートに戻す値を設定するAnimation Clipがあるか確認する。</li><li>一律にOn/Offを変更せず、AdditiveやDirect Blend Treeなどの例外も含めて設定を見直す。</li></ol>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/#write-defaults-on-states" target="_blank" rel="noopener noreferrer">VRChat公式：Write Defaults</a>。VRChatは基本的に設定を揃えることを勧めていますが、例外があります。</p>
-<h3 id="case-expressions-menu">Q2. Expressions Menuの操作で期待した動きにならない</h3>
-<ol><li>Expressions MenuのControlが指定するParameter名・型を確認する。</li><li>Avatar Descriptorに割り当てたExpression ParametersとAnimator側の定義を見比べる。</li><li>VRChat標準の組み込みParameterと自作Parameterを混同していないか確認する。</li></ol>
-<p class="note">参考：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">VRChat公式：Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
+<h3 id="case-expressions-menu">Q2. Expressions MenuのToggleを押しても衣装・表情が切り替わらない</h3>
+<p>「VRChatで衣装のトグルが動かない」という場合、まず <strong>Avatar Descriptor → Expressions Menu → Expression Parameters → Animator Controller</strong> の参照・設定を順に確認します。以下は説明用の架空設定であり、実Unity検証のスクリーンショットではありません。</p>
+<ol>
+<li>Avatar Descriptorの<strong>Expressions</strong>欄で、目的の <strong>Menu</strong> と <strong>Parameters</strong> アセットが割り当てられているか確認します。別のアセットが割り当てられていれば、編集中のメニューを直しても反映されません。</li>
+<li>Expressions Menuアセットで対象の<strong>Toggle</strong>を選び、ControlのParameter名を控えます。例えば衣装切替が <code>Clothing/Hat</code> の場合、<code>ClothingHat</code> は同じ名前ではありません。</li>
+<li>Expression Parametersに<strong>同名・設計どおりの型</strong>があるか見て、Animator ControllerのParametersおよびTransition Conditionsと照合します。例えば <code>Clothing/Hat</code> を<strong>Bool</strong>として扱う設計なら、Controller側もBoolとし、該当条件がその名前を参照しているか確認します。無料の名前比較だけでは型の食い違いは見つけられません。</li>
+<li>自分では切り替わるのに他の人には反映されない場合は<strong>Synced</strong>、アバターを切り替えると設定が戻る場合は<strong>Saved</strong>の設定を確認します。VRChat組み込みParameterは、カスタムExpression Parametersに追加する必要がない場合があります。</li>
+</ol>
+<p class="note">無料の<a href="#parameter-compare">Parameter名の手動照合</a>は入力した名前だけを比較し、Menu参照・型・Synced/Saved・VRChat内の動作を自動判定しません。有料のAnimator Doctor Pro 1.0.0も<strong>選択したAnimator Controller内の問題候補</strong>を確認する製品で、Expressions Menu全体の診断・トグルの自動修復には対応しません。<a href="#verified-demo">実Unity検証例と無料・有料の機能差を確認する</a>。公式資料：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
 <h3 id="case-transition">Q3. AnimatorのTransitionが動かない・元のステートに戻れない</h3>
 <ol><li>UnityのAnimatorウィンドウで、戻りたいステートへつながる<strong>Transitionの線</strong>を選択し、Inspectorの<strong>Conditions</strong>にあるParameter名・条件値を確認します。ControllerのParametersに同名の定義があるかも比較します。</li><li><strong>Has Exit Time</strong>が有効なら、条件が正しくても指定されたExit Timeに達するまで遷移しない場合があります。無効化を決めつけず、アニメーション再生時間・ループ・必要な動作タイミングを先に確認します。</li><li>戻り先へつながる遷移自体があるか、<strong>Any State / Entry / 子StateMachine</strong>側に関連条件がないかを調べます。設定を変える前にControllerをバックアップし、一度に1項目ずつ再確認してください。</li></ol>
 <p class="note">参照：<a href="https://docs.unity3d.com/ja/2022.3/Manual/class-Transition.html" target="_blank" rel="noopener noreferrer">Unity 2022.3公式：アニメーション遷移（Exit Time・Conditions）</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat公式：Animator Parameters</a>。<strong>無料チェックは症状の手動整理のみ</strong>。有料版で確認したのは遷移条件に関する候補検出であり、Exit TimeやVRChat内の復帰動作を自動で検証する機能はありません。<a href="#verified-demo">検証用Controllerの実例と機能差を確認</a>。</p>
