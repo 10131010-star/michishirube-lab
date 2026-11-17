@@ -37,14 +37,14 @@ code{font-size:13px;overflow-wrap:anywhere}footer{margin:36px 0;color:var(--mute
 <section class="panel">
 <h2>1. 記録期間とデータ操作</h2>
 <div class="toolbar">
-<div><label for="startDate">1日目の日付</label><input type="date" id="startDate" value="2026-11-12"></div>
+<div><label for="startDate">1日目の日付</label><input type="date" id="startDate"></div>
 <button type="button" id="setDates">空欄の7日間を作成</button>
 <button type="button" id="mock" class="subtle">架空サンプルを表示</button>
 <button type="button" id="load" class="subtle">CSVを読み込む</button>
 <button type="button" id="save">CSVを保存</button>
 <input id="file" type="file" accept=".csv,text/csv" hidden aria-label="専用CSVを選択">
 </div>
-<p class="small">保存先はあなたの端末です。ページを閉じる前にCSVを保存してください。再度開いた際は「CSVを読み込む」から復元できます。架空サンプルは実績として使わないでください。</p>
+<p class="small">1日目は端末の今日の日付を初期表示します。過去の週を入力する場合は日付を変更し、同梱の予備CSVを利用する際も記録期間を確認してください。保存先はあなたの端末です。ページを閉じる前にCSVを保存してください。再度開いた際は「CSVを読み込む」から復元できます。架空サンプルは実績として使わないでください。</p>
 </section>
 <section class="panel">
 <h2>2. 1日ずつ入力</h2>
@@ -75,7 +75,12 @@ code{font-size:13px;overflow-wrap:anywhere}footer{margin:36px 0;color:var(--mute
 <script>
 (function () {
   "use strict";
-  var core=window.SalonTracker, rows=core.emptyWeek("2026-11-12"), mock=false;
+  function localToday() {
+    var d=new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  var today=localToday();
+  var core=window.SalonTracker, rows=core.emptyWeek(today), mock=false;
   var keys=["reservations","day_before_reminders","late_cancellations","no_shows","slots_refilled","notes"];
   var labels=["予約数","前日確認","直前キャンセル","無断キャンセル","埋め直し","任意メモ"];
   function elem(id){return document.getElementById(id);}
@@ -119,7 +124,7 @@ code{font-size:13px;overflow-wrap:anywhere}footer{margin:36px 0;color:var(--mute
     catch(e){status(e.message,true);}
   });
   elem("mock").addEventListener("click",function(){
-    var r=core.emptyWeek(elem("startDate").value||"2026-11-12");
+    var r=core.emptyWeek(elem("startDate").value||today);
     var b=[5,7,6,4,8,7,6],rem=[4,6,5,3,7,6,5],late=[1,0,1,0,1,1,0],no=[0,1,0,0,0,0,1],ref=[1,0,0,0,1,1,0];
     r.forEach(function(x,i){x.reservations=b[i];x.day_before_reminders=rem[i];x.late_cancellations=late[i];x.no_shows=no[i];x.slots_refilled=ref[i];x.notes="架空データ";});
     rows=r;mock=true;paint();
@@ -145,6 +150,7 @@ code{font-size:13px;overflow-wrap:anywhere}footer{margin:36px 0;color:var(--mute
     }catch(e){status("CSVを読み込めませんでした："+e.message,true);}
     this.value="";
   });
+  elem("startDate").value=today;
   paint();
 })();
 </script>
