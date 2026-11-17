@@ -119,6 +119,7 @@ Controller: RC3_Demo_A
 <p class="note">まずUnityプロジェクトをバックアップし、症状が起きる条件を控えてください。ここで紹介するのは切り分けの手順であり、自動修復・原因の確定ではありません。</p>
 <h3 id="case-write-defaults">Q1. 衣装や表情の切り替え後、元の表示に戻らない</h3>
 <ol><li>該当するステートの <strong>Write Defaults</strong> が混在していないか確認する。</li><li>次のステートに戻す値を設定するAnimation Clipがあるか確認する。</li><li>一律にOn/Offを変更せず、AdditiveやDirect Blend Treeなどの例外も含めて設定を見直す。</li></ol>
+<p class="note"><strong>Write DefaultsをOffにしたのに状態が戻らないとき：</strong>VRChat公式は、Motionが<code>None</code>のStateや中身が空のAnimation Clipでは、Write DefaultsをOffにしていてもOnのように振る舞う場合があると説明しています。戻し先StateのMotionと、切り替えたいプロパティを実際に記録しているClipを確認してください。Additive Layer・Direct Blend Treeの例外もあるため、全Stateを機械的にOffへ変更しないでください。<strong>有料版の検証済み機能はWrite Defaults混在の候補提示であり、空Clipが原因かどうかの自動確定・修復はしません。</strong> <a href="#verified-demo">実Unity検証例と無料・有料の違いを見る</a>。</p>
 <p class="note">参考：<a href="https://creators.vrchat.com/avatars/#write-defaults-on-states" target="_blank" rel="noopener noreferrer">VRChat公式：Write Defaults</a>。VRChatは基本的に設定を揃えることを勧めていますが、例外があります。</p>
 <h3 id="case-expressions-menu">Q2. Expressions MenuのToggleを押しても衣装・表情が切り替わらない</h3>
 <p>「VRChatで衣装のトグルが動かない」という場合、まず <strong>Avatar Descriptor → Expressions Menu → Expression Parameters → Animator Controller</strong> の参照・設定を順に確認します。以下は説明用の架空設定であり、実Unity検証のスクリーンショットではありません。</p>
