@@ -38,12 +38,13 @@ button:focus-visible,.cta:focus-visible,input:focus-visible{outline:3px solid wh
 .real-capture{margin:18px 0 22px}.real-capture a{display:block}.real-capture img{display:block;width:100%;height:auto;border:1px solid #59799d;border-radius:10px}.real-capture figcaption{font-size:13px;line-height:1.7;color:#c7d7eb;margin-top:9px}
 </style></head><body><main>
 <p class="top">NOKINO TOOLS / FREE MANUAL GUIDE</p>
+<section class="card" aria-labelledby="booth-current-listing"><h2 id="booth-current-listing">購入前に：リンク先の現行商品名をご確認ください</h2><p>2026年11月19日にBOOTHの商品ID 9133855の公開ページを確認した時点では、<strong>「Avatar Setup Doctor」・500円</strong>と表示され、Animator／Expression Parameters／Expressions Menu／Missing Scriptの読み取り専用診断を案内しています。<strong>このページの実Unity画像・6項目比較は旧「Animator Doctor Pro」の先行RC3とその後の検証記録</strong>です。現行BOOTH掲載商品の画面や同梱ファイル、対応環境を実証したものではありません。購入者向け配布ファイルのSHA-256は未照合です。現在の品名・収録物・対応SDK・価格は、下のBOOTH商品リンクで確認してください。</p></section>
 <h1>VRChatの衣装・表情トラブルを<br>Animator 5項目で手動確認</h1>
 <p class="lead">UnityのAnimator Controllerを自分で確認し、気になる設定を整理する無料ガイド。<strong>Unityファイルの読み込みや自動解析はしません。</strong> 回答はこの画面でのみ処理され、自動保存・外部送信しません。コピー操作をした場合のみクリップボードへ保存されます。</p>
 <p class="note"><strong>手動チェックだけでは足りない方へ：</strong>検証用Unity Controllerの実画面で、未定義ParameterとWrite Defaults混在の確認例を見られます。無料の手動整理と、Unity Editorで確認候補を一覧・日英レポート化する有料版との違いを、購入前に比較してください。</p>
 <p><a class="cta" href="#verified-demo">実Unity画面を見る・無料版との違いを比較する</a></p>
-<p class="note">購入前に詳しく確かめたい方は、公開済みの<a href="./buyer-guide/">Animator Doctor Pro購入前ガイド（導入手順・対応環境・機能制限）</a>をご覧ください。商品の価格・配布内容はBOOTHの最新表示を優先してください。</p>
-<p class="note">Animator Doctor Pro 1.0.0は自動修復せず、設定上の問題候補と確認場所を読み取り専用で整理します。購入は任意です。</p>
+<p class="note">旧Animator Doctor Proの検証条件を確認したい方は、<a href="./buyer-guide/">先行版のUnity実証・購入前資料（現行BOOTH商品の保証資料ではありません）</a>をご覧ください。現行販売品の詳細はBOOTHの公開表示を優先してください。</p>
+<p class="note">以下のAnimator Doctor Pro 1.0.0に関する説明は旧製品の検証記録です。現在のBOOTH商品「Avatar Setup Doctor」と同一の実装・配布物であるとは確認できていません。購入は任意です。</p>
 <nav class="quick-links" aria-label="よくある症状から確認手順を探す"><strong>困っている症状から探す</strong><a href="#case-write-defaults">衣装・表情が戻らない</a><a href="#case-transition">Transitionが動かない</a><a href="#parameter-compare">Parameter名の手動照合</a><a href="#case-expressions-menu">Expressions Menuが動かない</a><a href="#case-layer-conflict">レイヤーが干渉する</a><a href="#case-layer-weight">Default Weightが0</a><a href="#checks">無料5項目チェックへ</a><a href="#purchase-faq">購入前の確認（FAQ）</a></nav>
 <section class="card"><h2>チェック方法</h2><p>Unityで該当箇所を見ながら、各項目を「気になる / 問題なし / 未確認」で選び、最後に結果を表示してください。</p>
 <p class="note">この手動チェックは参考情報です。すべて「問題なし」でも実機動作やVRChatでの互換性は保証しません。</p></section>
@@ -99,21 +100,21 @@ Controller: RC3_Demo_A
 </details>
 <h3>無料チェックと有料版の違い</h3>
 <div style="overflow-x:auto"><table class="compare">
-<thead><tr><th scope="col">項目</th><th scope="col">無料5項目チェック</th><th scope="col">Animator Doctor Pro 1.0.0</th></tr></thead>
+<thead><tr><th scope="col">項目</th><th scope="col">無料5項目チェック</th><th scope="col">旧Animator Doctor Pro 1.0.0の記録（現行商品では未確認）</th></tr></thead>
 <tbody>
 <tr><th scope="row">調べ方</th><td>自分でUnityを見て3択で整理。Unityファイルを読み込みません。</td><td>選択したAnimator ControllerをUnity Editor内で読み取り専用診断します。</td></tr>
 <tr><th scope="row">結果</th><td>気になる項目のメモ表示・コピー。</td><td>Layer・Write Defaults・遷移・Parameterの候補を日英UI・Markdownで出力。</td></tr>
 <tr><th scope="row">できないこと</th><td>問題の自動検出・自動修正。</td><td>自動修復・完全検出・Expressions Menu全体の診断・全SDK互換性保証。</td></tr>
 </tbody></table></div>
 <p class="note">公式参考：<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat Animator Parameters</a>。検証の内部記録は非公開で保存しています。購入前に確認できる資料として、上の<a href="#verified-demo">実Unity画面と診断レポート例</a>を公開しています。実例は合成検証用Controllerによるもので、現行の購入者向け配布ZIPとの同一性や市販アバターでの動作を保証しません。</p>
-<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=verified_demo" data-goatcounter-click="vrchat-freecheck-demo-to-booth" target="_blank" rel="noopener noreferrer">6種類の診断機能・対応環境・最新価格をBOOTHで確認する</a></p>
+<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=verified_demo" data-goatcounter-click="vrchat-freecheck-demo-to-booth" target="_blank" rel="noopener noreferrer">現行Avatar Setup Doctorの機能・対応環境・価格をBOOTHで確認する</a></p>
 <p class="note">このリンクのUTMは識別用の文字列であり、閲覧・クリック・購入の実測値ではありません。価格・販売状態はBOOTHの表示を優先してください。</p>
 </section>
-<section class="card"><p class="top">OPTIONAL / READ-ONLY DIAGNOSTICS</p><h2>Animator Doctor Pro 1.0.0</h2>
-<p>Unity Editor上でAnimator Controllerを読み取り専用で調べ、日本語・英語のレポートを出力するツール。自動修復は行いません。</p>
-<p><strong>最新の価格・販売状態はBOOTHの商品ページでご確認ください。</strong></p>
-<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=footer" data-goatcounter-click="vrchat-freecheck-footer-to-booth" target="_blank" rel="noopener noreferrer">BOOTHの商品詳細を見る</a></p>
-<p class="note">検証済み環境：Windows / Unity 2022.3.22f1 / VRChat SDK Avatars 3.10.5 / Modular Avatar 1.18.7あり・なし。別バージョンや市販アバター固有構成の動作を保証するものではありません。非公式ツールです。</p></section>
+<section class="card"><p class="top">OPTIONAL / READ-ONLY DIAGNOSTICS</p><h2>旧Animator Doctor Proの検証記録と現行BOOTH販売先</h2>
+<p>旧Animator Doctor ProではUnity Editor上でAnimator Controllerを読み取り専用で調べ、日英レポートを出力する機能を検証しました。現行BOOTHに表示される「Avatar Setup Doctor」との同一性は未確認です。</p>
+<p><strong>現在の販売ページはAvatar Setup Doctor（公開表示500円）です。最新価格・販売条件・対応環境・同梱物はBOOTHで確認してください。</strong></p>
+<p><a class="cta" href="https://nokino-tools.booth.pm/items/9133855?utm_source=michishirube_freecheck&amp;utm_medium=referral&amp;utm_campaign=animator_pro_launch&amp;utm_content=footer" data-goatcounter-click="vrchat-freecheck-footer-to-booth" target="_blank" rel="noopener noreferrer">現在のAvatar Setup DoctorのBOOTH商品詳細を見る</a></p>
+<p class="note">旧Animator Doctor Proの検証環境（現行BOOTH商品には適用未確認）：Windows / Unity 2022.3.22f1 / VRChat SDK Avatars 3.10.5 / Modular Avatar 1.18.7あり・なし。別バージョンや市販アバター固有構成の動作を保証するものではありません。非公式ツールです。</p></section>
 <section class="card" id="troubleshooting" aria-labelledby="troubletitle">
 <p class="top">CHECK BEFORE EDITING / 5 COMMON CASES</p>
 <h2 id="troubletitle">よくある5つのつまずきと確認順</h2>
@@ -130,7 +131,7 @@ Controller: RC3_Demo_A
 <li>Expression Parametersに<strong>同名・設計どおりの型</strong>があるか見て、Animator ControllerのParametersおよびTransition Conditionsと照合します。例えば <code>Clothing/Hat</code> を<strong>Bool</strong>として扱う設計なら、Controller側もBoolとし、該当条件がその名前を参照しているか確認します。無料の名前比較だけでは型の食い違いは見つけられません。</li>
 <li>自分では切り替わるのに他の人には反映されない場合は<strong>Synced</strong>、アバターを切り替えると設定が戻る場合は<strong>Saved</strong>の設定を確認します。VRChat組み込みParameterは、カスタムExpression Parametersに追加する必要がない場合があります。</li>
 </ol>
-<p class="note">無料の<a href="#parameter-compare">Parameter名の手動照合</a>は入力した名前だけを比較し、Menu参照・型・Synced/Saved・VRChat内の動作を自動判定しません。有料のAnimator Doctor Pro 1.0.0も<strong>選択したAnimator Controller内の問題候補</strong>を確認する製品で、Expressions Menu全体の診断・トグルの自動修復には対応しません。<a href="#verified-demo">実Unity検証例と無料・有料の機能差を確認する</a>。公式資料：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
+<p class="note">無料の<a href="#parameter-compare">Parameter名の手動照合</a>は入力した名前だけを比較し、Menu参照・型・Synced/Saved・VRChat内の動作を自動判定しません。旧Animator Doctor Pro 1.0.0の検証資料では<strong>選択したAnimator Controller内の問題候補</strong>を対象とし、Expressions Menu全体の診断は対象外でした。現行BOOTHに掲載されるAvatar Setup DoctorはMenuの診断も案内していますが、その配布実体は未照合です。<a href="#verified-demo">実Unity検証例と無料・有料の機能差を確認する</a>。公式資料：<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener noreferrer">Expressions Menu</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">Animator Parameters</a>。</p>
 <h3 id="case-transition">Q3. AnimatorのTransitionが動かない・元のステートに戻れない</h3>
 <ol><li>UnityのAnimatorウィンドウで、戻りたいステートへつながる<strong>Transitionの線</strong>を選択し、Inspectorの<strong>Conditions</strong>にあるParameter名・条件値を確認します。ControllerのParametersに同名の定義があるかも比較します。</li><li><strong>Has Exit Time</strong>が有効なら、条件が正しくても指定されたExit Timeに達するまで遷移しない場合があります。無効化を決めつけず、アニメーション再生時間・ループ・必要な動作タイミングを先に確認します。</li><li>戻り先へつながる遷移自体があるか、<strong>Any State / Entry / 子StateMachine</strong>側に関連条件がないかを調べます。設定を変える前にControllerをバックアップし、一度に1項目ずつ再確認してください。</li></ol>
 <p class="note">参照：<a href="https://docs.unity3d.com/ja/2022.3/Manual/class-Transition.html" target="_blank" rel="noopener noreferrer">Unity 2022.3公式：アニメーション遷移（Exit Time・Conditions）</a>／<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat公式：Animator Parameters</a>。<strong>無料チェックは症状の手動整理のみ</strong>。有料版で確認したのは遷移条件に関する候補検出であり、Exit TimeやVRChat内の復帰動作を自動で検証する機能はありません。<a href="#verified-demo">検証用Controllerの実例と機能差を確認</a>。</p>
@@ -171,11 +172,11 @@ Controller: RC3_Demo_A
 <h3>Q. 無料チェックだけでも使えますか？</h3>
 <p>はい。登録・購入・Unityファイルのアップロードは不要です。UnityのAnimator Controllerを自分で見ながら5項目を選び、「気になる」「未確認」を確認メモとして残せます。結果が「問題なし」でも正常動作の保証ではありません。</p>
 <h3>Q. Expressions Menuの不具合も自動検出しますか？</h3>
-<p>いいえ。無料チェックも有料のAnimator Doctor Proも、Expressions Menu全体の自動診断や不具合の原因確定には対応しません。まずControl、Expression Parameters、Animatorの名前と型を手動で照合してください。<a href="#case-expressions-menu">具体的な確認順はこちら</a>。</p>
+<p>無料チェックはExpressions Menu全体を自動診断しません。旧Animator Doctor ProもMenu全体は対象外でした。一方、現行のBOOTH掲載「Avatar Setup Doctor」はMenu関連の診断候補を紹介しています（配布実体の検証は未実施）。まずControl、Expression Parameters、Animatorの名前と型を手動で照合してください。<a href="#case-expressions-menu">具体的な確認順はこちら</a>。</p>
 <h3>Q. どのUnity・SDKで確認されていますか？</h3>
 <p>検証記録はWindows、Unity 2022.3.22f1、VRChat SDK Avatars 3.10.5、Modular Avatar 1.18.7あり・なしでのテスト用Controllerに関するものです。ほかのUnity・SDK、市販アバター固有構成の対応を保証しません。<a href="#verified-demo">検証例と無料・有料の機能差</a>を購入前に確認してください。</p>
 <h3>Q. Animator Doctor Proは自動修復しますか？</h3>
-<p>自動修復しません。Unity Editor内で選んだAnimator Controllerを読み取り専用で点検し、確認候補を日英UI・Markdownレポートで整理する1.0.0正式版です。修正はバックアップ後に利用者が判断して行います。購入は任意です。</p>
+<p>旧Animator Doctor Pro 1.0.0の検証資料では自動修復せず、選んだControllerを読み取り専用で点検し、候補を日英UI・Markdownレポートで整理する設計です。現行のAvatar Setup DoctorについてはBOOTH掲載仕様を確認してください。修正はバックアップ後に利用者が判断して行います。購入は任意です。</p>
 <p class="note">無料で症状を整理してから、必要な場合だけ既存のBOOTH商品詳細と最新の販売条件を確認してください。<a href="#verified-demo">検証例・機能比較・商品リンクへ戻る</a>。</p>
 </section>
 <section class="card" aria-label="共有"><h2>役立つ確認手順をBlueskyで共有</h2><p class="note">症状ごとに公式ガイドを参考にした手動の切り分け方を共有できます。リンク先は投稿の下書き画面です。<strong>自動投稿されません</strong>。投稿内容と公開範囲を確認してから操作してください。チェックの回答・結果は共有されません。</p><p><a class="cta" href="https://bsky.app/intent/compose?text=VRChat%E3%81%A7%E8%A1%A3%E8%A3%85%E3%82%84%E8%A1%A8%E6%83%85%E3%81%8C%E6%88%BB%E3%82%89%E3%81%AA%E3%81%84%E3%81%A8%E3%81%8D%E3%80%81Animator%E3%81%AEWrite%20Defaults%E3%81%A8%E6%88%BB%E3%81%99Animation%20Clip%E3%82%92%E9%A0%86%E3%81%AB%E7%A2%BA%E8%AA%8D%E3%80%82%E8%A8%AD%E5%AE%9A%E3%82%92%E4%B8%80%E6%8B%AC%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B%E5%89%8D%E3%81%AB%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%80%82%E7%97%87%E7%8A%B6%E5%88%A5%E3%81%AE%E7%A2%BA%E8%AA%8D%E6%89%8B%E9%A0%86%E3%81%A8%E7%84%A1%E6%96%995%E9%A0%85%E7%9B%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89%EF%BC%88%E6%89%8B%E5%8B%95%E3%83%BB%E8%87%AA%E5%8B%95%E4%BF%AE%E5%BE%A9%E3%81%AA%E3%81%97%EF%BC%89%EF%BC%9A%20https%3A%2F%2F10131010-star.github.io%2Fmichishirube-lab%2Fvrchat-animator-check%2F%3Futm_source%3Dbluesky%26utm_medium%3Dorganic%26utm_campaign%3Danimator_freecheck%26utm_content%3Dwrite_defaults" target="_blank" rel="noopener noreferrer" data-goatcounter-click="vrchat-freecheck-share-intent">Write Defaultsの確認手順を共有する（未投稿）</a></p><p><a class="cta" href="https://bsky.app/intent/compose?text=VRChat%E3%81%AEExpressions%20Menu%E3%81%8C%E5%8F%8D%E5%BF%9C%E3%81%97%E3%81%AA%E3%81%84%E3%81%A8%E3%81%8D%E3%81%AF%E3%80%81Control%E3%81%AEParameter%E5%90%8D%E3%83%BB%E5%9E%8B%E3%80%81Expression%20Parameters%E3%80%81Animator%E3%81%AE%E5%AE%9A%E7%BE%A9%E3%82%92%E9%A0%86%E3%81%AB%E8%A6%8B%E6%AF%94%E3%81%B9%E3%81%BE%E3%81%99%E3%80%82%E5%8E%9F%E5%9B%A0%E3%81%AE%E6%96%AD%E5%AE%9A%E3%81%AF%E3%81%9B%E3%81%9A%E5%88%87%E3%82%8A%E5%88%86%E3%81%91%E3%80%82%E7%84%A1%E6%96%995%E9%A0%85%E7%9B%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89%EF%BC%88%E6%89%8B%E5%8B%95%EF%BC%89%EF%BC%9A%20https%3A%2F%2F10131010-star.github.io%2Fmichishirube-lab%2Fvrchat-animator-check%2F%3Futm_source%3Dbluesky%26utm_medium%3Dorganic%26utm_campaign%3Danimator_freecheck%26utm_content%3Dexpression_menu" target="_blank" rel="noopener noreferrer" data-goatcounter-click="vrchat-freecheck-share-intent">Expressions Menuの確認手順を共有する（未投稿）</a></p><p class="note">2つの共有リンクは送客元を区別するUTMを含みます。UTMだけで投稿・クリック・購入を証明するものではありません。共有画面を開いた回数は既存の匿名イベントで計測します。</p></section>
