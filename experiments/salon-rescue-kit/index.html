@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="個人サロン向け無料・予約キャンセル損失の概算と予約リマインド文面作成ツール。入力情報は送信・保存されません。">
+<title>サロン予約ロス見える化｜無料ミニツール</title>
+<style>
+:root{color-scheme:light;--ink:#18332f;--muted:#526660;--paper:#f8f7f2;--accent:#056e5e;--line:#d9e1db;--white:#fff;--pink:#f9e9e3}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;color:var(--ink);line-height:1.7}
+main,header,footer{max-width:1060px;margin:auto;padding:0 22px}header{padding-top:26px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.12em;color:var(--accent);font-size:14px}.tag{font-size:12px;background:#dff1ea;padding:6px 12px;border-radius:50px}
+.hero{margin-top:42px;background:var(--ink);color:white;border-radius:26px;padding:36px 40px}.eyebrow{color:#8ce5bc;font-weight:700;letter-spacing:.12em;font-size:12px}.hero h1{font-size:clamp(27px,5vw,43px);line-height:1.4;margin:10px 0}.hero p{color:#e3ece6;max-width:650px}.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.pills span{background:#375650;border-radius:30px;padding:5px 12px;font-size:12px}
+section{margin:28px 0}.panel{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 8px 28px rgba(30,60,50,.04)}
+h2{font-size:21px;margin:0 0 8px}.sub{font-size:13px;color:var(--muted);margin:0 0 20px}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.field label{font-size:13px;font-weight:700;display:block;margin-bottom:5px}
+input,select,textarea{width:100%;border:1px solid #b9c9c1;border-radius:10px;padding:11px 12px;font:inherit;background:white;color:#17332e}
+input:focus,select:focus,textarea:focus{outline:3px solid #b9e5d4;border-color:var(--accent)}.hint{font-size:11px;color:var(--muted);margin-top:3px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}.metric{background:#e9f4ed;border-radius:13px;padding:18px}.metric strong{display:block;font-size:clamp(20px,3vw,29px);line-height:1.3}.metric span{font-size:12px;color:#415d51}
+.note{font-size:12px;color:var(--muted);margin-top:15px}.note strong{color:#884b21}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}.controls{display:grid;gap:14px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;border:0;border-radius:10px;background:var(--accent);color:#fff;cursor:pointer;font-weight:800;min-height:44px}.btn.secondary{background:#e6efe9;color:var(--ink)}.btn:focus-visible{outline:3px solid #dab46f}
+textarea{min-height:200px;resize:vertical;font-size:14px;line-height:1.85}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.callout{background:var(--pink);border-radius:16px;padding:23px}.callout h2{margin-bottom:8px}.callout p{font-size:14px}
+footer{color:var(--muted);font-size:12px;padding-bottom:32px;margin-top:26px}a{color:var(--accent)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:720px){.hero{padding:26px}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:430px){.fields{grid-template-columns:1fr}}
+</style></head>
+<body><header><div class="brand">SALON RECOVERY LAB</div><div class="tag">無料・登録不要・オフライン対応</div></header>
+<main><div class="hero"><div class="eyebrow">SOLO SALON / RESERVATION SUPPORT</div>
+<h1>予約の空き枠、<br>どれだけの売上機会を失っている？</h1>
+<p>月の直前キャンセル・無断キャンセルの影響を概算し、予約確認・変更案内のメッセージをすぐ作れる、個人サロン向けミニツールです。</p>
+<div class="pills"><span>入力は端末内だけで処理</span><span>外部送信なし</span><span>費用ゼロで試せる</span></div></div>
+<section class="panel" aria-labelledby="calcTitle"><h2 id="calcTitle">① 予約ロスを30秒で概算</h2><p class="sub">架空の初期値が入っています。あなたの店舗の実績に置き換えてください。</p>
+<div class="fields">
+<div class="field"><label for="bookings">月間予約数（件）</label><input id="bookings" type="number" min="0" max="100000" step="1" value="120"></div>
+<div class="field"><label for="price">平均施術単価（円）</label><input id="price" type="number" min="0" max="10000000" step="100" value="7000"></div>
+<div class="field"><label for="margin">粗利率（%）</label><input id="margin" type="number" min="0" max="100" step="1" value="65"><div class="hint">原価等を差し引いた概算</div></div>
+<div class="field"><label for="cancel">直前キャンセル（件/月）</label><input id="cancel" type="number" min="0" max="100000" step="1" value="6"></div>
+<div class="field"><label for="noshow">無断キャンセル（件/月）</label><input id="noshow" type="number" min="0" max="100000" step="1" value="2"></div>
+<div class="field"><label for="refill">空き枠の埋め直し率（%）</label><input id="refill" type="number" min="0" max="100" step="1" value="25"></div>
+</div>
+<div class="metrics" aria-live="polite">
+<div class="metric"><span>月間の機会売上（目安）</span><strong id="salesLoss">—</strong></div>
+<div class="metric"><span>月間の粗利機会損失（目安）</span><strong id="profitLoss">—</strong></div>
+<div class="metric"><span>年間換算の粗利機会損失</span><strong id="yearLoss">—</strong></div>
+</div>
+<p class="note">計算式：対象件数 × 平均施術単価 ×（1 − 埋め直し率）。粗利はさらに粗利率を掛けます。売上・利益が実際に失われたことを証明する数字ではありません。対象件数が予約件数を超える場合は入力を確認してください。</p>
+<div class="actions"><button class="btn secondary" id="exportCsv" type="button">この数値をCSVで保存</button></div><p id="validation" class="note" role="status"></p>
+</section>
+<section class="grid2"><div class="panel"><h2>② 送信文面を作る</h2><p class="sub">送信は自動では行いません。内容と宛先を確認してからコピーしてください。</p>
+<div class="controls">
+<div><label for="salon">サロン名（任意）</label><input id="salon" maxlength="70" placeholder="例：さくらサロン" value="さくらサロン"></div>
+<div><label for="date">予約日時（任意）</label><input id="date" maxlength="70" placeholder="例：11月15日（日）14:00" value="11月15日（日）14:00"></div>
+<div><label for="contact">変更連絡先（任意）</label><input id="contact" maxlength="90" placeholder="例：公式LINEまたはお電話" value="公式LINE"></div>
+<div><label for="template">使いたい文面</label><select id="template">
+<option value="remind">前日の予約リマインド</option>
+<option value="reconfirm">予約内容の再確認</option>
+<option value="change">日時変更・キャンセルの案内</option>
+<option value="slot">空き枠のご案内（既存顧客向け）</option>
+<option value="thanks">キャンセル連絡へのお礼</option>
+</select></div></div></div>
+<div class="panel"><h2>③ コピペして使う</h2><p class="sub">宛先の同意、利用する配信サービスの規約、自店の予約条件をご確認ください。</p>
+<label class="sr-only" for="message">生成文面</label><textarea id="message" readonly></textarea>
+<div class="actions"><button class="btn" id="copy" type="button">文面をコピー</button><button class="btn secondary" id="selectAll" type="button">全選択</button></div><p id="copyStatus" class="note" role="status"></p>
+</div></section>
+<section class="callout"><h2>次の一歩：7日間だけ記録しよう</h2>
+<p><a class="btn" href="./checklist.html">無料6項目チェックリストを開く</a></p>
+<p class="note">前日確認・変更案内・空き枠の案内・記録を、登録不要で点検できます。</p>
+<p>キャンセル件数、埋め直し件数、直前の予約確認の実施数を7日間記録し、対策前後を比較してください。リマインドの効果や売上増加は保証されません。</p>
+<p>店舗向け「7日実験シート・文面例集」の提供は準備中です。現在このページでは販売・注文・決済を受け付けていません。</p></section></main>
+<footer>© 2026 SALON RECOVERY LAB / Independent experimental tool. 個人情報や予約情報を外部サーバーに送信せず、Cookie・解析タグ・外部ライブラリは使用しません。キャンセル料請求の可否は各店舗の契約条件・法令等を確認してください。</footer>
+<script>
+(function(){
+"use strict";
+var ids=["bookings","price","margin","cancel","noshow","refill"];
+var yen=new Intl.NumberFormat("ja-JP",{style:"currency",currency:"JPY",maximumFractionDigits:0});
+var el=function(id){return document.getElementById(id)};
+var num=function(id){var n=Number(el(id).value);return Number.isFinite(n)?Math.max(0,n):0};
+var clamp=function(x,a,b){return Math.min(b,Math.max(a,x))};
+function calculate(){
+ var bookings=num("bookings"),price=num("price"),margin=clamp(num("margin"),0,100);
+ var cancel=num("cancel"),noshow=num("noshow"),refill=clamp(num("refill"),0,100);
+ var count=cancel+noshow, lost=count*price*(1-refill/100),gross=lost*margin/100;
+ el("salesLoss").textContent=yen.format(lost);el("profitLoss").textContent=yen.format(gross);
+ el("yearLoss").textContent=yen.format(gross*12);
+ el("validation").textContent=count>bookings?"注意：キャンセル件数の合計が月間予約数を超えています。入力値をご確認ください。":"本結果は入力値に基づく試算です。";
+ return {bookings:bookings,price:price,margin:margin,cancel:cancel,noshow:noshow,refill:refill,lost:Math.round(lost),gross:Math.round(gross)};
+}
+var phrases={
+remind:function(s,d,c){return "【"+s+"｜ご予約前日のご案内】\nご予約ありがとうございます。\n明日のご予約は「"+d+"」です。\nご都合が変わった場合は、分かり次第"+c+"へご連絡ください。\n当日お会いできるのを楽しみにしております。";},
+reconfirm:function(s,d,c){return "【"+s+"｜予約内容のご確認】\nご予約日時「"+d+"」で承っております。\n日時・メニューに相違がないかご確認ください。\n変更をご希望の場合は"+c+"へご連絡ください。\nよろしくお願いいたします。";},
+change:function(s,d,c){return "【"+s+"｜日時変更・キャンセルのご案内】\nご予約（"+d+"）の変更が必要な場合は、分かり次第"+c+"へご連絡をお願いいたします。\nキャンセル条件はご予約時にご案内した内容をご確認ください。\nご事情がある場合はお気軽にご相談ください。";},
+slot:function(s,d,c){return "【"+s+"｜空き枠のご案内】\n「"+d+"」のご案内枠が空きました。\nご希望の場合は"+c+"までお問い合わせください。\n受付状況によりご案内できない場合もございます。";},
+thanks:function(s,d,c){return "【"+s+"｜ご連絡ありがとうございます】\nご予約（"+d+"）について、変更のご連絡をいただきありがとうございます。\nまたご都合のよい日にお待ちしております。\n次回のご相談は"+c+"へお気軽にご連絡ください。";}
+};
+function safeText(id,fallback){var t=el(id).value.trim();return t?t:fallback}
+function updateMessage(){var key=el("template").value,fn=phrases[key]||phrases.remind;el("message").value=fn(safeText("salon","当店"),safeText("date","ご予約の日時"),safeText("contact","当店"))}
+ids.forEach(function(id){el(id).addEventListener("input",calculate)});
+["salon","date","contact","template"].forEach(function(id){el(id).addEventListener("input",updateMessage);el(id).addEventListener("change",updateMessage)});
+el("copy").addEventListener("click",async function(){try{await navigator.clipboard.writeText(el("message").value);el("copyStatus").textContent="コピーしました。送信前に内容をご確認ください。"}catch(e){el("message").focus();el("message").select();el("copyStatus").textContent="自動コピーできませんでした。選択中の文面を手動コピーしてください。"}});
+el("selectAll").addEventListener("click",function(){el("message").focus();el("message").select();el("copyStatus").textContent="文面を選択しました。"});
+el("exportCsv").addEventListener("click",function(){var v=calculate();var h="予約数,平均単価,粗利率(%),直前キャンセル,無断キャンセル,埋め直し率(%),推計機会売上(円),推計粗利損失(円)";var nums=[v.bookings,v.price,v.margin,v.cancel,v.noshow,v.refill,v.lost,v.gross];var csv="\uFEFF"+h+"\r\n"+nums.join(",")+"\r\n";var u=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));var a=document.createElement("a");a.href=u;a.download="salon-reservation-loss-estimate.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000)});
+calculate();updateMessage();
+})();
+</script></body></html>
