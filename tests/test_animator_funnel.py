@@ -69,7 +69,7 @@ class AnimatorFunnelTests(unittest.TestCase):
         self.assertIn("cta", link.get("class", "").split(),
                       "The post-check link must be a visible primary CTA on mobile")
         self.assertEqual(link.get("data-goatcounter-click"), "vrchat-freecheck-check-to-booth")
-        self.assertIn("BOOTHで機能・対応環境・最新価格を確認する（任意）", self.html)
+        self.assertIn("現行Avatar Setup Doctorの診断対象・対応環境をBOOTHで確認する（購入は任意）", self.html)
         self.assertIn("購入は任意です", self.html)
 
     def test_click_ids_unique_and_no_pii_in_urls(self):
