@@ -6,4 +6,4 @@
 2026-11-16,not_launched,none,,,null,null,null,null,null,null,null,null,未公開・未実測,null,null,null,null,null,null,null,null
 2026-11-17,not_launched,none,,,null,null,null,null,null,null,null,null,未公開・未実測,null,null,null,null,null,null,null,null
 2026-11-18,not_launched,none,,,null,null,null,null,null,null,null,null,未公開・未実測,null,null,null,null,null,null,null,null
-2026-11-19,permission_gate_checked,approval_not_evidenced,,,null,null,null,null,null,null,null,null,2026-11-19 02:20 JST時点：既存PR・AI CEO Issue・デモ・計測記録に販売条件/事業用受信先/対象者への提示/公開の個別承認証跡なし。暫定NOT TESTABLE・販売公開保留。当日終了判定は未実施。顧客接点未取得をゼロ扱いしない。,null,null,null,null,null,null,null,null
+2026-11-19,seven_day_gate_closed,no_approved_channel,,,null,null,null,null,null,null,null,null,2026-11-19 18:23 JST時点の7日検証ゲートを判定：既存PR・AI CEO Issue・既存MVP・測定記録に事業用窓口と顧客提示経路と正式価格等の個別承認証跡がない。実際の顧客購入意思は観測不能のためNOT TESTABLE／販売公開NO-GO。11/19終日観測済みを意味せず未観測を0に換算しない。新規開発と販路公開を行わず個別承認まで保留。,null,null,null,null,null,null,null,null
